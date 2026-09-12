@@ -101,6 +101,7 @@ function calculate(){
   const notional = margin * leverage;
   const maintenanceMarginUsd = notional * (mmrPct / 100);
 
+  document.getElementById('notionalOut').textContent = 'Notional $' + notional.toLocaleString('en-US', {maximumFractionDigits:0});
   document.getElementById('scPosition').textContent = '$' + notional.toLocaleString('en-US', {maximumFractionDigits:0});
   document.getElementById('scInitialMargin').textContent = '$' + margin.toLocaleString('en-US', {maximumFractionDigits:0});
   document.getElementById('scMaintMargin').textContent = mmrMissing ? '—' : ('$' + maintenanceMarginUsd.toLocaleString('en-US', {maximumFractionDigits:2}));

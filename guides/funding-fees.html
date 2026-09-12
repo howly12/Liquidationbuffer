@@ -107,8 +107,8 @@
     <h2 id="intervals">Settlement intervals aren't always 8 hours</h2>
     <p>Eight hours used to be close to a universal default, and it's still the most common baseline for major pairs on major exchanges. But this has genuinely changed in the last couple of years, and treating "every 8 hours" as a fixed assumption will produce wrong numbers on some pairs.</p>
     <ul>
-      <li><strong>OKX</strong> introduced tiered escalation that steps settlement frequency down — from 8h to 4h to 2h to 1h — specifically for more volatile or lower-liquidity pairs, where a full 8-hour accumulation window would let the price drift too far from spot before correcting.</li>
-      <li><strong>Bybit</strong> enabled a similar dynamic settlement system, initially excluding the very largest pairs (BTC, ETH) but extending it more broadly since.</li>
+      <li><strong><a href="/okx-liquidation-calculator.html">OKX</a></strong> introduced tiered escalation that steps settlement frequency down — from 8h to 4h to 2h to 1h — specifically for more volatile or lower-liquidity pairs, where a full 8-hour accumulation window would let the price drift too far from spot before correcting.</li>
+      <li><strong><a href="/bybit-liquidation-calculator.html">Bybit</a></strong> enabled a similar dynamic settlement system, initially excluding the very largest pairs (BTC, ETH) but extending it more broadly since.</li>
       <li><strong>Decentralized perpetual exchanges</strong> like Hyperliquid and dYdX settle hourly by design, not as an emergency measure — it's simply their default model, chosen to keep the perpetual price tighter to spot at all times.</li>
     </ul>
     <p>The practical takeaway: check the funding interval for the <em>specific pair</em> you're trading, not just what you remember as "the" interval for that exchange. This is exactly why the calculator on this site treats funding interval as a field you set yourself, with presets for 1h, 2h, 4h and 8h, rather than assuming a fixed number.</p>

@@ -112,6 +112,7 @@
     <p>This isn't just a philosophical difference — it changes the actual math. Under isolated margin, the liquidation price for a position can be calculated from that position's own numbers alone: entry price, leverage, maintenance margin rate, fees. That's exactly what a calculator like the one on this site does.</p>
     <p>Under cross margin, the same calculation is incomplete without knowing every other open position on the account and the current free balance, because all of it backs every position simultaneously. Two accounts with identical BTC positions at identical leverage can have completely different actual liquidation prices under cross margin, purely because one account has other open trades or spare balance and the other doesn't.</p>
     <div class="callout">This is why liquidation calculators — including this one — model isolated margin only. A cross-margin "calculator" that gives a single fixed answer without asking about your entire account is oversimplifying the mechanics, not just skipping a detail.</div>
+    <p>If you're checking an isolated position on one of the exchanges we track, the <a href="/binance-liquidation-calculator.html">Binance</a>, <a href="/bybit-liquidation-calculator.html">Bybit</a>, <a href="/okx-liquidation-calculator.html">OKX</a>, <a href="/kucoin-liquidation-calculator.html">KuCoin</a> and <a href="/mexc-liquidation-calculator.html">MEXC</a> calculators already have that exchange's fee and funding defaults filled in.</p>
 
     <h2 id="which">Which mode fits when</h2>
     <ul>

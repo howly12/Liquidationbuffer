@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Margin Call vs. Liquidation: What's the Difference? (2026) | LiquidationBuffer</title>
+<meta name="description" content="Traditional brokers give you a margin call before forced selling. Most crypto perpetual exchanges don't. Here's what actually warns you before liquidation instead.">
+<link rel="canonical" href="https://www.liquidationbuffer.com/guides/margin-call-vs-liquidation.html">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Margin Call vs. Liquidation">
+<meta property="og:description" content="There's no phone call before a crypto perpetual gets liquidated. Here's what replaces it.">
+<meta property="og:url" content="https://www.liquidationbuffer.com/guides/margin-call-vs-liquidation.html">
+<meta property="og:site_name" content="LiquidationBuffer">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Margin Call vs. Liquidation">
+<meta name="twitter:description" content="There's no phone call before a crypto perpetual gets liquidated. Here's what replaces it.">
+<link rel="icon" type="image/svg+xml" href="/assets/favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon-16.png">
+<link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
+<link rel="stylesheet" href="/assets/style.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "Margin Call vs. Liquidation",
+  "description": "Traditional brokers give you a margin call before forced selling. Most crypto perpetual exchanges don't. Here's what actually warns you before liquidation instead.",
+  "author": { "@type": "Organization", "name": "LiquidationBuffer" },
+  "publisher": { "@type": "Organization", "name": "LiquidationBuffer" },
+  "datePublished": "2026-09-12",
+  "dateModified": "2026-09-12"
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {"@type":"ListItem","position":1,"name":"Calculator","item":"https://www.liquidationbuffer.com/"},
+    {"@type":"ListItem","position":2,"name":"Guides","item":"https://www.liquidationbuffer.com/guides/"},
+    {"@type":"ListItem","position":3,"name":"Margin Call vs. Liquidation","item":"https://www.liquidationbuffer.com/guides/margin-call-vs-liquidation.html"}
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {"@type":"Question","name":"Do crypto exchanges ever send a margin call?",
+     "acceptedAnswer":{"@type":"Answer","text":"Some send an email or push notification once your margin ratio crosses a warning threshold, but this is a courtesy notification, not a negotiable deadline. There's no equivalent to a broker call asking you to wire funds by end of day — the liquidation engine doesn't wait for a response."}},
+    {"@type":"Question","name":"Can I add margin after a warning to avoid liquidation?",
+     "acceptedAnswer":{"@type":"Answer","text":"Yes, on most exchanges you can add margin to an isolated position at any point before liquidation actually triggers, which pushes the liquidation price further away. The catch is timing: if you're relying on a push notification that arrives after some delay, or you're away from your device, the window to react may already be gone."}},
+    {"@type":"Question","name":"Why don't crypto exchanges give more warning before liquidating?",
+     "acceptedAnswer":{"@type":"Answer","text":"Traditional margin calls exist partly because settlement and communication were slow and manual. Crypto perpetuals are matched and liquidated by automated engines running continuously, and the exchange's own risk (and other traders' positions) is on the line if a losing position isn't closed the moment it crosses its threshold — so the system is built to act instantly rather than wait for a human response."}}
+  ]
+}
+</script>
+<script defer src="https://cloud.umami.is/script.js" data-website-id="c57ce8d4-f0c9-427d-851b-8e64d8860d99"></script>
+</head>
+<body>
+<header class="site">
+  <div class="wrap">
+    <a class="brand" href="/"><div class="brand-mark">L</div><div class="brand-name">LiquidationBuffer</div></a>
+    <nav class="site"><a href="/#calc">Calculator</a><a href="/guides/">Guides</a></nav>
+  </div>
+</header>
+
+<div class="wrap breadcrumb"><a href="/">Calculator</a> · <a href="/guides/">Guides</a> · Margin Call vs. Liquidation</div>
+
+<article class="article wrap">
+  <div class="article-header">
+    <div class="kicker"><span class="dot"></span>Basics</div>
+    <h1>Margin Call vs. Liquidation</h1>
+    <p class="lede">There's no phone call before a crypto perpetual gets liquidated. Here's what replaces it.</p>
+    <p class="article-meta">Last updated September 12, 2026 · 6 min read</p>
+  </div>
+
+  <div class="toc">
+    <p class="toc-title">On this page</p>
+    <ol>
+      <li><a href="#whats-a-margin-call">What a margin call actually is</a></li>
+      <li><a href="#crypto-difference">Why crypto perpetuals mostly skip it</a></li>
+      <li><a href="#warning-signs">What actually warns you instead</a></li>
+      <li><a href="#example">A worked example of the gap</a></li>
+      <li><a href="#what-to-do">What to actually do when you're close</a></li>
+      <li><a href="#faq">FAQ</a></li>
+    </ol>
+  </div>
+
+  <div class="article-body">
+    <p>Traders coming from stocks or forex often assume crypto perpetuals work the same way: margin drops too low, the broker calls or emails, you get a day or two to top up before anything gets sold. That model barely exists in crypto perpetual futures. By the time most traders would expect a "call," the position is often already closed.</p>
+
+    <h2 id="whats-a-margin-call">What a margin call actually is</h2>
+    <p>In traditional brokerage, a <strong>margin call</strong> is a demand from the broker to deposit more funds or reduce a position, issued when your account equity falls below a required maintenance level. Critically, it's a request with a grace period — typically hours to a few days — not an automatic execution. The broker (or its systems) can force-liquidate if you don't respond, but the call itself is a separate, earlier step.</p>
+    <p>That structure exists because traditional settlement, communication, and even the underlying markets themselves move on a slower clock than crypto perpetuals do. A phone call or email made sense when trades settled overnight and markets closed for the day.</p>
+
+    <h2 id="crypto-difference">Why crypto perpetuals mostly skip it</h2>
+    <p>Crypto perpetual futures trade continuously, and the exchange's liquidation engine runs continuously too — there's no daily close during which a human could review accounts and place calls. More importantly, the exchange (and the traders on the other side of your position) carry the risk of your position for every second it stays open underwater. Waiting for a trader to respond to a warning, the way a broker might, creates exactly the kind of exposure the system is designed to avoid.</p>
+    <p>So instead of a call-then-wait model, almost every major exchange (Binance, Bybit, OKX, KuCoin, MEXC included) runs a threshold-then-execute model: cross the maintenance margin threshold, and the position starts getting force-closed immediately, no confirmation step in between.</p>
+
+    <h2 id="warning-signs">What actually warns you instead</h2>
+    <p>Since there's no call with a deadline, the closest equivalents are:</p>
+    <ul>
+      <li><strong>Margin ratio indicators in the app.</strong> Most exchanges show a live percentage or color-coded bar for how close a position is to its liquidation threshold — this is passive, you have to be looking at it.</li>
+      <li><strong>Push notifications or email alerts.</strong> Many exchanges send an automatic alert once margin ratio crosses a set warning level (often configurable). This is the closest thing to a margin call, but it's informational, not negotiable — there's no extra time bought by receiving it.</li>
+      <li><strong>Distance-to-liquidation calculators (like this one).</strong> Since the warning threshold and the liquidation threshold are usually close together in price terms, checking your buffer ahead of time tells you far more than waiting for a notification.</li>
+    </ul>
+    <p>The key difference from a real margin call: none of these buy you time. The liquidation engine doesn't pause because you haven't acknowledged an alert.</p>
+
+    <h2 id="example">A worked example of the gap</h2>
+    <p>Take a position with a 0.65% maintenance margin rate and an exchange that sends a warning notification at a 0.9% margin ratio. That's a genuinely thin gap — depending on leverage, it can represent well under 1% of price movement between "you get a notification" and "the position is already liquidating." In a fast move, both can happen within the same minute, especially if you're not actively watching the app when the alert arrives.</p>
+    <p>Compare that to a traditional margin call, where the gap between the call and forced selling is measured in hours or days, precisely because a human is expected to act on it. Sizing a crypto position as if you have that same reaction window is one of the more common ways traders get liquidated despite believing they were "keeping an eye on it."</p>
+
+    <h2 id="what-to-do">What to actually do when you're close</h2>
+    <p>Because there's no negotiation step, the only real strategies are ones that don't depend on reacting in time:</p>
+    <ul>
+      <li><strong>Size the position with the actual buffer in mind</strong> — including fees and funding, not just the naive 1/leverage assumption — before opening it, not after a warning arrives.</li>
+      <li><strong>Add margin proactively</strong> if you're isolated and want to widen the buffer, rather than waiting to see if a warning shows up.</li>
+      <li><strong>Set your own alerts tighter than the exchange's default</strong>, if the platform allows a custom threshold, so you have more room to act than the built-in warning gives you.</li>
+      <li><strong>Treat any notification as the last signal, not the first one</strong> — by the time it arrives, the buffer still available is exactly what this calculator would have shown you in advance.</li>
+    </ul>
+
+    <h2 id="faq">FAQ</h2>
+    <div class="faq-item">
+      <h3>Do crypto exchanges ever send a margin call?</h3>
+      <p>Some send an email or push notification once your margin ratio crosses a warning threshold, but this is a courtesy notification, not a negotiable deadline. There's no equivalent to a broker call asking you to wire funds by end of day — the liquidation engine doesn't wait for a response.</p>
+    </div>
+    <div class="faq-item">
+      <h3>Can I add margin after a warning to avoid liquidation?</h3>
+      <p>Yes, on most exchanges you can add margin to an isolated position at any point before liquidation actually triggers, which pushes the liquidation price further away. The catch is timing: if you're relying on a push notification that arrives after some delay, or you're away from your device, the window to react may already be gone.</p>
+    </div>
+    <div class="faq-item">
+      <h3>Why don't crypto exchanges give more warning before liquidating?</h3>
+      <p>Traditional margin calls exist partly because settlement and communication were slow and manual. Crypto perpetuals are matched and liquidated by automated engines running continuously, and the exchange's own risk (and other traders' positions) is on the line if a losing position isn't closed the moment it crosses its threshold — so the system is built to act instantly rather than wait for a human response.</p>
+    </div>
+
+    <a class="cta-inline" href="/#calc">
+      <span class="ci-title">Check your real buffer before you need a warning</span>
+      <span>→</span>
+    </a>
+  </div>
+
+  <div class="related">
+    <h3>Explore next</h3>
+    <div class="explore-grid">
+      <a class="explore-tile" href="/guides/maintenance-margin.html"><div class="et-kicker">Basics</div><div class="et-title">What maintenance margin actually means</div></a>
+      <a class="explore-tile" href="/guides/liquidation-vs-bankruptcy.html"><div class="et-kicker">Basics</div><div class="et-title">Liquidation price vs. bankruptcy price</div></a>
+      <a class="explore-tile" href="/guides/isolated-vs-cross.html"><div class="et-kicker">Basics</div><div class="et-title">Isolated vs. cross margin explained</div></a>
+      <a class="explore-tile" href="/guides/funding-fees.html"><div class="et-kicker">Costs &amp; Fees</div><div class="et-title">Why funding fees can eat your buffer</div></a>
+    </div>
+  </div>
+</article>
+
+<footer>
+  <div class="wrap">
+    <span>LiquidationBuffer — not financial advice, just math.</span>
+    <span><a href="/">Back to calculator</a> · <a href="/impressum.html">Imprint</a> · <a href="/datenschutz.html">Privacy</a></span>
+  </div>
+    <div class="footer-legal">Operated by Tensfeldt Consultancy and Advisory LTD · bul. &quot;Vitosha&quot; 25, 1000 Sofia, Bulgaria · UIC/EIK 206176562</div>
+</footer>
+</body>
+</html>

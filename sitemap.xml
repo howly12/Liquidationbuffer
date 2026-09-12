@@ -3,6 +3,10 @@
   <url><loc>https://www.liquidationbuffer.com/</loc><changefreq>weekly</changefreq><priority>1.0</priority></url>
   <url><loc>https://www.liquidationbuffer.com/guides/</loc><changefreq>weekly</changefreq><priority>0.9</priority></url>
   <url><loc>https://www.liquidationbuffer.com/binance-liquidation-calculator.html</loc><changefreq>monthly</changefreq><priority>0.85</priority></url>
+  <url><loc>https://www.liquidationbuffer.com/bybit-liquidation-calculator.html</loc><changefreq>monthly</changefreq><priority>0.85</priority></url>
+  <url><loc>https://www.liquidationbuffer.com/okx-liquidation-calculator.html</loc><changefreq>monthly</changefreq><priority>0.85</priority></url>
+  <url><loc>https://www.liquidationbuffer.com/kucoin-liquidation-calculator.html</loc><changefreq>monthly</changefreq><priority>0.85</priority></url>
+  <url><loc>https://www.liquidationbuffer.com/mexc-liquidation-calculator.html</loc><changefreq>monthly</changefreq><priority>0.85</priority></url>
   <url><loc>https://www.liquidationbuffer.com/guides/maintenance-margin.html</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
   <url><loc>https://www.liquidationbuffer.com/guides/isolated-vs-cross.html</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
   <url><loc>https://www.liquidationbuffer.com/guides/funding-fees.html</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>

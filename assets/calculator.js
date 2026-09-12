@@ -249,5 +249,7 @@ if (shareBtn){
   });
 }
 
-// Default fee-in-trigger state + initial render
-setFeeInTrigger(false);
+// Initial fee-in-trigger state comes from whichever button the page's own
+// HTML marks active (exchange pages pre-select "Yes" or "No" accordingly),
+// not a hardcoded default — otherwise every page would reset to "No".
+setFeeInTrigger(btnFeeYes.classList.contains('active'));

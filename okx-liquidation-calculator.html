@@ -4,17 +4,15 @@
 <meta charset="UTF-8">
 <script>(function(){try{if(localStorage.getItem('lb-theme')==='light')document.documentElement.setAttribute('data-theme','light');}catch(e){}})();</script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Liquidation Buffer Calculator — Any Exchange, Real Numbers | LiquidationBuffer</title>
-<meta name="description" content="Free liquidation buffer calculator for any crypto exchange. Enter your own maintenance margin rate, fees and funding rate to see your real price buffer before liquidation — not just the naive 1/leverage math.">
-<link rel="canonical" href="https://www.liquidationbuffer.com/">
+<title>OKX Liquidation Calculator — Real Fee &amp; Funding Defaults | LiquidationBuffer</title>
+<meta name="description" content="Liquidation buffer calculator pre-filled with OKX's own taker fee and funding interval. Maintenance margin is left for you to enter — it depends on your pair, and we don't guess it.">
+<link rel="canonical" href="https://www.liquidationbuffer.com/okx-liquidation-calculator.html">
 <meta property="og:type" content="website">
-<meta property="og:title" content="Liquidation Buffer Calculator — Your real buffer, not the assumed one">
-<meta property="og:description" content="10x leverage doesn't mean a 10% buffer. Enter your exchange's real maintenance margin, fee and funding numbers to see what's actually left.">
-<meta property="og:url" content="https://www.liquidationbuffer.com/">
+<meta property="og:title" content="OKX Liquidation Calculator">
+<meta property="og:description" content="Pre-filled with OKX's fee and funding rules. Maintenance margin is left for you to enter — it depends on your pair, not just the exchange.">
+<meta property="og:url" content="https://www.liquidationbuffer.com/okx-liquidation-calculator.html">
 <meta property="og:site_name" content="LiquidationBuffer">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Liquidation Buffer Calculator — Your real buffer, not the assumed one">
-<meta name="twitter:description" content="10x leverage doesn't mean a 10% buffer. Works for any exchange — enter your own numbers.">
 <link rel="icon" type="image/svg+xml" href="/assets/favicon.svg">
 <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32.png">
 <link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon-16.png">
@@ -26,11 +24,11 @@
 {
   "@context": "https://schema.org",
   "@type": "WebApplication",
-  "name": "LiquidationBuffer",
-  "url": "https://www.liquidationbuffer.com/",
+  "name": "OKX Liquidation Calculator",
+  "url": "https://www.liquidationbuffer.com/okx-liquidation-calculator.html",
   "applicationCategory": "FinanceApplication",
   "operatingSystem": "Any browser",
-  "description": "Liquidation buffer calculator for crypto perpetuals. Works for any exchange — enter your own maintenance margin rate, fees and funding rate to see the real price buffer before liquidation.",
+  "description": "Liquidation buffer calculator pre-filled with OKX's own taker fee and funding interval defaults. Maintenance margin is left for you to enter since it varies by pair.",
   "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
 }
 </script>
@@ -46,7 +44,7 @@
     </a>
     <div class="hdr-right">
       <nav class="site">
-        <a href="#calc">Calculator</a>
+        <a href="/#calc">Calculator</a>
         <a href="/guides/">Guides</a>
       </nav>
       <div class="ticker" id="btcTicker"><span class="t-dot"></span><span class="t-price">BTC</span><span class="t-chg"></span></div>
@@ -58,11 +56,26 @@
   </div>
 </header>
 
+<div class="wrap breadcrumb"><a href="/">Calculator</a> · Exchanges · OKX</div>
+
 <section class="hero">
   <div class="wrap hero-grid">
-    <div class="kicker"><span class="dot"></span>Works with any exchange</div>
-    <h1 class="hero-title">10x leverage doesn't mean a 10% buffer</h1>
-    <p class="hero-sub">Maintenance margin, fees and funding eat into your safety margin before the price even moves. Enter your exchange's own numbers below and see how much is actually left — no guessing, no exchange lock-in.</p>
+    <div class="exch-badge">⚫ <b>OKX</b> · USDT-Margined Perpetual Swap</div>
+    <h1 class="hero-title">OKX Liquidation Calculator</h1>
+    <p class="hero-sub">Pre-filled with OKX's own fee structure and funding interval. Maintenance margin is left for you to enter — it depends on your pair and position tier, and we don't guess it for you.</p>
+
+    <div class="miniguide">
+      <p>OKX defines liquidation directly around your <strong>maintenance margin ratio</strong>: your position gets force-reduced once your adjusted equity falls to 100% of the required maintenance margin <strong>plus applicable liquidation fees</strong> — the fee isn't a footnote, it's written into the trigger condition itself. BTC-USDT-SWAP's lowest position tier is commonly around <strong>0.40% MMR up to 125× leverage</strong>, but every tier and every pair has its own numbers. Check yours on <a href="https://www.okx.com/en-us/help/v-tiered-maintenance-margin-ratio-rules" target="_blank" rel="noopener">OKX's tiered maintenance margin rules ↗</a> before trusting a figure here.</p>
+      <p>OKX also charges a separate <strong>liquidation clearance fee</strong> on top of the standard liquidation taker fee, meant to cover slippage during the forced close — on some account modes this is even paid in the liquidated asset itself rather than USDT. See <a href="/guides/liquidation-vs-bankruptcy.html">Liquidation price vs. bankruptcy price</a> for how exchanges size these buffers.</p>
+    </div>
+
+    <div class="exch-row">
+      <a class="exch-pill" href="/binance-liquidation-calculator.html">Binance</a>
+      <a class="exch-pill" href="/bybit-liquidation-calculator.html">Bybit</a>
+      <a class="exch-pill current" href="/okx-liquidation-calculator.html">OKX</a>
+      <a class="exch-pill" href="/kucoin-liquidation-calculator.html">KuCoin</a>
+      <a class="exch-pill" href="/mexc-liquidation-calculator.html">MEXC</a>
+    </div>
 
     <div class="calc-shell" id="calc">
       <div class="calc-form">
@@ -92,33 +105,40 @@
         </div>
 
         <div class="fieldset">
-          <div class="fieldset-title">Costs &amp; Funding</div>
+          <div class="fieldset-title">Costs &amp; Funding — OKX defaults</div>
 
           <div class="field">
-            <label><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M10 2v16M14 6H8.5a2.5 2.5 0 0 0 0 5h3a2.5 2.5 0 0 1 0 5H6"/></svg>Maintenance margin rate (%)</label>
-            <input type="text" id="mmrInput" value="0.65">
-            <p class="hint">Read this off your exchange's own margin/leverage tier table for your position size.</p>
+            <label><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M10 2v16M14 6H8.5a2.5 2.5 0 0 0 0 5h3a2.5 2.5 0 0 1 0 5H6"/></svg>Maintenance margin rate (%)<span class="preset-tag">Your pair</span></label>
+            <input type="text" id="mmrInput" value="" placeholder="enter your pair's MMR">
+            <div class="field-callout">
+              <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="10" cy="10" r="7.5"/><path d="M10 9v4.5"/><circle cx="10" cy="6.7" r=".6" fill="currentColor"/></svg>
+              <p>BTC-USDT-SWAP's lowest tier is commonly ~0.40% (up to 125×) — but this rises per tier and differs completely for altcoins. <a href="https://www.okx.com/en-us/help/v-tiered-maintenance-margin-ratio-rules" target="_blank" rel="noopener">Check your pair on OKX ↗</a></p>
+            </div>
           </div>
 
           <div class="field">
-            <label><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="6" cy="6" r="2.5"/><circle cx="14" cy="14" r="2.5"/><path d="M15 5L5 15"/></svg>Taker fee per trade (%)</label>
+            <label><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="6" cy="6" r="2.5"/><circle cx="14" cy="14" r="2.5"/><path d="M15 5L5 15"/></svg>Taker fee per trade (%)<span class="preset-tag">Level 1</span></label>
             <input type="text" id="feeInput" value="0.05">
             <p class="hint">Counted twice automatically (opening + closing).</p>
+            <div class="field-callout">
+              <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="10" cy="10" r="7.5"/><path d="M10 9v4.5"/><circle cx="10" cy="6.7" r=".6" fill="currentColor"/></svg>
+              <p>0.05% is OKX's <strong>Level 1 (Regular)</strong> taker fee — higher VIP tiers and OKB holdings pay less. <a href="https://www.okx.com/en-us/fees" target="_blank" rel="noopener">Check your own fee tier ↗</a></p>
+            </div>
           </div>
 
           <div class="field">
-            <label>Does your exchange count this fee toward the liquidation trigger?</label>
+            <label>Fee counted toward the liquidation trigger?<span class="preset-tag">OKX</span></label>
             <div class="yn-toggle">
-              <button id="btnFeeYes">Yes</button>
-              <button id="btnFeeNo" class="active">No / not sure</button>
+              <button id="btnFeeYes" class="active">Yes</button>
+              <button id="btnFeeNo">No / not sure</button>
             </div>
-            <p class="hint">Not sure which applies to your exchange? <a href="/guides/liquidation-vs-bankruptcy.html" style="color:var(--accent);">See the guide</a> — this genuinely differs by exchange.</p>
+            <p class="hint">OKX triggers liquidation once equity falls to maintenance margin plus applicable liquidation fees — the fee is part of the trigger. See <a href="/guides/liquidation-vs-bankruptcy.html" style="color:var(--accent);">the guide</a>.</p>
           </div>
 
-          <div class="field" id="clearanceFeeField">
+          <div class="field" id="clearanceFeeField" style="display:none;">
             <label>Clearance fee at liquidation (%, optional)</label>
             <input type="text" id="clearanceFeeInput" value="">
-            <p class="hint">Only applies if you answered "No" above — shown separately since it doesn't move your trigger price.</p>
+            <p class="hint">Not applicable — OKX builds the fee into the trigger itself, though a separate liquidation clearance fee can still apply for slippage.</p>
           </div>
 
           <div class="field">
@@ -127,7 +147,7 @@
           </div>
 
           <div class="field">
-            <label>Funding interval (hours)</label>
+            <label>Funding interval (hours)<span class="preset-tag">OKX</span></label>
             <input type="text" id="fundingIntervalInput" value="8">
             <div class="preset-row">
               <button type="button" class="funding-preset" data-hours="1">1h</button>
@@ -135,7 +155,7 @@
               <button type="button" class="funding-preset" data-hours="4">4h</button>
               <button type="button" class="funding-preset" data-hours="8">8h</button>
             </div>
-            <p class="hint">Most majors settle every 8h. Some exchanges settle small-cap/volatile pairs every 1–4h instead — check your pair, not just the exchange default.</p>
+            <p class="hint">Most OKX majors settle every 8h. Some pairs settle more frequently — check yours, not just this default.</p>
           </div>
 
           <div class="field">
@@ -160,7 +180,7 @@
 
         <div class="disclaimer-card">
           <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M10 2.5l7 3.2v4.3c0 4.2-2.9 7.4-7 8.5-4.1-1.1-7-4.3-7-8.5V5.7z"/><path d="M7.3 10.2l2 2 3.4-4"/></svg>
-          <div><strong>Estimate, not an exchange quote</strong><p>Based on the numbers you entered — always cross-check the result against your exchange's own interface before trading on it.</p></div>
+          <div><strong>Estimate, not an exchange quote</strong><p>Fill in your pair's real MMR before trusting this. We only pre-fill what's genuinely OKX-wide (fee, funding, trigger behavior) — never a guessed maintenance margin.</p></div>
         </div>
 
         <div class="risk-band" id="riskBand">
@@ -206,13 +226,19 @@
         <table class="breakdown" id="breakdownTable"></table>
 
         <div class="disclaimers">
-          <p>Based on your exchange's mark price, not the chart/last price — the two can diverge slightly.</p>
+          <p>Based on OKX's mark price, not the chart/last price — the two can diverge slightly.</p>
           <p>Isolated margin only. Cross margin depends on your whole account balance and isn't modeled here.</p>
-          <p>Very large positions may be liquidated in steps (partial liquidation) on some exchanges.</p>
+          <p>Very large positions may be liquidated in steps (partial liquidation) above certain tiers.</p>
           <p>Auto-deleveraging (ADL) can close a position in extreme cases regardless of the liquidation price.</p>
           <p>Assumption: no automatic margin top-up active, and your entered rates stay constant over the holding period.</p>
         </div>
       </div>
+    </div>
+
+    <div class="embed-card">
+      <div class="embed-text"><strong>Embed this calculator</strong><p>Drop the OKX calculator into your own site or blog post — free, no signup.</p></div>
+      <div class="embed-code">&lt;iframe src="https://www.liquidationbuffer.com/embed/"&gt;</div>
+      <button class="embed-btn" id="embedCopyBtn">Copy embed code</button>
     </div>
   </div>
 </section>
@@ -224,28 +250,6 @@
   </div>
 </section>
 
-<section class="features">
-  <div class="wrap">
-    <div class="features-grid">
-      <div class="feature-cell">
-        <div class="f-num">01</div>
-        <h3>Works with any exchange</h3>
-        <p>No lock-in to one platform's API. Enter the real numbers from your exchange's own fee and margin pages, and the math is correct for any of them.</p>
-      </div>
-      <div class="feature-cell">
-        <div class="f-num">02</div>
-        <h3>Fee-in-trigger, handled correctly</h3>
-        <p>Some exchanges fold the closing fee into the liquidation trigger itself; others deduct it only afterward. Toggle it — the formula changes accordingly.</p>
-      </div>
-      <div class="feature-cell">
-        <div class="f-num">03</div>
-        <h3>Funding over any interval</h3>
-        <p>Not every pair settles every 8 hours. Set your own funding interval and holding period and see the real cumulative effect.</p>
-      </div>
-    </div>
-  </div>
-</section>
-
 <section class="guides" id="guides">
   <div class="wrap">
     <h2>Before you calculate</h2>
@@ -254,28 +258,16 @@
         <div><div class="gi-title">What maintenance margin actually means</div><div class="gi-sub">Why your real buffer is always smaller than 1/leverage alone</div></div>
         <span class="gi-arrow">→</span>
       </a>
-      <a class="guide-item" href="/guides/isolated-vs-cross.html">
-        <div><div class="gi-title">Isolated vs. cross margin explained</div><div class="gi-sub">Two different answers to what happens when a position moves against you</div></div>
-        <span class="gi-arrow">→</span>
-      </a>
-      <a class="guide-item" href="/guides/funding-fees.html">
-        <div><div class="gi-title">Why funding fees can eat your buffer</div><div class="gi-sub">How periodic payments shrink — or grow — your margin over time</div></div>
-        <span class="gi-arrow">→</span>
-      </a>
       <a class="guide-item" href="/guides/liquidation-vs-bankruptcy.html">
         <div><div class="gi-title">Liquidation price vs. bankruptcy price</div><div class="gi-sub">Why "nothing left" is rarer than most traders assume</div></div>
         <span class="gi-arrow">→</span>
       </a>
+      <a class="guide-item" href="/guides/margin-call-vs-liquidation.html">
+        <div><div class="gi-title">Margin call vs. liquidation</div><div class="gi-sub">There's no phone call before a crypto perpetual gets liquidated</div></div>
+        <span class="gi-arrow">→</span>
+      </a>
     </div>
     <p style="margin-top:24px;"><a href="/guides/" style="color:var(--accent); font-size:14px; text-decoration:none;">Browse all guides →</a></p>
-
-    <div class="exch-row" style="margin-top:30px;">
-      <a class="exch-pill" href="/binance-liquidation-calculator.html">Binance calculator →</a>
-      <a class="exch-pill" href="/bybit-liquidation-calculator.html">Bybit calculator →</a>
-      <a class="exch-pill" href="/okx-liquidation-calculator.html">OKX calculator →</a>
-      <a class="exch-pill" href="/kucoin-liquidation-calculator.html">KuCoin calculator →</a>
-      <a class="exch-pill" href="/mexc-liquidation-calculator.html">MEXC calculator →</a>
-    </div>
   </div>
 </section>
 
@@ -289,5 +281,18 @@
 
 <script src="/assets/site.js"></script>
 <script src="/assets/calculator.js"></script>
+<script>
+const embedBtn = document.getElementById('embedCopyBtn');
+if (embedBtn){
+  embedBtn.addEventListener('click', () => {
+    navigator.clipboard.writeText('<iframe src="https://www.liquidationbuffer.com/embed/" width="100%" height="900" style="border:0;" loading="lazy"></iframe>').then(() => {
+      const original = embedBtn.textContent;
+      embedBtn.textContent = 'Copied ✓';
+      embedBtn.classList.add('copied');
+      setTimeout(() => { embedBtn.textContent = original; embedBtn.classList.remove('copied'); }, 1800);
+    });
+  });
+}
+</script>
 </body>
 </html>

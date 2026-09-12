@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<script>(function(){try{if(localStorage.getItem('lb-theme')==='light')document.documentElement.setAttribute('data-theme','light');}catch(e){}})();</script>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Maker vs. Taker Fees Explained (2026) | LiquidationBuffer</title>
+<meta name="description" content="Why liquidation always costs the taker fee, never the maker fee — and what that means for the number you should actually enter into a liquidation calculator.">
+<link rel="canonical" href="https://www.liquidationbuffer.com/guides/maker-vs-taker-fees.html">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Maker vs. Taker Fees Explained">
+<meta property="og:description" content="Your liquidation always executes as a taker order — here's why that's the only fee that matters for your buffer.">
+<meta property="og:url" content="https://www.liquidationbuffer.com/guides/maker-vs-taker-fees.html">
+<meta property="og:site_name" content="LiquidationBuffer">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Maker vs. Taker Fees Explained">
+<meta name="twitter:description" content="Your liquidation always executes as a taker order — here's why that's the only fee that matters for your buffer.">
+<link rel="icon" type="image/svg+xml" href="/assets/favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon-16.png">
+<link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
+<link rel="stylesheet" href="/assets/style.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "Maker vs. Taker Fees Explained",
+  "description": "Why liquidation always costs the taker fee, never the maker fee — and what that means for the number you should enter into a liquidation calculator.",
+  "author": { "@type": "Organization", "name": "LiquidationBuffer" },
+  "publisher": { "@type": "Organization", "name": "LiquidationBuffer" },
+  "datePublished": "2026-09-13",
+  "dateModified": "2026-09-13"
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {"@type":"ListItem","position":1,"name":"Calculator","item":"https://www.liquidationbuffer.com/"},
+    {"@type":"ListItem","position":2,"name":"Guides","item":"https://www.liquidationbuffer.com/guides/"},
+    {"@type":"ListItem","position":3,"name":"Maker vs. Taker Fees","item":"https://www.liquidationbuffer.com/guides/maker-vs-taker-fees.html"}
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {"@type":"Question","name":"Can my liquidation ever execute as a maker order?",
+     "acceptedAnswer":{"@type":"Answer","text":"No. A maker order rests on the order book waiting for someone else to fill it, which takes an unknown amount of time — the opposite of what a liquidation engine needs. Liquidations are always sent as market (taker) orders so they execute immediately, whatever the cost."}},
+    {"@type":"Question","name":"Do maker rebates exist on crypto perpetuals?",
+     "acceptedAnswer":{"@type":"Answer","text":"Yes, at high-volume VIP tiers several exchanges pay makers a small rebate (a negative fee) instead of charging one, since resting limit orders add liquidity the exchange wants. This never applies to liquidations, which are always taker-side."}},
+    {"@type":"Question","name":"Why does this calculator only ask for a taker fee?",
+     "acceptedAnswer":{"@type":"Answer","text":"Because that's the only fee that can ever affect your liquidation. Whatever maker fee you'd pay closing the position yourself manually is irrelevant to where the forced liquidation actually triggers."}}
+  ]
+}
+</script>
+<script defer src="https://cloud.umami.is/script.js" data-website-id="c57ce8d4-f0c9-427d-851b-8e64d8860d99"></script>
+</head>
+<body>
+<header class="site">
+  <div class="wrap">
+    <a class="brand" href="/"><div class="brand-mark">L</div><div class="brand-name">LiquidationBuffer</div></a>
+    <div class="hdr-right">
+      <nav class="site"><a href="/#calc">Calculator</a><a href="/guides/">Guides</a></nav>
+      <div class="theme-toggle">
+        <button data-theme-btn="dark" class="active">Dark</button>
+        <button data-theme-btn="light">Light</button>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="wrap breadcrumb"><a href="/">Calculator</a> · <a href="/guides/">Guides</a> · Maker vs. Taker Fees</div>
+
+<article class="article wrap">
+  <div class="article-header">
+    <div class="kicker"><span class="dot"></span>Costs &amp; Fees</div>
+    <h1>Maker vs. Taker Fees Explained</h1>
+    <p class="lede">Your liquidation always executes as a taker order — here's why that's the only fee that matters for your buffer.</p>
+    <p class="article-meta">Last updated September 13, 2026 · 7 min read</p>
+  </div>
+
+  <div class="toc">
+    <p class="toc-title">On this page</p>
+    <ol>
+      <li><a href="#maker-vs-taker">What "maker" and "taker" actually mean</a></li>
+      <li><a href="#why-different">Why exchanges charge them differently</a></li>
+      <li><a href="#always-taker">Why liquidation is always a taker order</a></li>
+      <li><a href="#fee-table">Taker fees across the exchanges we track</a></li>
+      <li><a href="#reduce-fees">How traders actually reduce these fees</a></li>
+      <li><a href="#faq">FAQ</a></li>
+    </ol>
+  </div>
+
+  <div class="article-body">
+    <p>Every exchange fee page lists two numbers side by side — maker and taker — and most traders learn to just glance at "the lower one" without asking why two numbers exist at all. For liquidation math specifically, only one of them is ever relevant, and knowing which (and why) explains a design choice in this calculator that otherwise looks like an oversight.</p>
+
+    <h2 id="maker-vs-taker">What "maker" and "taker" actually mean</h2>
+    <p>A <strong>maker</strong> order adds liquidity: it's placed on the order book at a specific price and waits there until someone else trades against it. A <strong>taker</strong> order removes liquidity: it's a market order (or a limit order that crosses the book immediately) that fills right away against whatever's already resting there.</p>
+    <p>Exchanges want their order books full — deep liquidity is what makes an exchange usable at all — so they consistently charge takers more than makers, and at high-volume tiers some exchanges pay makers a small rebate instead of a fee. The distinction is about behavior, not about whether you're opening or closing a position; either side of a trade can be maker or taker depending on how the order was placed.</p>
+
+    <h2 id="why-different">Why exchanges charge them differently</h2>
+    <p>The maker/taker split is a deliberate incentive, not a pricing accident. A trader willing to wait for their order to be filled is doing the exchange a favor — supplying the liquidity that lets everyone else's market orders execute instantly and at a fair price. A taker is consuming that liquidity on demand. Charging takers more (and sometimes paying makers) nudges more volume toward resting limit orders, which keeps spreads tight and the market functional.</p>
+    <p>This is also why the gap between the two fees varies so much by exchange: platforms competing hardest for market-maker volume (algorithmic firms, liquidity providers) tend to push maker fees toward zero or into rebate territory, while taker fees stay comparatively stable.</p>
+
+    <h2 id="always-taker">Why liquidation is always a taker order</h2>
+    <p>A maker order has no guaranteed fill time — it sits on the book until a counterparty happens to trade against it, which could be instant or could be minutes away. A liquidation engine cannot accept that uncertainty: once your margin crosses the maintenance threshold, the exchange needs the position closed <em>now</em>, not whenever the book gets around to it. So every liquidation, on every exchange, executes as a market (taker) order, full stop.</p>
+    <p>That's precisely why the calculator on this site only ever asks for your <strong>taker</strong> fee. Whatever maker fee you'd pay closing a position yourself with a resting limit order is real, but it's simply irrelevant to where a forced liquidation actually triggers or what it costs you at that moment. Asking for a maker fee here would just be one more number to fill in that never changes the answer.</p>
+
+    <h2 id="fee-table">Taker fees across the exchanges we track</h2>
+    <p>Regular-tier (no VIP, no token discount) rates, maker included for comparison — taker is the one that matters for liquidation math:</p>
+    <table class="breakdown" style="margin:20px 0;">
+      <tr><td><strong>Exchange</strong></td><td><strong>Maker</strong></td><td style="text-align:right;"><strong>Taker</strong></td></tr>
+      <tr><td>Binance</td><td>0.02%</td><td style="text-align:right;">0.05%</td></tr>
+      <tr><td>Bybit</td><td>0.02%</td><td style="text-align:right;">0.055%</td></tr>
+      <tr><td>OKX</td><td>0.02%</td><td style="text-align:right;">0.05%</td></tr>
+      <tr><td>KuCoin</td><td>0.02%</td><td style="text-align:right;">0.06%</td></tr>
+      <tr><td>MEXC (BTCUSDT)</td><td>0.00%</td><td style="text-align:right;">0.02%</td></tr>
+    </table>
+    <p>MEXC's near-zero maker fee is the widest maker/taker gap of the five — a sign of how aggressively it's competing for resting order-book volume. None of that changes what you'd enter into a liquidation calculator, though: it's still the taker column either way. See the calculator for your own exchange — <a href="/binance-liquidation-calculator.html">Binance</a>, <a href="/bybit-liquidation-calculator.html">Bybit</a>, <a href="/okx-liquidation-calculator.html">OKX</a>, <a href="/kucoin-liquidation-calculator.html">KuCoin</a> or <a href="/mexc-liquidation-calculator.html">MEXC</a> — for the taker rate already filled in.</p>
+
+    <h2 id="reduce-fees">How traders actually reduce these fees</h2>
+    <p>Since the maker side is a dead end for liquidation purposes, lowering your effective taker fee (and therefore your real buffer, on exchanges that build the fee into the trigger) comes down to a few genuine levers:</p>
+    <ul>
+      <li><strong>30-day trading volume tiers.</strong> Every exchange in the table above steps taker fees down as your rolling volume rises — the standard route for active traders.</li>
+      <li><strong>Native token discounts.</strong> Binance's BNB discount is the best-known example; not every exchange offers one, and where it exists it usually doesn't apply to futures the way it does to spot (KuCoin's KCS discount, for instance, is spot-only).</li>
+      <li><strong>Market-maker programs.</strong> Reserved for firms providing substantial resting liquidity, not something a retail trader opts into casually.</li>
+    </ul>
+    <p>None of these change the maker/taker distinction itself — they just move where your particular account sits on the taker-fee scale, which is exactly the number this calculator asks you to double-check against your own account rather than assume from the table above.</p>
+
+    <h2 id="faq">FAQ</h2>
+    <div class="faq-item">
+      <h3>Can my liquidation ever execute as a maker order?</h3>
+      <p>No. A maker order rests on the order book waiting for someone else to fill it, which takes an unknown amount of time — the opposite of what a liquidation engine needs. Liquidations are always sent as market (taker) orders so they execute immediately, whatever the cost.</p>
+    </div>
+    <div class="faq-item">
+      <h3>Do maker rebates exist on crypto perpetuals?</h3>
+      <p>Yes, at high-volume VIP tiers several exchanges pay makers a small rebate (a negative fee) instead of charging one, since resting limit orders add liquidity the exchange wants. This never applies to liquidations, which are always taker-side.</p>
+    </div>
+    <div class="faq-item">
+      <h3>Why does this calculator only ask for a taker fee?</h3>
+      <p>Because that's the only fee that can ever affect your liquidation. Whatever maker fee you'd pay closing the position yourself manually is irrelevant to where the forced liquidation actually triggers.</p>
+    </div>
+
+    <a class="cta-inline" href="/#calc">
+      <span class="ci-title">Check your real buffer with your own taker fee</span>
+      <span>→</span>
+    </a>
+  </div>
+
+  <div class="related">
+    <h3>Explore next</h3>
+    <div class="explore-grid">
+      <a class="explore-tile" href="/guides/maintenance-margin.html"><div class="et-kicker">Basics</div><div class="et-title">What maintenance margin actually means</div></a>
+      <a class="explore-tile" href="/guides/margin-call-vs-liquidation.html"><div class="et-kicker">Basics</div><div class="et-title">Margin call vs. liquidation</div></a>
+      <a class="explore-tile" href="/guides/liquidation-vs-bankruptcy.html"><div class="et-kicker">Basics</div><div class="et-title">Liquidation price vs. bankruptcy price</div></a>
+      <a class="explore-tile" href="/guides/funding-fees.html"><div class="et-kicker">Costs &amp; Fees</div><div class="et-title">Why funding fees can eat your buffer</div></a>
+    </div>
+  </div>
+</article>
+
+<footer>
+  <div class="wrap">
+    <span>LiquidationBuffer — not financial advice, just math.</span>
+    <span><a href="/">Back to calculator</a> · <a href="/impressum.html">Imprint</a> · <a href="/datenschutz.html">Privacy</a></span>
+  </div>
+    <div class="footer-legal">Operated by Tensfeldt Consultancy and Advisory LTD · bul. &quot;Vitosha&quot; 25, 1000 Sofia, Bulgaria · UIC/EIK 206176562</div>
+</footer>
+<script src="/assets/site.js"></script>
+</body>
+</html>

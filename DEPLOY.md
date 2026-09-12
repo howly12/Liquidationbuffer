@@ -85,6 +85,12 @@ articles than the original four.
 
 ---
 
+## 5b. Git integration (Cloudflare Workers)
+This repo is connected to a Cloudflare Workers service (`billowing-lab-7d25`)
+via GitHub integration on the `main` branch. Every push to `main` triggers
+an automatic `npx wrangler deploy` build using the `wrangler.toml` static
+assets config — no manual dashboard upload needed anymore.
+
 ## 6. Ongoing maintenance
 - Nothing to keep alive — there's no live data source to break.
 - If you want to reintroduce live exchange data later (auto-filling

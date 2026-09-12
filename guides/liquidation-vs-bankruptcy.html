@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
+<script>(function(){try{if(localStorage.getItem('lb-theme')==='light')document.documentElement.setAttribute('data-theme','light');}catch(e){}})();</script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Liquidation Price vs. Bankruptcy Price Explained (2026) | LiquidationBuffer</title>
 <meta name="description" content="Why the liquidation price isn't the point where your margin hits zero, how the insurance fund and auto-deleveraging fit in, and where the clearance fee actually comes from.">
@@ -64,7 +65,13 @@
 <header class="site">
   <div class="wrap">
     <a class="brand" href="/"><div class="brand-mark">L</div><div class="brand-name">LiquidationBuffer</div></a>
-    <nav class="site"><a href="/#calc">Calculator</a><a href="/guides/">Guides</a></nav>
+    <div class="hdr-right">
+      <nav class="site"><a href="/#calc">Calculator</a><a href="/guides/">Guides</a></nav>
+      <div class="theme-toggle">
+        <button data-theme-btn="dark" class="active">Dark</button>
+        <button data-theme-btn="light">Light</button>
+      </div>
+    </div>
   </div>
 </header>
 
@@ -154,5 +161,6 @@
   </div>
     <div class="footer-legal">Operated by Tensfeldt Consultancy and Advisory LTD · bul. &quot;Vitosha&quot; 25, 1000 Sofia, Bulgaria · UIC/EIK 206176562</div>
 </footer>
+<script src="/assets/site.js"></script>
 </body>
 </html>

@@ -4,17 +4,15 @@
 <meta charset="UTF-8">
 <script>(function(){try{if(localStorage.getItem('lb-theme')==='light')document.documentElement.setAttribute('data-theme','light');}catch(e){}})();</script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Liquidation Buffer Calculator — Any Exchange, Real Numbers | LiquidationBuffer</title>
-<meta name="description" content="Free liquidation buffer calculator for any crypto exchange. Enter your own maintenance margin rate, fees and funding rate to see your real price buffer before liquidation — not just the naive 1/leverage math.">
-<link rel="canonical" href="https://www.liquidationbuffer.com/">
+<title>Binance Liquidation Calculator — Real Fee &amp; Funding Defaults | LiquidationBuffer</title>
+<meta name="description" content="Liquidation buffer calculator pre-filled with Binance's own taker fee and funding interval. Maintenance margin is left for you to enter — it depends on your pair, and we don't guess it.">
+<link rel="canonical" href="https://www.liquidationbuffer.com/binance-liquidation-calculator.html">
 <meta property="og:type" content="website">
-<meta property="og:title" content="Liquidation Buffer Calculator — Your real buffer, not the assumed one">
-<meta property="og:description" content="10x leverage doesn't mean a 10% buffer. Enter your exchange's real maintenance margin, fee and funding numbers to see what's actually left.">
-<meta property="og:url" content="https://www.liquidationbuffer.com/">
+<meta property="og:title" content="Binance Liquidation Calculator">
+<meta property="og:description" content="Pre-filled with Binance's fee and funding rules. Maintenance margin is left for you to enter — it depends on your pair, not just the exchange.">
+<meta property="og:url" content="https://www.liquidationbuffer.com/binance-liquidation-calculator.html">
 <meta property="og:site_name" content="LiquidationBuffer">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Liquidation Buffer Calculator — Your real buffer, not the assumed one">
-<meta name="twitter:description" content="10x leverage doesn't mean a 10% buffer. Works for any exchange — enter your own numbers.">
 <link rel="icon" type="image/svg+xml" href="/assets/favicon.svg">
 <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32.png">
 <link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon-16.png">
@@ -26,11 +24,11 @@
 {
   "@context": "https://schema.org",
   "@type": "WebApplication",
-  "name": "LiquidationBuffer",
-  "url": "https://www.liquidationbuffer.com/",
+  "name": "Binance Liquidation Calculator",
+  "url": "https://www.liquidationbuffer.com/binance-liquidation-calculator.html",
   "applicationCategory": "FinanceApplication",
   "operatingSystem": "Any browser",
-  "description": "Liquidation buffer calculator for crypto perpetuals. Works for any exchange — enter your own maintenance margin rate, fees and funding rate to see the real price buffer before liquidation.",
+  "description": "Liquidation buffer calculator pre-filled with Binance's own taker fee and funding interval defaults. Maintenance margin is left for you to enter since it varies by pair.",
   "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
 }
 </script>
@@ -58,11 +56,26 @@
   </div>
 </header>
 
+<div class="wrap breadcrumb"><a href="/">Calculator</a> · Exchanges · Binance</div>
+
 <section class="hero">
   <div class="wrap hero-grid">
-    <div class="kicker"><span class="dot"></span>Works with any exchange</div>
-    <h1 class="hero-title">10x leverage doesn't mean a 10% buffer</h1>
-    <p class="hero-sub">Maintenance margin, fees and funding eat into your safety margin before the price even moves. Enter your exchange's own numbers below and see how much is actually left — no guessing, no exchange lock-in.</p>
+    <div class="exch-badge">🔶 <b>Binance</b> · USDⓈ-M Perpetual Futures</div>
+    <h1 class="hero-title">Binance Liquidation Calculator</h1>
+    <p class="hero-sub">Pre-filled with Binance's own fee structure and funding interval. Maintenance margin is left for you to enter — it depends on your pair and position size, and we don't guess it for you.</p>
+
+    <div class="miniguide">
+      <p>Binance runs a <strong>tiered maintenance margin system</strong>: the larger your position, the higher your MMR and the lower your max leverage. BTCUSDT and ETHUSDT start at <strong>0.40% MMR up to 150×</strong> for positions under $300,000 — but that's the top of a 12-tier ladder, and every other pair has its own table entirely. Check yours on <a href="https://www.binance.com/en/futures/trading-rules/perpetual/leverage-margin" target="_blank" rel="noopener">Binance's own leverage &amp; margin page ↗</a> before trusting a number here.</p>
+      <p>One Binance-specific detail worth knowing: in isolated mode, the <strong>closing fee is deducted from whatever margin remains after liquidation triggers</strong> — it doesn't move the trigger price itself. That's different from Bybit, OKX and KuCoin, which build a comparable fee directly into the trigger formula. See <a href="/guides/liquidation-vs-bankruptcy.html">Liquidation price vs. bankruptcy price</a> for why that matters.</p>
+    </div>
+
+    <div class="exch-row">
+      <a class="exch-pill current" href="/binance-liquidation-calculator.html">Binance</a>
+      <span class="exch-pill soon">Bybit — soon</span>
+      <span class="exch-pill soon">OKX — soon</span>
+      <span class="exch-pill soon">KuCoin — soon</span>
+      <span class="exch-pill soon">MEXC — soon</span>
+    </div>
 
     <div class="calc-shell" id="calc">
       <div class="calc-form">
@@ -92,33 +105,40 @@
         </div>
 
         <div class="fieldset">
-          <div class="fieldset-title">Costs &amp; Funding</div>
+          <div class="fieldset-title">Costs &amp; Funding — Binance defaults</div>
 
           <div class="field">
-            <label><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M10 2v16M14 6H8.5a2.5 2.5 0 0 0 0 5h3a2.5 2.5 0 0 1 0 5H6"/></svg>Maintenance margin rate (%)</label>
-            <input type="text" id="mmrInput" value="0.65">
-            <p class="hint">Read this off your exchange's own margin/leverage tier table for your position size.</p>
+            <label><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M10 2v16M14 6H8.5a2.5 2.5 0 0 0 0 5h3a2.5 2.5 0 0 1 0 5H6"/></svg>Maintenance margin rate (%)<span class="preset-tag">Your pair</span></label>
+            <input type="text" id="mmrInput" value="" placeholder="enter your pair's MMR">
+            <div class="field-callout">
+              <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="10" cy="10" r="7.5"/><path d="M10 9v4.5"/><circle cx="10" cy="6.7" r=".6" fill="currentColor"/></svg>
+              <p>BTC/ETH Tier 1 is 0.40% (up to 150×, positions under $300k) — but this rises per tier and is completely different for altcoins. <a href="https://www.binance.com/en/futures/trading-rules/perpetual/leverage-margin" target="_blank" rel="noopener">Check your pair on Binance ↗</a></p>
+            </div>
           </div>
 
           <div class="field">
-            <label><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="6" cy="6" r="2.5"/><circle cx="14" cy="14" r="2.5"/><path d="M15 5L5 15"/></svg>Taker fee per trade (%)</label>
+            <label><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="6" cy="6" r="2.5"/><circle cx="14" cy="14" r="2.5"/><path d="M15 5L5 15"/></svg>Taker fee per trade (%)<span class="preset-tag">Regular tier</span></label>
             <input type="text" id="feeInput" value="0.05">
             <p class="hint">Counted twice automatically (opening + closing).</p>
+            <div class="field-callout">
+              <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="10" cy="10" r="7.5"/><path d="M10 9v4.5"/><circle cx="10" cy="6.7" r=".6" fill="currentColor"/></svg>
+              <p>0.05% is Binance's <strong>Regular-tier</strong> taker fee — VIP levels and BNB discounts pay less. <a href="https://www.binance.com/en/fee/futureFee" target="_blank" rel="noopener">Check your own fee tier ↗</a></p>
+            </div>
           </div>
 
           <div class="field">
-            <label>Does your exchange count this fee toward the liquidation trigger?</label>
+            <label>Fee counted toward the liquidation trigger?<span class="preset-tag">Binance</span></label>
             <div class="yn-toggle">
               <button id="btnFeeYes">Yes</button>
               <button id="btnFeeNo" class="active">No / not sure</button>
             </div>
-            <p class="hint">Not sure which applies to your exchange? <a href="/guides/liquidation-vs-bankruptcy.html" style="color:var(--accent);">See the guide</a> — this genuinely differs by exchange.</p>
+            <p class="hint">On Binance, the closing fee is deducted after the trigger, not built into it. See <a href="/guides/liquidation-vs-bankruptcy.html" style="color:var(--accent);">the guide</a> for why this differs by exchange.</p>
           </div>
 
           <div class="field" id="clearanceFeeField">
             <label>Clearance fee at liquidation (%, optional)</label>
             <input type="text" id="clearanceFeeInput" value="">
-            <p class="hint">Only applies if you answered "No" above — shown separately since it doesn't move your trigger price.</p>
+            <p class="hint">Only applies since Binance answers "No" above — shown separately since it doesn't move your trigger price.</p>
           </div>
 
           <div class="field">
@@ -127,7 +147,7 @@
           </div>
 
           <div class="field">
-            <label>Funding interval (hours)</label>
+            <label>Funding interval (hours)<span class="preset-tag">Binance</span></label>
             <input type="text" id="fundingIntervalInput" value="8">
             <div class="preset-row">
               <button type="button" class="funding-preset" data-hours="1">1h</button>
@@ -135,7 +155,7 @@
               <button type="button" class="funding-preset" data-hours="4">4h</button>
               <button type="button" class="funding-preset" data-hours="8">8h</button>
             </div>
-            <p class="hint">Most majors settle every 8h. Some exchanges settle small-cap/volatile pairs every 1–4h instead — check your pair, not just the exchange default.</p>
+            <p class="hint">Most Binance majors settle every 8h. Some small-cap/volatile pairs settle every 1–4h instead — check your pair, not just this default.</p>
           </div>
 
           <div class="field">
@@ -160,7 +180,7 @@
 
         <div class="disclaimer-card">
           <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M10 2.5l7 3.2v4.3c0 4.2-2.9 7.4-7 8.5-4.1-1.1-7-4.3-7-8.5V5.7z"/><path d="M7.3 10.2l2 2 3.4-4"/></svg>
-          <div><strong>Estimate, not an exchange quote</strong><p>Based on the numbers you entered — always cross-check the result against your exchange's own interface before trading on it.</p></div>
+          <div><strong>Estimate, not an exchange quote</strong><p>Fill in your pair's real MMR before trusting this. We only pre-fill what's genuinely Binance-wide (fee, funding, trigger behavior) — never a guessed maintenance margin.</p></div>
         </div>
 
         <div class="risk-band" id="riskBand">
@@ -206,13 +226,19 @@
         <table class="breakdown" id="breakdownTable"></table>
 
         <div class="disclaimers">
-          <p>Based on your exchange's mark price, not the chart/last price — the two can diverge slightly.</p>
+          <p>Based on Binance's mark price, not the chart/last price — the two can diverge slightly.</p>
           <p>Isolated margin only. Cross margin depends on your whole account balance and isn't modeled here.</p>
-          <p>Very large positions may be liquidated in steps (partial liquidation) on some exchanges.</p>
+          <p>Very large positions may be liquidated in steps (partial liquidation) above certain tiers.</p>
           <p>Auto-deleveraging (ADL) can close a position in extreme cases regardless of the liquidation price.</p>
           <p>Assumption: no automatic margin top-up active, and your entered rates stay constant over the holding period.</p>
         </div>
       </div>
+    </div>
+
+    <div class="embed-card">
+      <div class="embed-text"><strong>Embed this calculator</strong><p>Drop the Binance calculator into your own site or blog post — free, no signup.</p></div>
+      <div class="embed-code" id="embedSnippet">&lt;iframe src="https://www.liquidationbuffer.com/embed/"&gt;</div>
+      <button class="embed-btn" id="embedCopyBtn">Copy embed code</button>
     </div>
   </div>
 </section>
@@ -224,28 +250,6 @@
   </div>
 </section>
 
-<section class="features">
-  <div class="wrap">
-    <div class="features-grid">
-      <div class="feature-cell">
-        <div class="f-num">01</div>
-        <h3>Works with any exchange</h3>
-        <p>No lock-in to one platform's API. Enter the real numbers from your exchange's own fee and margin pages, and the math is correct for any of them.</p>
-      </div>
-      <div class="feature-cell">
-        <div class="f-num">02</div>
-        <h3>Fee-in-trigger, handled correctly</h3>
-        <p>Some exchanges fold the closing fee into the liquidation trigger itself; others deduct it only afterward. Toggle it — the formula changes accordingly.</p>
-      </div>
-      <div class="feature-cell">
-        <div class="f-num">03</div>
-        <h3>Funding over any interval</h3>
-        <p>Not every pair settles every 8 hours. Set your own funding interval and holding period and see the real cumulative effect.</p>
-      </div>
-    </div>
-  </div>
-</section>
-
 <section class="guides" id="guides">
   <div class="wrap">
     <h2>Before you calculate</h2>
@@ -254,28 +258,16 @@
         <div><div class="gi-title">What maintenance margin actually means</div><div class="gi-sub">Why your real buffer is always smaller than 1/leverage alone</div></div>
         <span class="gi-arrow">→</span>
       </a>
-      <a class="guide-item" href="/guides/isolated-vs-cross.html">
-        <div><div class="gi-title">Isolated vs. cross margin explained</div><div class="gi-sub">Two different answers to what happens when a position moves against you</div></div>
-        <span class="gi-arrow">→</span>
-      </a>
-      <a class="guide-item" href="/guides/funding-fees.html">
-        <div><div class="gi-title">Why funding fees can eat your buffer</div><div class="gi-sub">How periodic payments shrink — or grow — your margin over time</div></div>
-        <span class="gi-arrow">→</span>
-      </a>
       <a class="guide-item" href="/guides/liquidation-vs-bankruptcy.html">
         <div><div class="gi-title">Liquidation price vs. bankruptcy price</div><div class="gi-sub">Why "nothing left" is rarer than most traders assume</div></div>
         <span class="gi-arrow">→</span>
       </a>
+      <a class="guide-item" href="/guides/margin-call-vs-liquidation.html">
+        <div><div class="gi-title">Margin call vs. liquidation</div><div class="gi-sub">There's no phone call before a crypto perpetual gets liquidated</div></div>
+        <span class="gi-arrow">→</span>
+      </a>
     </div>
     <p style="margin-top:24px;"><a href="/guides/" style="color:var(--accent); font-size:14px; text-decoration:none;">Browse all guides →</a></p>
-
-    <div class="exch-row" style="margin-top:30px;">
-      <a class="exch-pill" href="/binance-liquidation-calculator.html">Binance calculator →</a>
-      <span class="exch-pill soon">Bybit — soon</span>
-      <span class="exch-pill soon">OKX — soon</span>
-      <span class="exch-pill soon">KuCoin — soon</span>
-      <span class="exch-pill soon">MEXC — soon</span>
-    </div>
   </div>
 </section>
 
@@ -289,5 +281,18 @@
 
 <script src="/assets/site.js"></script>
 <script src="/assets/calculator.js"></script>
+<script>
+const embedBtn = document.getElementById('embedCopyBtn');
+if (embedBtn){
+  embedBtn.addEventListener('click', () => {
+    navigator.clipboard.writeText('<iframe src="https://www.liquidationbuffer.com/embed/" width="100%" height="900" style="border:0;" loading="lazy"></iframe>').then(() => {
+      const original = embedBtn.textContent;
+      embedBtn.textContent = 'Copied ✓';
+      embedBtn.classList.add('copied');
+      setTimeout(() => { embedBtn.textContent = original; embedBtn.classList.remove('copied'); }, 1800);
+    });
+  });
+}
+</script>
 </body>
 </html>

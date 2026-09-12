@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Liquidation Buffer Calculator (Embed) | LiquidationBuffer</title>
+<meta name="robots" content="noindex, nofollow">
+<link rel="stylesheet" href="/assets/style.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  body{ padding:16px; }
+  .embed-wrap{ max-width:900px; margin:0 auto; }
+  .embed-credit{ text-align:center; font-size:11.5px; color:var(--ink-soft); padding:14px 0 4px; }
+  .embed-credit a{ color:var(--accent); text-decoration:none; }
+</style>
+</head>
+<body>
+
+<div class="embed-wrap">
+  <div class="calc-shell" id="calc">
+    <div class="calc-form">
+
+      <div class="fieldset">
+        <div class="fieldset-title">Position</div>
+        <div class="field">
+          <label>Direction</label>
+          <div class="side-toggle">
+            <button id="btnLong" class="active long">Long</button>
+            <button id="btnShort" class="short">Short</button>
+          </div>
+        </div>
+
+        <div class="field row2">
+          <div>
+            <label><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="7" cy="13" r="4"/><circle cx="13" cy="7" r="4"/></svg>Margin (USDT)</label>
+            <input type="text" id="marginInput" value="5000">
+          </div>
+          <div>
+            <label><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 15a7 7 0 0 1 14 0"/><path d="M10 15l4-5"/><circle cx="10" cy="15" r="1"/></svg>Leverage</label>
+            <input type="text" id="leverageInput" value="10">
+          </div>
+        </div>
+        <p class="hint" id="notionalOut">Notional $50,000</p>
+        <div id="leverageWarning"></div>
+      </div>
+
+      <div class="fieldset">
+        <div class="fieldset-title">Costs &amp; Funding</div>
+
+        <div class="field">
+          <label><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M10 2v16M14 6H8.5a2.5 2.5 0 0 0 0 5h3a2.5 2.5 0 0 1 0 5H6"/></svg>Maintenance margin rate (%)</label>
+          <input type="text" id="mmrInput" value="0.5">
+          <p class="hint">Read this off your exchange's own margin/leverage tier table.</p>
+        </div>
+
+        <div class="field">
+          <label><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="6" cy="6" r="2.5"/><circle cx="14" cy="14" r="2.5"/><path d="M15 5L5 15"/></svg>Taker fee per trade (%)</label>
+          <input type="text" id="feeInput" value="0.05">
+          <p class="hint">Counted twice automatically (opening + closing).</p>
+        </div>
+
+        <div class="field">
+          <label>Fee counted toward the liquidation trigger?</label>
+          <div class="yn-toggle">
+            <button id="btnFeeYes">Yes</button>
+            <button id="btnFeeNo" class="active">No / not sure</button>
+          </div>
+          <p class="hint">This genuinely differs by exchange — check yours if unsure.</p>
+        </div>
+
+        <div class="field" id="clearanceFeeField">
+          <label>Clearance fee at liquidation (%, optional)</label>
+          <input type="text" id="clearanceFeeInput" value="">
+        </div>
+
+        <div class="field">
+          <label><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="10" cy="10" r="7"/><path d="M10 6v4l3 2"/></svg>Funding rate per interval (%)</label>
+          <input type="text" id="fundingRateInput" value="0.01">
+        </div>
+
+        <div class="field">
+          <label>Funding interval (hours)</label>
+          <input type="text" id="fundingIntervalInput" value="8">
+          <div class="preset-row">
+            <button type="button" class="funding-preset" data-hours="1">1h</button>
+            <button type="button" class="funding-preset" data-hours="2">2h</button>
+            <button type="button" class="funding-preset" data-hours="4">4h</button>
+            <button type="button" class="funding-preset" data-hours="8">8h</button>
+          </div>
+        </div>
+
+        <div class="field">
+          <label>Planned holding period <span class="range-current" id="holdOut" style="display:inline;font-weight:500;">— 24h</span></label>
+          <input type="range" id="holdSlider" min="0" max="168" step="1" value="24">
+          <div class="range-labels"><span>0h</span><span>24h</span><span>3d</span><span>5d</span><span>7d</span></div>
+          <p class="hint" id="fundingIntervalsOut">3× funding payments within the selected holding period (every 8h)</p>
+        </div>
+
+        <div class="field">
+          <label>Current price (USDT, optional)</label>
+          <input type="text" id="priceInput" value="">
+          <p class="hint">Only used to show a $ liquidation price alongside the % buffer.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="calc-out">
+      <div class="out-label"><span class="compare-cell-label">Result</span></div>
+
+      <div class="risk-band" id="riskBand">
+        <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M10 3l7.5 13h-15z"/><path d="M10 8.5v3.2"/><circle cx="10" cy="14" r=".6" fill="currentColor"/></svg>
+        <span class="rb-text" id="riskBadge">—</span>
+        <span class="rb-sub" id="pathBadge">—</span>
+      </div>
+
+      <div class="stat-cards">
+        <div class="stat-card"><div class="sc-label">Position size</div><div class="sc-val" id="scPosition">$0</div></div>
+        <div class="stat-card"><div class="sc-label">Initial margin</div><div class="sc-val" id="scInitialMargin">$0</div></div>
+        <div class="stat-card"><div class="sc-label">Maintenance margin</div><div class="sc-val" id="scMaintMargin">$0</div></div>
+      </div>
+
+      <div class="compare-grid">
+        <div class="compare-cell left">
+          <div class="cc-label">Assumed</div>
+          <div class="cc-num num" id="naiveOut">—%</div>
+          <div class="cc-sub" id="naivePriceOut">—</div>
+        </div>
+        <div class="compare-cell right">
+          <div class="cc-label">Real buffer</div>
+          <div class="cc-num num" id="realOut">—%</div>
+          <div class="cc-sub" id="realPriceOut">—</div>
+        </div>
+      </div>
+
+      <div class="buffer-bar"><div class="buffer-bar-fill" id="bufferBar" style="width:0%"></div></div>
+
+      <div class="distance-visual" id="distanceVisual">
+        <div class="distance-track">
+          <div class="dt-fill" id="dtFill" style="width:0%"></div>
+          <div class="distance-marker entry" style="left:0%;"><span class="dm-label" id="entryLabel">Entry</span></div>
+          <div class="distance-marker liq" id="liqMarker" style="left:0%;"><span class="dm-label" id="liqLabel">Liq.</span></div>
+        </div>
+      </div>
+
+      <table class="breakdown" id="breakdownTable"></table>
+    </div>
+  </div>
+
+  <div class="embed-credit">Calculator by <a href="https://www.liquidationbuffer.com/" target="_top">LiquidationBuffer.com</a> — not financial advice, just math.</div>
+</div>
+
+<script src="/assets/calculator.js"></script>
+</body>
+</html>

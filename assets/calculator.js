@@ -86,7 +86,9 @@ let lastResult = null; // used by the copy/share buttons
 function calculate(){
   const margin = parseFloat(document.getElementById('marginInput').value) || 0;
   const leverage = parseFloat(document.getElementById('leverageInput').value) || 1;
-  const mmrPct = parseFloat(document.getElementById('mmrInput').value) || 0;
+  const mmrRaw = document.getElementById('mmrInput').value.trim();
+  const mmrMissing = mmrRaw === ''; // exchange pages leave this blank on purpose — never assume 0
+  const mmrPct = parseFloat(mmrRaw) || 0;
   const feePct = parseFloat(document.getElementById('feeInput').value) || 0;
   const clearanceFeePct = parseFloat(document.getElementById('clearanceFeeInput').value) || 0;
   const fundingRatePct = parseFloat(document.getElementById('fundingRateInput').value) || 0;
@@ -101,7 +103,7 @@ function calculate(){
 
   document.getElementById('scPosition').textContent = '$' + notional.toLocaleString('en-US', {maximumFractionDigits:0});
   document.getElementById('scInitialMargin').textContent = '$' + margin.toLocaleString('en-US', {maximumFractionDigits:0});
-  document.getElementById('scMaintMargin').textContent = '$' + maintenanceMarginUsd.toLocaleString('en-US', {maximumFractionDigits:2});
+  document.getElementById('scMaintMargin').textContent = mmrMissing ? '—' : ('$' + maintenanceMarginUsd.toLocaleString('en-US', {maximumFractionDigits:2}));
 
   const intervals = fundingIntervalHours > 0 ? Math.floor(holdHours / fundingIntervalHours) : 0;
   document.getElementById('fundingIntervalsOut').textContent =
@@ -112,6 +114,38 @@ function calculate(){
   const openCloseFeePct = feePct * 2; // open + close
 
   const naive = 100 / leverage;
+  document.getElementById('naiveOut').textContent = naive.toFixed(2) + '%';
+
+  if (mmrMissing){
+    // Never silently treat a blank MMR as 0 — that would understate risk,
+    // exactly what this site exists to avoid. Show a waiting state instead.
+    const riskEl = document.getElementById('riskBadge');
+    riskEl.textContent = 'Enter MMR to see risk';
+    riskEl.className = 'risk-badge';
+    document.getElementById('pathBadge').textContent = 'waiting for input';
+    const riskBand = document.getElementById('riskBand');
+    if (riskBand){ riskBand.removeAttribute('data-risk'); riskBand.setAttribute('data-state', 'waiting'); }
+    document.getElementById('realOut').textContent = '—';
+    const dir0 = state.side === 'long' ? -1 : 1;
+    document.getElementById('naivePriceOut').textContent = price > 0 ? ('Liq. at ' + formatPrice(price * (1 + dir0 * naive / 100))) : '';
+    document.getElementById('realPriceOut').textContent = "Add your pair's MMR above to calculate";
+    document.getElementById('bufferBar').style.width = '0%';
+    document.getElementById('dtFill').style.width = '0%';
+    document.getElementById('liqMarker').style.left = '0%';
+    document.getElementById('entryLabel').textContent = 'Entry';
+    document.getElementById('liqLabel').textContent = 'Liq.';
+    const tbl = document.getElementById('breakdownTable');
+    tbl.innerHTML = '';
+    const row = (a,b) => { const tr=document.createElement('tr'); tr.innerHTML = `<td>${a}</td><td>${b}</td>`; return tr; };
+    tbl.appendChild(row('Assumed (1/leverage)', naive.toFixed(3) + '%'));
+    tbl.appendChild(row('Maintenance margin rate', 'enter above'));
+    const totalTr = row('Real buffer', '—'); totalTr.className = 'total';
+    tbl.appendChild(totalTr);
+    lastResult = null;
+    return;
+  }
+  const riskBandEl = document.getElementById('riskBand');
+  if (riskBandEl) riskBandEl.removeAttribute('data-state');
 
   const feeBufferImpact = state.feeInTrigger ? openCloseFeePct : 0;
   const real0 = naive - mmrPct - feeBufferImpact - fundingImpact;
@@ -127,7 +161,6 @@ function calculate(){
   breakdownRows.push(['Funding (' + intervals + '×, ' + state.side + ')', (fundingImpact >= 0 ? '−' : '+') + Math.abs(fundingImpact).toFixed(3) + '%']);
 
   document.getElementById('pathBadge').textContent = state.feeInTrigger ? 'Fee in trigger' : 'Fee after trigger';
-  document.getElementById('naiveOut').textContent = naive.toFixed(2) + '%';
   document.getElementById('realOut').textContent = real.toFixed(2) + '%';
   document.getElementById('bufferBar').style.width = ((real / naive) * 100).toFixed(1) + '%';
 
@@ -135,6 +168,8 @@ function calculate(){
   const riskEl = document.getElementById('riskBadge');
   riskEl.textContent = risk.text;
   riskEl.className = 'risk-badge ' + risk.cls;
+  const riskBand = document.getElementById('riskBand');
+  if (riskBand) riskBand.setAttribute('data-risk', risk.cls);
 
   const dir = state.side === 'long' ? -1 : 1;
   let naivePrice = 0, realPrice = 0;

@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
+<script>(function(){try{if(localStorage.getItem('lb-theme')==='light')document.documentElement.setAttribute('data-theme','light');}catch(e){}})();</script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Privacy Policy | LiquidationBuffer</title>
 <meta name="description" content="Privacy policy for LiquidationBuffer.com — hosting, analytics, and data subject rights.">
@@ -20,7 +21,13 @@
 <header class="site">
   <div class="wrap">
     <a class="brand" href="/"><div class="brand-mark">L</div><div class="brand-name">LiquidationBuffer</div></a>
-    <nav class="site"><a href="/#calc">Calculator</a><a href="/guides/">Guides</a></nav>
+    <div class="hdr-right">
+      <nav class="site"><a href="/#calc">Calculator</a><a href="/guides/">Guides</a></nav>
+      <div class="theme-toggle">
+        <button data-theme-btn="dark" class="active">Dark</button>
+        <button data-theme-btn="light">Light</button>
+      </div>
+    </div>
   </div>
 </header>
 
@@ -85,5 +92,6 @@
   </div>
     <div class="footer-legal">Operated by Tensfeldt Consultancy and Advisory LTD · bul. &quot;Vitosha&quot; 25, 1000 Sofia, Bulgaria · UIC/EIK 206176562</div>
 </footer>
+<script src="/assets/site.js"></script>
 </body>
 </html>

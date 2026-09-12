@@ -243,15 +243,19 @@ input[type=range]{ width:100%; accent-color:var(--ink); margin-top:4px; }
 .risk-badge.extreme{ background:var(--danger); color:#fff; }
 
 /* ---------- Price distance visual ---------- */
-.distance-visual{ margin-bottom:22px; padding:18px 4px 8px; }
+.distance-visual{ margin-bottom:22px; padding:18px 4px 24px; }
 .distance-track{ position:relative; height:4px; background:var(--line); border-radius:2px; }
 .distance-track .dt-fill{ position:absolute; top:0; height:100%; background:var(--danger-soft); border-radius:2px; }
 .distance-marker{ position:absolute; top:-6px; width:2px; height:16px; }
 .distance-marker.entry{ background:var(--ink); }
 .distance-marker.liq{ background:var(--danger); }
-.distance-marker .dm-label{ position:absolute; top:20px; font-size:10.5px; font-family:'IBM Plex Mono', monospace; white-space:nowrap; transform:translateX(-50%); }
-.distance-marker.entry .dm-label{ color:var(--ink-soft); left:0; transform:none; }
-.distance-marker.liq .dm-label{ color:var(--danger); right:0; left:auto; transform:none; }
+.distance-marker .dm-label{ position:absolute; font-size:10.5px; font-family:'IBM Plex Mono', monospace; white-space:nowrap; max-width:calc(100vw - 40px); }
+/* Entry sits at a fixed 0% and the liq marker's position is data-driven — it can
+   land anywhere along the track (including right next to entry on a high-risk
+   result), so the two labels are staggered onto separate rows rather than
+   placed side by side, which used to overlap on narrow/mobile widths. */
+.distance-marker.entry .dm-label{ top:20px; color:var(--ink-soft); left:0; }
+.distance-marker.liq .dm-label{ top:36px; color:var(--danger); left:50%; transform:translateX(-50%); }
 
 /* ---------- Share row ---------- */
 .share-row{ display:flex; gap:8px; margin:16px 0 20px; }

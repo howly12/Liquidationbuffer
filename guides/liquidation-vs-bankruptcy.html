@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Liquidation Price vs. Bankruptcy Price Explained (2026) | LiquidationBuffer</title>
+<meta name="description" content="Why the liquidation price isn't the point where your margin hits zero, how the insurance fund and auto-deleveraging fit in, and where the clearance fee actually comes from.">
+<link rel="canonical" href="https://www.liquidationbuffer.com/guides/liquidation-vs-bankruptcy.html">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Liquidation Price vs. Bankruptcy Price">
+<meta property="og:description" content="'Nothing left' is rarer at liquidation than most traders assume.">
+<meta property="og:url" content="https://www.liquidationbuffer.com/guides/liquidation-vs-bankruptcy.html">
+<meta property="og:site_name" content="LiquidationBuffer">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Liquidation Price vs. Bankruptcy Price">
+<meta name="twitter:description" content="'Nothing left' is rarer at liquidation than most traders assume.">
+<link rel="icon" type="image/svg+xml" href="/assets/favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon-16.png">
+<link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
+<link rel="stylesheet" href="/assets/style.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "Liquidation Price vs. Bankruptcy Price",
+  "description": "Why the liquidation price isn't the point where your margin hits zero, and where the clearance fee at liquidation actually comes from.",
+  "author": { "@type": "Organization", "name": "LiquidationBuffer" },
+  "publisher": { "@type": "Organization", "name": "LiquidationBuffer" },
+  "datePublished": "2026-09-09",
+  "dateModified": "2026-09-09"
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {"@type":"ListItem","position":1,"name":"Calculator","item":"https://www.liquidationbuffer.com/"},
+    {"@type":"ListItem","position":2,"name":"Guides","item":"https://www.liquidationbuffer.com/guides/"},
+    {"@type":"ListItem","position":3,"name":"Liquidation vs. Bankruptcy Price","item":"https://www.liquidationbuffer.com/guides/liquidation-vs-bankruptcy.html"}
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {"@type":"Question","name":"Do I always get money back when I get liquidated?",
+     "acceptedAnswer":{"@type":"Answer","text":"Often a small amount survives after fees, but not always. In fast-moving markets the actual execution price during liquidation can be worse than the calculated liquidation price, which can consume the entire remaining buffer or more. In that case the exchange's insurance fund covers the gap, not you personally — but you should not count on receiving a refund as the expected outcome."}},
+    {"@type":"Question","name":"What is an insurance fund?",
+     "acceptedAnswer":{"@type":"Answer","text":"A pool of funds each exchange maintains, largely built from the leftover margin of liquidations that closed with room to spare. It exists to cover the gap when a liquidation executes worse than expected (during a fast market move) and would otherwise leave the trader's account negative or leave the exchange unable to pay the counterparty in full."}},
+    {"@type":"Question","name":"Does every exchange handle the liquidation fee the same way?",
+     "acceptedAnswer":{"@type":"Answer","text":"No. Some exchanges (Binance in isolated mode, for example) deduct the clearance fee from remaining margin only after the liquidation trigger — it doesn't shift when liquidation happens. Others (Bybit, OKX, KuCoin) build a comparable fee directly into the trigger formula itself, which means liquidation happens slightly earlier, closer to entry price, than a maintenance-margin-only calculation would suggest."}}
+  ]
+}
+</script>
+<script defer src="https://cloud.umami.is/script.js" data-website-id="c57ce8d4-f0c9-427d-851b-8e64d8860d99"></script>
+</head>
+<body>
+<header class="site">
+  <div class="wrap">
+    <a class="brand" href="/"><div class="brand-mark">L</div><div class="brand-name">LiquidationBuffer</div></a>
+    <nav class="site"><a href="/#calc">Calculator</a><a href="/guides/">Guides</a></nav>
+  </div>
+</header>
+
+<div class="wrap breadcrumb"><a href="/">Calculator</a> · <a href="/guides/">Guides</a> · Liq. vs. Bankruptcy</div>
+
+<article class="article wrap">
+  <div class="article-header">
+    <div class="kicker"><span class="dot"></span>Basics</div>
+    <h1>Liquidation Price vs. Bankruptcy Price</h1>
+    <p class="lede">"Nothing left" is rarer at liquidation than most traders assume.</p>
+    <p class="article-meta">Last updated September 9, 2026 · 7 min read</p>
+  </div>
+
+  <div class="toc">
+    <p class="toc-title">On this page</p>
+    <ol>
+      <li><a href="#two-prices">Two different prices</a></li>
+      <li><a href="#why-buffer">Why this buffer exists</a></li>
+      <li><a href="#example">A worked example</a></li>
+      <li><a href="#insurance">The insurance fund and ADL</a></li>
+      <li><a href="#where-fee">Where the fee belongs — and where it doesn't</a></li>
+      <li><a href="#faq">FAQ</a></li>
+    </ol>
+  </div>
+
+  <div class="article-body">
+    <p>A common misconception: when a position gets liquidated, the margin is assumed to be completely gone. In reality, there's usually still a small buffer of a few tenths of a percent between the liquidation price and the point where truly nothing is left — and understanding that gap explains a lot about how exchanges actually manage risk.</p>
+
+    <h2 id="two-prices">Two different prices</h2>
+    <p>The <strong>liquidation price</strong> is the point where your margin hits the maintenance margin threshold — the exchange begins force-closing your position here. The <strong>bankruptcy price</strong> sits further from entry: it's the theoretical point where your margin would be exactly zero, the absolute worst case with nothing recoverable.</p>
+    <p>Between the two lies exactly the amount of maintenance margin (assuming no other fees). That gap is what pays for the liquidation clearance fee some exchanges charge when force-closing a position, and it's also the buffer that protects against slippage during the forced close itself.</p>
+
+    <h2 id="why-buffer">Why this buffer exists</h2>
+    <p>Maintenance margin is deliberately sized not just to absorb the trigger itself, but to leave enough room to close the position in a controlled way and cover any associated fees — before the account actually goes negative. Without this buffer, every liquidation would risk leaving the trader owing the exchange money, which creates a much harder collections and risk-management problem than simply losing the deposited margin.</p>
+
+    <h2 id="example">A worked example</h2>
+    <p>Take a long position with a 0.65% maintenance margin rate. At the moment of liquidation, roughly 0.65% of the position's notional value in margin is still present — that's not "zero," it's the threshold itself. If the closing fee for that liquidation comes to, say, 0.4% of notional, there's still a small residual amount that could theoretically be returned to the trader. If the fee were instead 1.25% of notional — higher than the remaining maintenance margin — the buffer isn't enough to fully cover it, and the shortfall is absorbed by the exchange's insurance fund rather than by the trader going into negative balance.</p>
+    <p>This is also why maintenance margin rates and clearance fees aren't independent numbers picked in isolation — exchanges size them together, at least roughly, so that the buffer covers the typical cost of closing a position under normal market conditions.</p>
+
+    <h2 id="insurance">The insurance fund and ADL</h2>
+    <p>Only in extremely fast market moves (flash crashes, thin liquidity, a sudden large liquidation cascading into more liquidations) can actual execution be meaningfully worse than the calculated liquidation price. In that case, the exchange's <strong>insurance fund</strong> — a pool built up largely from the leftover margin of liquidations that closed with room to spare — steps in to cover the difference, rather than the trader's account going negative or the exchange failing to pay the profitable counterparty in full.</p>
+    <p>If the insurance fund itself were ever insufficient during an extreme event, most exchanges have a further mechanism called <strong>auto-deleveraging (ADL)</strong>: profitable positions on the opposite side get force-closed, in order of leverage and profitability, to make up the shortfall. It's rare, it's disclosed in every major exchange's terms, and it's precisely the kind of tail-risk scenario that a normal liquidation-price calculation doesn't capture — which is why it's called out separately as a disclaimer rather than folded into the math.</p>
+
+    <h2 id="where-fee">Where the fee belongs — and where it doesn't</h2>
+    <p>Not every exchange handles the clearance fee the same way, and this genuinely changes the math, not just the terminology:</p>
+    <ul>
+      <li><strong>Fee deducted after the trigger</strong> (Binance in isolated mode, for example): the fee comes out of whatever margin remains once liquidation has already started. It does not change <em>when</em> liquidation happens — only how much, if anything, comes back afterward.</li>
+      <li><strong>Fee built into the trigger itself</strong> (Bybit, OKX, KuCoin, among others): a comparable fee term is added directly to the liquidation price formula, which means the trigger point sits slightly closer to entry price than a maintenance-margin-only calculation would suggest.</li>
+    </ul>
+    <p>Neither approach is "wrong" — they're just different engineering choices for the same underlying goal (make sure the exchange, and other traders, are never left short). But it means the same maintenance margin rate can produce a slightly different real-world buffer depending on which model your exchange uses, which is exactly why the calculator on this site asks you directly which category your exchange falls into, rather than assuming one universal formula.</p>
+
+    <h2 id="faq">FAQ</h2>
+    <div class="faq-item">
+      <h3>Do I always get money back when I get liquidated?</h3>
+      <p>Often a small amount survives after fees, but not always. In fast-moving markets the actual execution price during liquidation can be worse than the calculated liquidation price, which can consume the entire remaining buffer or more. In that case the exchange's insurance fund covers the gap, not you personally — but you should not count on receiving a refund as the expected outcome.</p>
+    </div>
+    <div class="faq-item">
+      <h3>What is an insurance fund?</h3>
+      <p>A pool of funds each exchange maintains, largely built from the leftover margin of liquidations that closed with room to spare. It exists to cover the gap when a liquidation executes worse than expected (during a fast market move) and would otherwise leave the trader's account negative or leave the exchange unable to pay the counterparty in full.</p>
+    </div>
+    <div class="faq-item">
+      <h3>Does every exchange handle the liquidation fee the same way?</h3>
+      <p>No. Some exchanges (Binance in isolated mode, for example) deduct the clearance fee from remaining margin only after the liquidation trigger — it doesn't shift when liquidation happens. Others (Bybit, OKX, KuCoin) build a comparable fee directly into the trigger formula itself, which means liquidation happens slightly earlier, closer to entry price, than a maintenance-margin-only calculation would suggest.</p>
+    </div>
+
+    <a class="cta-inline" href="/#calc">
+      <span class="ci-title">See the difference for your own exchange's rules</span>
+      <span>→</span>
+    </a>
+  </div>
+
+  <div class="related">
+    <h3>Explore next</h3>
+    <div class="explore-grid">
+      <a class="explore-tile" href="/guides/maintenance-margin.html"><div class="et-kicker">Basics</div><div class="et-title">What maintenance margin actually means</div></a>
+      <a class="explore-tile" href="/guides/isolated-vs-cross.html"><div class="et-kicker">Basics</div><div class="et-title">Isolated vs. cross margin explained</div></a>
+      <a class="explore-tile" href="/guides/funding-fees.html"><div class="et-kicker">Costs &amp; Fees</div><div class="et-title">Why funding fees can eat your buffer</div></a>
+      <a class="explore-tile" href="/guides/practice-without-real-money.html"><div class="et-kicker">Strategy &amp; Practice</div><div class="et-title">How to practice liquidation risk without real money</div></a>
+    </div>
+  </div>
+</article>
+
+<footer>
+  <div class="wrap">
+    <span>LiquidationBuffer — not financial advice, just math.</span>
+    <span><a href="/">Back to calculator</a> · <a href="/impressum.html">Imprint</a> · <a href="/datenschutz.html">Privacy</a></span>
+  </div>
+    <div class="footer-legal">Operated by Tensfeldt Consultancy and Advisory LTD · bul. &quot;Vitosha&quot; 25, 1000 Sofia, Bulgaria · UIC/EIK 206176562</div>
+</footer>
+</body>
+</html>

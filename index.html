@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Liquidation Buffer Calculator — Any Exchange, Real Numbers | LiquidationBuffer</title>
+<meta name="description" content="Free liquidation buffer calculator for any crypto exchange. Enter your own maintenance margin rate, fees and funding rate to see your real price buffer before liquidation — not just the naive 1/leverage math.">
+<link rel="canonical" href="https://www.liquidationbuffer.com/">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Liquidation Buffer Calculator — Your real buffer, not the assumed one">
+<meta property="og:description" content="10x leverage doesn't mean a 10% buffer. Enter your exchange's real maintenance margin, fee and funding numbers to see what's actually left.">
+<meta property="og:url" content="https://www.liquidationbuffer.com/">
+<meta property="og:site_name" content="LiquidationBuffer">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Liquidation Buffer Calculator — Your real buffer, not the assumed one">
+<meta name="twitter:description" content="10x leverage doesn't mean a 10% buffer. Works for any exchange — enter your own numbers.">
+<link rel="icon" type="image/svg+xml" href="/assets/favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon-16.png">
+<link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
+<link rel="stylesheet" href="/assets/style.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "LiquidationBuffer",
+  "url": "https://www.liquidationbuffer.com/",
+  "applicationCategory": "FinanceApplication",
+  "operatingSystem": "Any browser",
+  "description": "Liquidation buffer calculator for crypto perpetuals. Works for any exchange — enter your own maintenance margin rate, fees and funding rate to see the real price buffer before liquidation.",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+}
+</script>
+<script defer src="https://cloud.umami.is/script.js" data-website-id="c57ce8d4-f0c9-427d-851b-8e64d8860d99"></script>
+</head>
+<body>
+
+<header class="site">
+  <div class="wrap">
+    <a class="brand" href="/">
+      <div class="brand-mark">L</div>
+      <div class="brand-name">LiquidationBuffer</div>
+    </a>
+    <nav class="site">
+      <a href="#calc">Calculator</a>
+      <a href="/guides/">Guides</a>
+    </nav>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="wrap hero-grid">
+    <div class="kicker"><span class="dot"></span>Works with any exchange</div>
+    <h1 class="hero-title">10x leverage doesn't mean a 10% buffer</h1>
+    <p class="hero-sub">Maintenance margin, fees and funding eat into your safety margin before the price even moves. Enter your exchange's own numbers below and see how much is actually left — no guessing, no exchange lock-in.</p>
+
+    <div class="calc-shell" id="calc">
+      <div class="calc-form">
+
+        <div class="field">
+          <label>Direction</label>
+          <div class="side-toggle">
+            <button id="btnLong" class="active long">Long</button>
+            <button id="btnShort" class="short">Short</button>
+          </div>
+        </div>
+
+        <div class="field row2">
+          <div>
+            <label>Margin (USDT)</label>
+            <input type="text" id="marginInput" value="5000">
+          </div>
+          <div>
+            <label>Leverage</label>
+            <input type="text" id="leverageInput" value="75">
+          </div>
+        </div>
+        <p class="hint" id="notionalOut">Notional $375,000</p>
+        <div id="leverageWarning"></div>
+
+        <div class="field" style="margin-top:18px;">
+          <label>Maintenance margin rate (%)</label>
+          <input type="text" id="mmrInput" value="0.65">
+          <p class="hint">Read this off your exchange's own margin/leverage tier table for your position size.</p>
+        </div>
+
+        <div class="field">
+          <label>Taker fee per trade (%)</label>
+          <input type="text" id="feeInput" value="0.05">
+          <p class="hint">Counted twice automatically (opening + closing).</p>
+        </div>
+
+        <div class="field">
+          <label>Does your exchange count this fee toward the liquidation trigger?</label>
+          <div class="yn-toggle">
+            <button id="btnFeeYes">Yes</button>
+            <button id="btnFeeNo" class="active">No / not sure</button>
+          </div>
+          <p class="hint">Not sure which applies to your exchange? <a href="/guides/liquidation-vs-bankruptcy.html" style="color:var(--accent);">See the guide</a> — this genuinely differs by exchange.</p>
+        </div>
+
+        <div class="field" id="clearanceFeeField">
+          <label>Clearance fee at liquidation (%, optional)</label>
+          <input type="text" id="clearanceFeeInput" value="">
+          <p class="hint">Only applies if you answered "No" above — shown separately since it doesn't move your trigger price.</p>
+        </div>
+
+        <div class="field">
+          <label>Funding rate per interval (%)</label>
+          <input type="text" id="fundingRateInput" value="0.01">
+        </div>
+
+        <div class="field">
+          <label>Funding interval (hours)</label>
+          <input type="text" id="fundingIntervalInput" value="8">
+          <div class="preset-row">
+            <button type="button" class="funding-preset" data-hours="1">1h</button>
+            <button type="button" class="funding-preset" data-hours="2">2h</button>
+            <button type="button" class="funding-preset" data-hours="4">4h</button>
+            <button type="button" class="funding-preset" data-hours="8">8h</button>
+          </div>
+          <p class="hint">Most majors settle every 8h. Some exchanges settle small-cap/volatile pairs every 1–4h instead — check your pair, not just the exchange default.</p>
+        </div>
+
+        <div class="field">
+          <label>Planned holding period <span class="range-current" id="holdOut" style="display:inline;font-weight:500;">— 24h</span></label>
+          <input type="range" id="holdSlider" min="0" max="168" step="1" value="24">
+          <div class="range-labels"><span>0h</span><span>24h</span><span>3d</span><span>5d</span><span>7d</span></div>
+          <p class="hint" id="fundingIntervalsOut">3× funding payments within the selected holding period (every 8h)</p>
+        </div>
+
+        <div class="field">
+          <label>Current price (USDT, optional)</label>
+          <input type="text" id="priceInput" value="62000">
+          <p class="hint">Only used to show a $ liquidation price alongside the % buffer.</p>
+        </div>
+
+      </div>
+
+      <div class="calc-out">
+        <div class="out-label">
+          <span class="compare-cell-label">Result</span>
+        </div>
+
+        <div class="stat-cards">
+          <div class="stat-card"><div class="sc-label">Position size</div><div class="sc-val" id="scPosition">$0</div></div>
+          <div class="stat-card"><div class="sc-label">Initial margin</div><div class="sc-val" id="scInitialMargin">$0</div></div>
+          <div class="stat-card"><div class="sc-label">Maintenance margin</div><div class="sc-val" id="scMaintMargin">$0</div></div>
+        </div>
+
+        <div class="compare-grid">
+          <div class="compare-cell left">
+            <div class="cc-label">Assumed</div>
+            <div class="cc-num num" id="naiveOut">—%</div>
+            <div class="cc-sub" id="naivePriceOut">—</div>
+          </div>
+          <div class="compare-cell right">
+            <div class="cc-label">Real buffer<span class="path-badge" id="pathBadge" style="display:inline-block; font-size:11px; font-family:'IBM Plex Mono', monospace; padding:2px 7px; border-radius:3px; margin-left:8px; background:var(--accent-soft); color:var(--accent);">—</span><span class="risk-badge" id="riskBadge">—</span></div>
+            <div class="cc-num num" id="realOut">—%</div>
+            <div class="cc-sub" id="realPriceOut">—</div>
+          </div>
+        </div>
+
+        <div class="buffer-bar"><div class="buffer-bar-fill" id="bufferBar" style="width:0%"></div></div>
+
+        <div class="distance-visual" id="distanceVisual">
+          <div class="distance-track">
+            <div class="dt-fill" id="dtFill" style="width:0%"></div>
+            <div class="distance-marker entry" style="left:0%;"><span class="dm-label" id="entryLabel">Entry</span></div>
+            <div class="distance-marker liq" id="liqMarker" style="left:0%;"><span class="dm-label" id="liqLabel">Liq.</span></div>
+          </div>
+        </div>
+
+        <div class="share-row">
+          <button type="button" id="copyResultBtn">Copy result</button>
+          <button type="button" id="shareXBtn">Share on X</button>
+        </div>
+
+        <table class="breakdown" id="breakdownTable"></table>
+
+        <div class="disclaimers">
+          <p>Based on your exchange's mark price, not the chart/last price — the two can diverge slightly.</p>
+          <p>Isolated margin only. Cross margin depends on your whole account balance and isn't modeled here.</p>
+          <p>Very large positions may be liquidated in steps (partial liquidation) on some exchanges.</p>
+          <p>Auto-deleveraging (ADL) can close a position in extreme cases regardless of the liquidation price.</p>
+          <p>Assumption: no automatic margin top-up active, and your entered rates stay constant over the holding period.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="promo-banner">
+  <div class="wrap">
+    <div class="pb-text">Want to test your <strong>market timing</strong>, not just the math? <span style="color:var(--ink-soft);">Blitzkurs is a 10-second Long/Short prediction game.</span></div>
+    <a class="pb-link" href="https://blitzkurs.com" target="_blank" rel="noopener">Try Blitzkurs →</a>
+  </div>
+</section>
+
+<section class="features">
+  <div class="wrap">
+    <div class="features-grid">
+      <div class="feature-cell">
+        <div class="f-num">01</div>
+        <h3>Works with any exchange</h3>
+        <p>No lock-in to one platform's API. Enter the real numbers from your exchange's own fee and margin pages, and the math is correct for any of them.</p>
+      </div>
+      <div class="feature-cell">
+        <div class="f-num">02</div>
+        <h3>Fee-in-trigger, handled correctly</h3>
+        <p>Some exchanges fold the closing fee into the liquidation trigger itself; others deduct it only afterward. Toggle it — the formula changes accordingly.</p>
+      </div>
+      <div class="feature-cell">
+        <div class="f-num">03</div>
+        <h3>Funding over any interval</h3>
+        <p>Not every pair settles every 8 hours. Set your own funding interval and holding period and see the real cumulative effect.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="guides" id="guides">
+  <div class="wrap">
+    <h2>Before you calculate</h2>
+    <div class="guide-list">
+      <a class="guide-item" href="/guides/maintenance-margin.html">
+        <div><div class="gi-title">What maintenance margin actually means</div><div class="gi-sub">Why your real buffer is always smaller than 1/leverage alone</div></div>
+        <span class="gi-arrow">→</span>
+      </a>
+      <a class="guide-item" href="/guides/isolated-vs-cross.html">
+        <div><div class="gi-title">Isolated vs. cross margin explained</div><div class="gi-sub">Two different answers to what happens when a position moves against you</div></div>
+        <span class="gi-arrow">→</span>
+      </a>
+      <a class="guide-item" href="/guides/funding-fees.html">
+        <div><div class="gi-title">Why funding fees can eat your buffer</div><div class="gi-sub">How periodic payments shrink — or grow — your margin over time</div></div>
+        <span class="gi-arrow">→</span>
+      </a>
+      <a class="guide-item" href="/guides/liquidation-vs-bankruptcy.html">
+        <div><div class="gi-title">Liquidation price vs. bankruptcy price</div><div class="gi-sub">Why "nothing left" is rarer than most traders assume</div></div>
+        <span class="gi-arrow">→</span>
+      </a>
+    </div>
+    <p style="margin-top:24px;"><a href="/guides/" style="color:var(--accent); font-size:14px; text-decoration:none;">Browse all guides →</a></p>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <span>LiquidationBuffer — not financial advice, just math.</span>
+    <span><a href="/impressum.html">Imprint</a> · <a href="/datenschutz.html">Privacy</a></span>
+  </div>
+    <div class="footer-legal">Operated by Tensfeldt Consultancy and Advisory LTD · bul. &quot;Vitosha&quot; 25, 1000 Sofia, Bulgaria · UIC/EIK 206176562</div>
+</footer>
+
+<script src="/assets/calculator.js"></script>
+</body>
+</html>

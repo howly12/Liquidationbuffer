@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Why Funding Fees Can Eat Your Liquidation Buffer (2026) | LiquidationBuffer</title>
+<meta name="description" content="How funding fees work on crypto perpetuals, why settlement intervals vary by exchange and token, and how accumulated funding shrinks — or grows — your liquidation buffer over time.">
+<link rel="canonical" href="https://www.liquidationbuffer.com/guides/funding-fees.html">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Why Funding Fees Can Eat Your Liquidation Buffer">
+<meta property="og:description" content="Your safety margin can shrink even without the price moving at all — purely through time.">
+<meta property="og:url" content="https://www.liquidationbuffer.com/guides/funding-fees.html">
+<meta property="og:site_name" content="LiquidationBuffer">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Why Funding Fees Can Eat Your Liquidation Buffer">
+<meta name="twitter:description" content="Your safety margin can shrink even without the price moving at all — purely through time.">
+<link rel="icon" type="image/svg+xml" href="/assets/favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon-16.png">
+<link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
+<link rel="stylesheet" href="/assets/style.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "Why Funding Fees Can Eat Your Liquidation Buffer",
+  "description": "How funding fees work on perpetuals and why they can shrink or grow your liquidation buffer over time.",
+  "author": { "@type": "Organization", "name": "LiquidationBuffer" },
+  "publisher": { "@type": "Organization", "name": "LiquidationBuffer" },
+  "datePublished": "2026-09-09",
+  "dateModified": "2026-09-09"
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {"@type":"ListItem","position":1,"name":"Calculator","item":"https://www.liquidationbuffer.com/"},
+    {"@type":"ListItem","position":2,"name":"Guides","item":"https://www.liquidationbuffer.com/guides/"},
+    {"@type":"ListItem","position":3,"name":"Funding Fees","item":"https://www.liquidationbuffer.com/guides/funding-fees.html"}
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {"@type":"Question","name":"Do all exchanges settle funding every 8 hours?",
+     "acceptedAnswer":{"@type":"Answer","text":"No. 8 hours is the traditional default for major exchanges on major pairs, but this has changed. OKX introduced tiered escalation that steps settlement down from 8h to 4h to 2h to 1h for more volatile or lower-liquidity pairs. Bybit enabled dynamic settlement for a similar purpose. Decentralized perpetual exchanges like Hyperliquid and dYdX settle hourly by default, not as an exception. Always check the specific pair, not just the exchange's general default."}},
+    {"@type":"Question","name":"Can funding fees alone cause liquidation?",
+     "acceptedAnswer":{"@type":"Answer","text":"In combination with a thin buffer from high leverage, yes — funding is one of several factors (alongside maintenance margin and trading fees) that reduce available margin. At very high leverage, where the starting buffer is already a fraction of a percent, several days of unfavorable funding can meaningfully close the remaining gap even with no adverse price movement."}},
+    {"@type":"Question","name":"Is a positive funding rate good or bad for me?",
+     "acceptedAnswer":{"@type":"Answer","text":"It depends entirely on which side you're on. A positive funding rate means longs pay shorts. If you're long, it works against your buffer; if you're short, it works in your favor and your buffer actually grows over time, all else equal. There's no universal 'good' or 'bad' — only relative to your position's direction."}}
+  ]
+}
+</script>
+<script defer src="https://cloud.umami.is/script.js" data-website-id="c57ce8d4-f0c9-427d-851b-8e64d8860d99"></script>
+</head>
+<body>
+<header class="site">
+  <div class="wrap">
+    <a class="brand" href="/"><div class="brand-mark">L</div><div class="brand-name">LiquidationBuffer</div></a>
+    <nav class="site"><a href="/#calc">Calculator</a><a href="/guides/">Guides</a></nav>
+  </div>
+</header>
+
+<div class="wrap breadcrumb"><a href="/">Calculator</a> · <a href="/guides/">Guides</a> · Funding Fees</div>
+
+<article class="article wrap">
+  <div class="article-header">
+    <div class="kicker"><span class="dot"></span>Costs & Fees</div>
+    <h1>Why Funding Fees Can Eat Your Buffer</h1>
+    <p class="lede">Your safety margin to liquidation can shrink even without the price moving at all — purely through time.</p>
+    <p class="article-meta">Last updated September 9, 2026 · 7 min read</p>
+  </div>
+
+  <div class="toc">
+    <p class="toc-title">On this page</p>
+    <ol>
+      <li><a href="#who-pays">Who pays whom, and why</a></li>
+      <li><a href="#intervals">Settlement intervals aren't always 8 hours</a></li>
+      <li><a href="#effect">The overlooked effect on liquidation</a></li>
+      <li><a href="#example">A practical example</a></li>
+      <li><a href="#management">What this means for your position management</a></li>
+      <li><a href="#faq">FAQ</a></li>
+    </ol>
+  </div>
+
+  <div class="article-body">
+    <p>Perpetual contracts have no expiry date like classic futures. To keep their price close to the spot market anyway, long and short positions pay each other a periodic fee: the <strong>funding rate</strong>. It's an elegant mechanism — no external settlement needed, just traders on each side paying each other based on how far the perpetual has drifted from the underlying spot index.</p>
+
+    <h2 id="who-pays">Who pays whom, and why</h2>
+    <p>When the funding rate is positive, longs pay shorts — the perpetual price sits above spot, and funding pushes it back down by making it more expensive to stay long. When it's negative, shorts pay longs, for the mirror-image reason. The sign can flip multiple times a day depending on how the market is positioned, and during extended trending markets it can also stay heavily one-sided for days or weeks at a time.</p>
+    <p>The rate itself is typically built from two components: an interest-rate component (usually small and fixed) and a premium/discount component reflecting the actual gap between the perpetual's price and the spot index. Exchanges compute and average this over the settlement window, then apply it at each interval.</p>
+
+    <h2 id="intervals">Settlement intervals aren't always 8 hours</h2>
+    <p>Eight hours used to be close to a universal default, and it's still the most common baseline for major pairs on major exchanges. But this has genuinely changed in the last couple of years, and treating "every 8 hours" as a fixed assumption will produce wrong numbers on some pairs.</p>
+    <ul>
+      <li><strong>OKX</strong> introduced tiered escalation that steps settlement frequency down — from 8h to 4h to 2h to 1h — specifically for more volatile or lower-liquidity pairs, where a full 8-hour accumulation window would let the price drift too far from spot before correcting.</li>
+      <li><strong>Bybit</strong> enabled a similar dynamic settlement system, initially excluding the very largest pairs (BTC, ETH) but extending it more broadly since.</li>
+      <li><strong>Decentralized perpetual exchanges</strong> like Hyperliquid and dYdX settle hourly by design, not as an emergency measure — it's simply their default model, chosen to keep the perpetual price tighter to spot at all times.</li>
+    </ul>
+    <p>The practical takeaway: check the funding interval for the <em>specific pair</em> you're trading, not just what you remember as "the" interval for that exchange. This is exactly why the calculator on this site treats funding interval as a field you set yourself, with presets for 1h, 2h, 4h and 8h, rather than assuming a fixed number.</p>
+
+    <h2 id="effect">The overlooked effect on liquidation</h2>
+    <p>Every funding payment is debited from — or credited to — your position margin directly. If you're long and the rate is positive, your available margin shrinks with every payment — your buffer to liquidation gets smaller, with no price movement involved at all. If you're short during a positive rate, your buffer grows instead, purely from holding the position over time.</p>
+    <p>For short-term trades (minutes to hours) this effect is usually negligible next to the maintenance margin and fee components. For positions held open across days, it can add up noticeably — especially at high leverage, where the starting buffer is already thin and every fraction of a percentage point matters more.</p>
+
+    <div class="callout">Formula: <code>Funding impact = funding rate per interval × sign (long = +1, short = −1) × number of intervals held</code>. At an 8-hour interval, that's three payments a day — 21 individual debits or credits after a week. At a 1-hour interval on a fast-settling pair, that's 24 payments a <em>day</em>, and the cumulative effect compounds much faster.</div>
+
+    <h2 id="example">A practical example</h2>
+    <p>At a funding rate of 0.01% per interval, 8-hour settlement, and a 3-day holding period (9 intervals), the effect adds up to about 0.09 percentage points — barely noticeable at 5x leverage, but a meaningful chunk of an already-thin buffer at 75x or 100x, where the entire remaining cushion after maintenance margin and fees might only be half a percent to begin with.</p>
+    <p>Now compare that to a small-cap pair settling every 2 hours instead of 8, at the same 0.01% per-interval rate: the same 3-day hold produces 36 intervals instead of 9 — four times the cumulative funding impact, from the interval alone, with the per-payment rate unchanged. This is precisely the scenario the interval assumption gets wrong if you don't check it per pair.</p>
+
+    <h2 id="management">What this means for your position management</h2>
+    <ul>
+      <li>At very high leverage and long holding periods, check both the current funding rate <em>and</em> the settlement interval before you open — the interval alone can multiply the cumulative effect several times over.</li>
+      <li>Extremely negative or positive funding rates often signal a one-sided, crowded market — beyond the pure cost, that can also be a sentiment indicator worth reading on its own.</li>
+      <li>Traders who actively position against the funding direction (on the side receiving payments) benefit twice: from a growing buffer and from the ongoing credit to their margin.</li>
+      <li>If you're holding for more than a day or two, re-check the funding rate periodically rather than assuming it stays constant — it's recalculated fresh at every interval and can shift meaningfully during volatile stretches.</li>
+    </ul>
+
+    <h2 id="faq">FAQ</h2>
+    <div class="faq-item">
+      <h3>Do all exchanges settle funding every 8 hours?</h3>
+      <p>No. 8 hours is the traditional default for major exchanges on major pairs, but this has changed. OKX introduced tiered escalation that steps settlement down from 8h to 4h to 2h to 1h for more volatile or lower-liquidity pairs. Bybit enabled dynamic settlement for a similar purpose. Decentralized perpetual exchanges like Hyperliquid and dYdX settle hourly by default, not as an exception. Always check the specific pair, not just the exchange's general default.</p>
+    </div>
+    <div class="faq-item">
+      <h3>Can funding fees alone cause liquidation?</h3>
+      <p>In combination with a thin buffer from high leverage, yes — funding is one of several factors (alongside maintenance margin and trading fees) that reduce available margin. At very high leverage, where the starting buffer is already a fraction of a percent, several days of unfavorable funding can meaningfully close the remaining gap even with no adverse price movement.</p>
+    </div>
+    <div class="faq-item">
+      <h3>Is a positive funding rate good or bad for me?</h3>
+      <p>It depends entirely on which side you're on. A positive funding rate means longs pay shorts. If you're long, it works against your buffer; if you're short, it works in your favor and your buffer actually grows over time, all else equal. There's no universal "good" or "bad" — only relative to your position's direction.</p>
+    </div>
+
+    <a class="cta-inline" href="/#calc">
+      <span class="ci-title">Simulate the funding effect for your own holding period</span>
+      <span>→</span>
+    </a>
+  </div>
+
+  <div class="related">
+    <h3>Explore next</h3>
+    <div class="explore-grid">
+      <a class="explore-tile" href="/guides/maintenance-margin.html"><div class="et-kicker">Basics</div><div class="et-title">What maintenance margin actually means</div></a>
+      <a class="explore-tile" href="/guides/isolated-vs-cross.html"><div class="et-kicker">Basics</div><div class="et-title">Isolated vs. cross margin explained</div></a>
+      <a class="explore-tile" href="/guides/liquidation-vs-bankruptcy.html"><div class="et-kicker">Basics</div><div class="et-title">Liquidation price vs. bankruptcy price</div></a>
+      <a class="explore-tile" href="/guides/practice-without-real-money.html"><div class="et-kicker">Strategy &amp; Practice</div><div class="et-title">How to practice liquidation risk without real money</div></a>
+    </div>
+  </div>
+</article>
+
+<footer>
+  <div class="wrap">
+    <span>LiquidationBuffer — not financial advice, just math.</span>
+    <span><a href="/">Back to calculator</a> · <a href="/impressum.html">Imprint</a> · <a href="/datenschutz.html">Privacy</a></span>
+  </div>
+    <div class="footer-legal">Operated by Tensfeldt Consultancy and Advisory LTD · bul. &quot;Vitosha&quot; 25, 1000 Sofia, Bulgaria · UIC/EIK 206176562</div>
+</footer>
+</body>
+</html>

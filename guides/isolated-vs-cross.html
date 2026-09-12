@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Isolated vs. Cross Margin: The Difference Explained (2026) | LiquidationBuffer</title>
+<meta name="description" content="Isolated margin and cross margin explained simply: what happens at liquidation in each mode, how the liquidation price calculation differs, and which to use when.">
+<link rel="canonical" href="https://www.liquidationbuffer.com/guides/isolated-vs-cross.html">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Isolated vs. Cross Margin: The Difference Explained">
+<meta property="og:description" content="Two completely different answers to the same question: what happens when a position moves against you?">
+<meta property="og:url" content="https://www.liquidationbuffer.com/guides/isolated-vs-cross.html">
+<meta property="og:site_name" content="LiquidationBuffer">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Isolated vs. Cross Margin: The Difference Explained">
+<meta name="twitter:description" content="Two completely different answers to the same question: what happens when a position moves against you?">
+<link rel="icon" type="image/svg+xml" href="/assets/favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon-16.png">
+<link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
+<link rel="stylesheet" href="/assets/style.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "Isolated vs. Cross Margin: The Difference Explained",
+  "description": "Isolated margin and cross margin explained simply: what happens at liquidation in each mode, and the trade-offs between them.",
+  "author": { "@type": "Organization", "name": "LiquidationBuffer" },
+  "publisher": { "@type": "Organization", "name": "LiquidationBuffer" },
+  "datePublished": "2026-09-09",
+  "dateModified": "2026-09-09"
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {"@type":"ListItem","position":1,"name":"Calculator","item":"https://www.liquidationbuffer.com/"},
+    {"@type":"ListItem","position":2,"name":"Guides","item":"https://www.liquidationbuffer.com/guides/"},
+    {"@type":"ListItem","position":3,"name":"Isolated vs. Cross Margin","item":"https://www.liquidationbuffer.com/guides/isolated-vs-cross.html"}
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {"@type":"Question","name":"Which is safer, isolated or cross margin?",
+     "acceptedAnswer":{"@type":"Answer","text":"Isolated margin caps your maximum loss at the amount you assigned to that position, which makes it easier to reason about and journal. Cross margin gives a larger buffer before liquidation but puts your whole account balance at risk from a single bad trade. For most individual traders, especially when learning, isolated margin's capped downside is the safer default."}},
+    {"@type":"Question","name":"Can I switch a position from isolated to cross margin after opening it?",
+     "acceptedAnswer":{"@type":"Answer","text":"On most exchanges, yes, though the exact mechanics vary. Switching to cross typically adds your available account balance as backing collateral, which moves the liquidation price further away. Switching from cross to isolated usually requires the position to not currently be at risk of immediate liquidation."}},
+    {"@type":"Question","name":"Why can't a liquidation calculator show an exact price for cross margin?",
+     "acceptedAnswer":{"@type":"Answer","text":"Because a cross-margin position's liquidation price depends on your entire account state — every other open position, unrealized P&L, and free balance — not just the numbers for that one trade. Any calculator showing a single fixed answer for cross margin is oversimplifying; that's why calculators (including this one) model isolated margin only."}}
+  ]
+}
+</script>
+<script defer src="https://cloud.umami.is/script.js" data-website-id="c57ce8d4-f0c9-427d-851b-8e64d8860d99"></script>
+</head>
+<body>
+<header class="site">
+  <div class="wrap">
+    <a class="brand" href="/"><div class="brand-mark">L</div><div class="brand-name">LiquidationBuffer</div></a>
+    <nav class="site"><a href="/#calc">Calculator</a><a href="/guides/">Guides</a></nav>
+  </div>
+</header>
+
+<div class="wrap breadcrumb"><a href="/">Calculator</a> · <a href="/guides/">Guides</a> · Isolated vs. Cross</div>
+
+<article class="article wrap">
+  <div class="article-header">
+    <div class="kicker"><span class="dot"></span>Basics</div>
+    <h1>Isolated vs. Cross Margin</h1>
+    <p class="lede">Two completely different answers to the same question: what happens when a position moves against you?</p>
+    <p class="article-meta">Last updated September 9, 2026 · 6 min read</p>
+  </div>
+
+  <div class="toc">
+    <p class="toc-title">On this page</p>
+    <ol>
+      <li><a href="#isolated">Isolated margin</a></li>
+      <li><a href="#cross">Cross margin</a></li>
+      <li><a href="#technical">How the liquidation calculation actually differs</a></li>
+      <li><a href="#which">Which mode fits when</a></li>
+      <li><a href="#mistakes">Common mistakes</a></li>
+      <li><a href="#faq">FAQ</a></li>
+    </ol>
+  </div>
+
+  <div class="article-body">
+    <p>Before you even choose a leverage level, you make a more important decision: isolated or cross margin. Both determine what capital is actually at risk for a position — and that's a bigger difference than most traders expect going in, one that shapes every other number this site's calculator produces.</p>
+
+    <h2 id="isolated">Isolated margin</h2>
+    <p>With isolated margin, you assign a fixed amount of margin to a single position. Only that amount can be lost. If the position moves against you, it gets liquidated once maintenance margin is reached — the rest of your account balance stays completely untouched, regardless of how badly that one trade goes.</p>
+    <p>The advantage: your risk per position is clearly capped and known in advance, before you even click "open." The downside: that same cap also means a smaller buffer, since no extra capital automatically steps in when things get tight. If the position is one tick away from liquidation and you have $50,000 sitting free elsewhere in your account, none of it helps unless you manually add margin to that specific position.</p>
+
+    <h2 id="cross">Cross margin</h2>
+    <p>With cross margin, all your open positions share the same overall account balance. If one position moves against you, margin is automatically pulled from other, profitable positions or free balance to delay liquidation — the exchange treats your whole account as one pool of collateral.</p>
+    <p>The advantage: a larger effective buffer, as long as your total account has enough balance. A position that would have been liquidated under isolated margin might survive under cross margin simply because unrelated funds backed it up. The downside: a single, badly losing position can, in the extreme, put your entire account balance at risk — not just the margin meant for it. There's no hard ceiling on the loss the way there is with isolated margin.</p>
+
+    <h2 id="technical">How the liquidation calculation actually differs</h2>
+    <p>This isn't just a philosophical difference — it changes the actual math. Under isolated margin, the liquidation price for a position can be calculated from that position's own numbers alone: entry price, leverage, maintenance margin rate, fees. That's exactly what a calculator like the one on this site does.</p>
+    <p>Under cross margin, the same calculation is incomplete without knowing every other open position on the account and the current free balance, because all of it backs every position simultaneously. Two accounts with identical BTC positions at identical leverage can have completely different actual liquidation prices under cross margin, purely because one account has other open trades or spare balance and the other doesn't.</p>
+    <div class="callout">This is why liquidation calculators — including this one — model isolated margin only. A cross-margin "calculator" that gives a single fixed answer without asking about your entire account is oversimplifying the mechanics, not just skipping a detail.</div>
+
+    <h2 id="which">Which mode fits when</h2>
+    <ul>
+      <li><strong>Isolated:</strong> When you want risk per trade clearly capped, e.g. speculative positions on volatile tokens, or when you're learning and want each trade's worst case to be easy to journal and understand.</li>
+      <li><strong>Cross:</strong> When you're running several correlated positions and want gains and losses to cushion each other, or when you actively manage collateral across a portfolio rather than trade-by-trade.</li>
+    </ul>
+    <p>Many experienced traders use both modes in parallel — cross for their core holdings, isolated for individual, riskier bets whose loss should be clearly capped and separated from the rest of the account. There's no rule that an account has to pick one mode for everything.</p>
+
+    <h2 id="mistakes">Common mistakes</h2>
+    <ul>
+      <li><strong>Defaulting to cross without realizing it.</strong> Most exchanges set cross margin as the account-wide default. Traders who intend to cap their risk per trade sometimes don't realize they're actually exposing their whole balance.</li>
+      <li><strong>Assuming cross margin means "can't be liquidated."</strong> It only delays liquidation by drawing on more collateral — it doesn't prevent it if the account-wide balance also runs out.</li>
+      <li><strong>Switching to cross mid-trade as a panic move.</strong> This does buy more room, but it also means a continued adverse move now threatens the rest of the account, not just the original position.</li>
+    </ul>
+
+    <h2 id="faq">FAQ</h2>
+    <div class="faq-item">
+      <h3>Which is safer, isolated or cross margin?</h3>
+      <p>Isolated margin caps your maximum loss at the amount you assigned to that position, which makes it easier to reason about and journal. Cross margin gives a larger buffer before liquidation but puts your whole account balance at risk from a single bad trade. For most individual traders, especially when learning, isolated margin's capped downside is the safer default.</p>
+    </div>
+    <div class="faq-item">
+      <h3>Can I switch a position from isolated to cross margin after opening it?</h3>
+      <p>On most exchanges, yes, though the exact mechanics vary. Switching to cross typically adds your available account balance as backing collateral, which moves the liquidation price further away. Switching from cross to isolated usually requires the position to not currently be at risk of immediate liquidation.</p>
+    </div>
+    <div class="faq-item">
+      <h3>Why can't a liquidation calculator show an exact price for cross margin?</h3>
+      <p>Because a cross-margin position's liquidation price depends on your entire account state — every other open position, unrealized P&L, and free balance — not just the numbers for that one trade. Any calculator showing a single fixed answer for cross margin is oversimplifying; that's why calculators (including this one) model isolated margin only.</p>
+    </div>
+
+    <a class="cta-inline" href="/#calc">
+      <span class="ci-title">Calculate your isolated margin buffer</span>
+      <span>→</span>
+    </a>
+  </div>
+
+  <div class="related">
+    <h3>Explore next</h3>
+    <div class="explore-grid">
+      <a class="explore-tile" href="/guides/maintenance-margin.html"><div class="et-kicker">Basics</div><div class="et-title">What maintenance margin actually means</div></a>
+      <a class="explore-tile" href="/guides/liquidation-vs-bankruptcy.html"><div class="et-kicker">Basics</div><div class="et-title">Liquidation price vs. bankruptcy price</div></a>
+      <a class="explore-tile" href="/guides/funding-fees.html"><div class="et-kicker">Costs &amp; Fees</div><div class="et-title">Why funding fees can eat your buffer</div></a>
+      <a class="explore-tile" href="/guides/practice-without-real-money.html"><div class="et-kicker">Strategy &amp; Practice</div><div class="et-title">How to practice liquidation risk without real money</div></a>
+    </div>
+  </div>
+</article>
+
+<footer>
+  <div class="wrap">
+    <span>LiquidationBuffer — not financial advice, just math.</span>
+    <span><a href="/">Back to calculator</a> · <a href="/impressum.html">Imprint</a> · <a href="/datenschutz.html">Privacy</a></span>
+  </div>
+    <div class="footer-legal">Operated by Tensfeldt Consultancy and Advisory LTD · bul. &quot;Vitosha&quot; 25, 1000 Sofia, Bulgaria · UIC/EIK 206176562</div>
+</footer>
+</body>
+</html>

@@ -1,0 +1,15 @@
+Font files in this folder are self-hosted copies of open-source fonts,
+served from this site instead of a third-party font CDN.
+
+Space Grotesk   - Copyright 2020 The Space Grotesk Project Authors
+                  (https://github.com/floriankarsten/space-grotesk)
+IBM Plex Sans   - Copyright 2017 IBM Corp. with Reserved Font Name "Plex"
+IBM Plex Mono   - Copyright 2017 IBM Corp. with Reserved Font Name "Plex"
+                  (https://github.com/IBM/plex)
+
+All three are licensed under the SIL Open Font License, Version 1.1:
+https://openfontlicense.org
+
+Files are unmodified woff2 subsets (latin, latin-ext and, for IBM Plex Sans,
+cyrillic) as distributed by Google Fonts. If a file is ever replaced, give the
+new file a new name - /_headers caches everything here for one year.

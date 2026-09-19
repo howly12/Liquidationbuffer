@@ -71,7 +71,9 @@ Every article in `/guides/` follows the same structure — use the most
 recent one as your template for the next:
 
 1. Duplicate an existing `/guides/*.html` file.
-2. Update: `<title>`, meta description, canonical URL, all three
+2. Keep `<title>` to 60 characters at most (add ` | LiquidationBuffer` only if it
+   still fits) and the meta description to 155; Google cuts both off beyond that.
+   Update: `<title>`, meta description, canonical URL, all three
    `og:`/`twitter:` tags, the `Article` JSON-LD block (headline,
    description, dates), the `BreadcrumbList` JSON-LD block, and the
    `FAQPage` JSON-LD block (write 2–3 real questions the article

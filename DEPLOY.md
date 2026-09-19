@@ -58,6 +58,15 @@ wait for, since nothing is fetched.
 ---
 
 ## 5. Adding a new guide article (the established template)
+**URLs have no `.html`.** Cloudflare serves `/guides/foo.html` as `/guides/foo`
+and 307-redirects the `.html` form to it. So in every place a URL appears —
+`<link rel="canonical">`, `og:url`, JSON-LD, breadcrumbs, `sitemap.xml`, and every
+internal `href` — write `https://www.liquidationbuffer.com/guides/foo` and
+`/guides/foo`, never `…foo.html` (the *file* is still `foo.html`). Using the
+`.html` form makes each canonical point at a redirect, which Google reports as
+"Alternative page with proper canonical tag" / "Crawled – currently not indexed".
+`impressum` and `datenschutz` are `noindex`, so they stay out of the sitemap.
+
 Every article in `/guides/` follows the same structure — use the most
 recent one as your template for the next:
 

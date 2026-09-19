@@ -6,11 +6,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Why Funding Fees Can Eat Your Liquidation Buffer (2026) | LiquidationBuffer</title>
 <meta name="description" content="How funding fees work on crypto perpetuals, why settlement intervals vary by exchange and token, and how accumulated funding shrinks — or grows — your liquidation buffer over time.">
-<link rel="canonical" href="https://www.liquidationbuffer.com/guides/funding-fees.html">
+<link rel="canonical" href="https://www.liquidationbuffer.com/guides/funding-fees">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Why Funding Fees Can Eat Your Liquidation Buffer">
 <meta property="og:description" content="Your safety margin can shrink even without the price moving at all — purely through time.">
-<meta property="og:url" content="https://www.liquidationbuffer.com/guides/funding-fees.html">
+<meta property="og:url" content="https://www.liquidationbuffer.com/guides/funding-fees">
 <meta property="og:site_name" content="LiquidationBuffer">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Why Funding Fees Can Eat Your Liquidation Buffer">
@@ -41,7 +41,7 @@
   "itemListElement": [
     {"@type":"ListItem","position":1,"name":"Calculator","item":"https://www.liquidationbuffer.com/"},
     {"@type":"ListItem","position":2,"name":"Guides","item":"https://www.liquidationbuffer.com/guides/"},
-    {"@type":"ListItem","position":3,"name":"Funding Fees","item":"https://www.liquidationbuffer.com/guides/funding-fees.html"}
+    {"@type":"ListItem","position":3,"name":"Funding Fees","item":"https://www.liquidationbuffer.com/guides/funding-fees"}
   ]
 }
 </script>
@@ -107,8 +107,8 @@
     <h2 id="intervals">Settlement intervals aren't always 8 hours</h2>
     <p>Eight hours used to be close to a universal default, and it's still the most common baseline for major pairs on major exchanges. But this has genuinely changed in the last couple of years, and treating "every 8 hours" as a fixed assumption will produce wrong numbers on some pairs.</p>
     <ul>
-      <li><strong><a href="/okx-liquidation-calculator.html">OKX</a></strong> introduced tiered escalation that steps settlement frequency down — from 8h to 4h to 2h to 1h — specifically for more volatile or lower-liquidity pairs, where a full 8-hour accumulation window would let the price drift too far from spot before correcting.</li>
-      <li><strong><a href="/bybit-liquidation-calculator.html">Bybit</a></strong> enabled a similar dynamic settlement system, initially excluding the very largest pairs (BTC, ETH) but extending it more broadly since.</li>
+      <li><strong><a href="/okx-liquidation-calculator">OKX</a></strong> introduced tiered escalation that steps settlement frequency down — from 8h to 4h to 2h to 1h — specifically for more volatile or lower-liquidity pairs, where a full 8-hour accumulation window would let the price drift too far from spot before correcting.</li>
+      <li><strong><a href="/bybit-liquidation-calculator">Bybit</a></strong> enabled a similar dynamic settlement system, initially excluding the very largest pairs (BTC, ETH) but extending it more broadly since.</li>
       <li><strong>Decentralized perpetual exchanges</strong> like Hyperliquid and dYdX settle hourly by design, not as an emergency measure — it's simply their default model, chosen to keep the perpetual price tighter to spot at all times.</li>
     </ul>
     <p>The practical takeaway: check the funding interval for the <em>specific pair</em> you're trading, not just what you remember as "the" interval for that exchange. This is exactly why the calculator on this site treats funding interval as a field you set yourself, with presets for 1h, 2h, 4h and 8h, rather than assuming a fixed number.</p>
@@ -154,10 +154,10 @@
   <div class="related">
     <h3>Explore next</h3>
     <div class="explore-grid">
-      <a class="explore-tile" href="/guides/maintenance-margin.html"><div class="et-kicker">Basics</div><div class="et-title">What maintenance margin actually means</div></a>
-      <a class="explore-tile" href="/guides/isolated-vs-cross.html"><div class="et-kicker">Basics</div><div class="et-title">Isolated vs. cross margin explained</div></a>
-      <a class="explore-tile" href="/guides/liquidation-vs-bankruptcy.html"><div class="et-kicker">Basics</div><div class="et-title">Liquidation price vs. bankruptcy price</div></a>
-      <a class="explore-tile" href="/guides/practice-without-real-money.html"><div class="et-kicker">Strategy &amp; Practice</div><div class="et-title">How to practice liquidation risk without real money</div></a>
+      <a class="explore-tile" href="/guides/maintenance-margin"><div class="et-kicker">Basics</div><div class="et-title">What maintenance margin actually means</div></a>
+      <a class="explore-tile" href="/guides/isolated-vs-cross"><div class="et-kicker">Basics</div><div class="et-title">Isolated vs. cross margin explained</div></a>
+      <a class="explore-tile" href="/guides/liquidation-vs-bankruptcy"><div class="et-kicker">Basics</div><div class="et-title">Liquidation price vs. bankruptcy price</div></a>
+      <a class="explore-tile" href="/guides/practice-without-real-money"><div class="et-kicker">Strategy &amp; Practice</div><div class="et-title">How to practice liquidation risk without real money</div></a>
     </div>
   </div>
 </article>
@@ -165,7 +165,7 @@
 <footer>
   <div class="wrap">
     <span>LiquidationBuffer — not financial advice, just math.</span>
-    <span><a href="/">Back to calculator</a> · <a href="/impressum.html">Imprint</a> · <a href="/datenschutz.html">Privacy</a></span>
+    <span><a href="/">Back to calculator</a> · <a href="/impressum">Imprint</a> · <a href="/datenschutz">Privacy</a></span>
   </div>
 </footer>
 <script src="/assets/site.js"></script>

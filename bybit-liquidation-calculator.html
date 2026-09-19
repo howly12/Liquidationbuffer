@@ -6,11 +6,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Bybit Liquidation Calculator — Real Fee &amp; Funding Defaults | LiquidationBuffer</title>
 <meta name="description" content="Liquidation buffer calculator pre-filled with Bybit's own taker fee and funding interval. Maintenance margin is left for you to enter — it depends on your pair, and we don't guess it.">
-<link rel="canonical" href="https://www.liquidationbuffer.com/bybit-liquidation-calculator.html">
+<link rel="canonical" href="https://www.liquidationbuffer.com/bybit-liquidation-calculator">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Bybit Liquidation Calculator">
 <meta property="og:description" content="Pre-filled with Bybit's fee and funding rules. Maintenance margin is left for you to enter — it depends on your pair, not just the exchange.">
-<meta property="og:url" content="https://www.liquidationbuffer.com/bybit-liquidation-calculator.html">
+<meta property="og:url" content="https://www.liquidationbuffer.com/bybit-liquidation-calculator">
 <meta property="og:site_name" content="LiquidationBuffer">
 <meta name="twitter:card" content="summary">
 <link rel="icon" type="image/svg+xml" href="/assets/favicon.svg">
@@ -25,7 +25,7 @@
   "@context": "https://schema.org",
   "@type": "WebApplication",
   "name": "Bybit Liquidation Calculator",
-  "url": "https://www.liquidationbuffer.com/bybit-liquidation-calculator.html",
+  "url": "https://www.liquidationbuffer.com/bybit-liquidation-calculator",
   "applicationCategory": "FinanceApplication",
   "operatingSystem": "Any browser",
   "description": "Liquidation buffer calculator pre-filled with Bybit's own taker fee and funding interval defaults. Maintenance margin is left for you to enter since it varies by pair.",
@@ -38,7 +38,7 @@
   "@type": "BreadcrumbList",
   "itemListElement": [
     {"@type":"ListItem","position":1,"name":"Calculator","item":"https://www.liquidationbuffer.com/"},
-    {"@type":"ListItem","position":2,"name":"Bybit Liquidation Calculator","item":"https://www.liquidationbuffer.com/bybit-liquidation-calculator.html"}
+    {"@type":"ListItem","position":2,"name":"Bybit Liquidation Calculator","item":"https://www.liquidationbuffer.com/bybit-liquidation-calculator"}
   ]
 }
 </script>
@@ -76,15 +76,15 @@
 
     <div class="miniguide">
       <p>Bybit's maintenance margin isn't a flat percentage of your position — it's a <strong>tiered rate with a deduction term</strong>: MM = (Position Value × MMR) − Maintenance Margin Deduction. BTCUSDT starts at <strong>0.50% MMR for positions up to $2,000,000</strong>, then steps up per risk-limit tier. Every other pair has its own table. Check yours on <a href="https://www.bybit.com/en/help-center/article/Maintenance-Margin-USDT-Contract" target="_blank" rel="noopener">Bybit's margin parameters page ↗</a> before trusting a number here.</p>
-      <p>Bybit's own position tab already shows this: the maintenance margin figure it displays includes an <strong>estimated closing fee</strong>, added directly to what's required to avoid liquidation — meaning the fee genuinely moves your trigger price closer to entry, not just your payout afterward. That's the opposite of Binance's isolated-mode behavior. See <a href="/guides/liquidation-vs-bankruptcy.html">Liquidation price vs. bankruptcy price</a> for why that distinction matters.</p>
+      <p>Bybit's own position tab already shows this: the maintenance margin figure it displays includes an <strong>estimated closing fee</strong>, added directly to what's required to avoid liquidation — meaning the fee genuinely moves your trigger price closer to entry, not just your payout afterward. That's the opposite of Binance's isolated-mode behavior. See <a href="/guides/liquidation-vs-bankruptcy">Liquidation price vs. bankruptcy price</a> for why that distinction matters.</p>
     </div>
 
     <div class="exch-row">
-      <a class="exch-pill" href="/binance-liquidation-calculator.html">Binance</a>
-      <a class="exch-pill current" href="/bybit-liquidation-calculator.html">Bybit</a>
-      <a class="exch-pill" href="/okx-liquidation-calculator.html">OKX</a>
-      <a class="exch-pill" href="/kucoin-liquidation-calculator.html">KuCoin</a>
-      <a class="exch-pill" href="/mexc-liquidation-calculator.html">MEXC</a>
+      <a class="exch-pill" href="/binance-liquidation-calculator">Binance</a>
+      <a class="exch-pill current" href="/bybit-liquidation-calculator">Bybit</a>
+      <a class="exch-pill" href="/okx-liquidation-calculator">OKX</a>
+      <a class="exch-pill" href="/kucoin-liquidation-calculator">KuCoin</a>
+      <a class="exch-pill" href="/mexc-liquidation-calculator">MEXC</a>
     </div>
 
     <div class="calc-shell" id="calc">
@@ -142,7 +142,7 @@
               <button id="btnFeeYes" class="active">Yes</button>
               <button id="btnFeeNo">No / not sure</button>
             </div>
-            <p class="hint">Bybit's displayed maintenance margin already includes an estimated closing fee — it moves your trigger, unlike Binance. See <a href="/guides/liquidation-vs-bankruptcy.html" style="color:var(--accent);">the guide</a>.</p>
+            <p class="hint">Bybit's displayed maintenance margin already includes an estimated closing fee — it moves your trigger, unlike Binance. See <a href="/guides/liquidation-vs-bankruptcy" style="color:var(--accent);">the guide</a>.</p>
           </div>
 
           <div class="field" id="clearanceFeeField" style="display:none;">
@@ -264,15 +264,15 @@
   <div class="wrap">
     <h2>Before you calculate</h2>
     <div class="guide-list">
-      <a class="guide-item" href="/guides/maintenance-margin.html">
+      <a class="guide-item" href="/guides/maintenance-margin">
         <div><div class="gi-title">What maintenance margin actually means</div><div class="gi-sub">Why your real buffer is always smaller than 1/leverage alone</div></div>
         <span class="gi-arrow">→</span>
       </a>
-      <a class="guide-item" href="/guides/liquidation-vs-bankruptcy.html">
+      <a class="guide-item" href="/guides/liquidation-vs-bankruptcy">
         <div><div class="gi-title">Liquidation price vs. bankruptcy price</div><div class="gi-sub">Why "nothing left" is rarer than most traders assume</div></div>
         <span class="gi-arrow">→</span>
       </a>
-      <a class="guide-item" href="/guides/margin-call-vs-liquidation.html">
+      <a class="guide-item" href="/guides/margin-call-vs-liquidation">
         <div><div class="gi-title">Margin call vs. liquidation</div><div class="gi-sub">There's no phone call before a crypto perpetual gets liquidated</div></div>
         <span class="gi-arrow">→</span>
       </a>
@@ -284,7 +284,7 @@
 <footer>
   <div class="wrap">
     <span>LiquidationBuffer — not financial advice, just math.</span>
-    <span><a href="/impressum.html">Imprint</a> · <a href="/datenschutz.html">Privacy</a></span>
+    <span><a href="/impressum">Imprint</a> · <a href="/datenschutz">Privacy</a></span>
   </div>
 </footer>
 

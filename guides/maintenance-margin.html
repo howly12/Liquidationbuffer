@@ -6,11 +6,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>What Is Maintenance Margin? Explained Simply (2026) | LiquidationBuffer</title>
 <meta name="description" content="Maintenance margin explained simply: what it means, how it determines your liquidation price, why it rises with position size, and how to find your exchange's actual rate.">
-<link rel="canonical" href="https://www.liquidationbuffer.com/guides/maintenance-margin.html">
+<link rel="canonical" href="https://www.liquidationbuffer.com/guides/maintenance-margin">
 <meta property="og:type" content="article">
 <meta property="og:title" content="What Is Maintenance Margin? Explained Simply">
 <meta property="og:description" content="The value that actually determines when your position gets liquidated — not your leverage.">
-<meta property="og:url" content="https://www.liquidationbuffer.com/guides/maintenance-margin.html">
+<meta property="og:url" content="https://www.liquidationbuffer.com/guides/maintenance-margin">
 <meta property="og:site_name" content="LiquidationBuffer">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="What Is Maintenance Margin? Explained Simply">
@@ -41,7 +41,7 @@
   "itemListElement": [
     {"@type":"ListItem","position":1,"name":"Calculator","item":"https://www.liquidationbuffer.com/"},
     {"@type":"ListItem","position":2,"name":"Guides","item":"https://www.liquidationbuffer.com/guides/"},
-    {"@type":"ListItem","position":3,"name":"Maintenance Margin","item":"https://www.liquidationbuffer.com/guides/maintenance-margin.html"}
+    {"@type":"ListItem","position":3,"name":"Maintenance Margin","item":"https://www.liquidationbuffer.com/guides/maintenance-margin"}
   ]
 }
 </script>
@@ -114,14 +114,14 @@
     <p>The reason is liquidity risk, not arbitrary punishment. Larger positions are harder for the exchange to unwind without moving the market against remaining traders. A bigger forced sale needs a bigger cushion before it's triggered, both to protect the exchange's insurance fund and to reduce the odds of the liquidation itself causing a cascade. This is also why the same nominal leverage (say, 20x) can carry very different real risk depending on how large the position is in dollar terms — a 20x position worth $5,000 and a 20x position worth $5,000,000 are not standing on the same footing at all.</p>
 
     <h2 id="example">A worked example</h2>
-    <p>Take a real, publicly verifiable case: <a href="/binance-liquidation-calculator.html">Binance's own BTCUSDT perpetual bracket table</a> lists a maintenance margin rate of 0.40% for positions up to $300,000 notional, rising to 0.50% for the next tier (up to $800,000), 0.65% for the tier after that, and climbing further from there — up to 50% at the very largest, single-digit-leverage tier. That's not a hypothetical; it's the actual published structure, and it illustrates the pattern every exchange follows in some form: small tier, low MMR, high leverage cap; large tier, high MMR, low leverage cap.</p>
+    <p>Take a real, publicly verifiable case: <a href="/binance-liquidation-calculator">Binance's own BTCUSDT perpetual bracket table</a> lists a maintenance margin rate of 0.40% for positions up to $300,000 notional, rising to 0.50% for the next tier (up to $800,000), 0.65% for the tier after that, and climbing further from there — up to 50% at the very largest, single-digit-leverage tier. That's not a hypothetical; it's the actual published structure, and it illustrates the pattern every exchange follows in some form: small tier, low MMR, high leverage cap; large tier, high MMR, low leverage cap.</p>
     <p>At 75x leverage, the naive math gives you 1.33% of movement tolerance (1 ÷ 75). If the maintenance margin rate for your tier is 0.65%, only about 0.68% of real price movement is actually available before the trigger — roughly half of what the naive number suggested. At higher leverage the effect gets proportionally worse, because MMR tends to climb alongside position size in tiered systems, compounding the squeeze exactly when a trader can least afford it.</p>
 
-    <div class="callout">Rule of thumb: your real movement buffer before liquidation is roughly <code>1 / leverage − maintenance margin rate</code> — not simply <code>1 / leverage</code>. Fees and funding then reduce that further, depending on your exchange (see the guides on <a href="/guides/funding-fees.html">funding fees</a> and <a href="/guides/liquidation-vs-bankruptcy.html">liquidation vs. bankruptcy price</a>).</div>
+    <div class="callout">Rule of thumb: your real movement buffer before liquidation is roughly <code>1 / leverage − maintenance margin rate</code> — not simply <code>1 / leverage</code>. Fees and funding then reduce that further, depending on your exchange (see the guides on <a href="/guides/funding-fees">funding fees</a> and <a href="/guides/liquidation-vs-bankruptcy">liquidation vs. bankruptcy price</a>).</div>
 
     <h2 id="find-yours">How to find your exchange's actual rate</h2>
     <p>Every major exchange publishes its maintenance margin tiers publicly — usually on a page titled something like "Leverage & Margin" or "Risk Limit" under the futures trading rules section. Look specifically for the tier that matches your intended <em>notional</em> position value (margin × leverage), not just your margin amount, since that's what determines which row of the table applies to you.</p>
-    <p>Once you have the number, plug it directly into the <a href="/#calc">calculator on this site</a> along with your fee rate and funding rate — the tool works with any exchange's numbers, since maintenance margin rates aren't something that can be reliably auto-detected across dozens of platforms that each structure their public data differently. If you're on one of the five exchanges we track, the <a href="/binance-liquidation-calculator.html">Binance</a>, <a href="/bybit-liquidation-calculator.html">Bybit</a>, <a href="/okx-liquidation-calculator.html">OKX</a>, <a href="/kucoin-liquidation-calculator.html">KuCoin</a> and <a href="/mexc-liquidation-calculator.html">MEXC</a> calculators already have the fee and funding defaults filled in for you.</p>
+    <p>Once you have the number, plug it directly into the <a href="/#calc">calculator on this site</a> along with your fee rate and funding rate — the tool works with any exchange's numbers, since maintenance margin rates aren't something that can be reliably auto-detected across dozens of platforms that each structure their public data differently. If you're on one of the five exchanges we track, the <a href="/binance-liquidation-calculator">Binance</a>, <a href="/bybit-liquidation-calculator">Bybit</a>, <a href="/okx-liquidation-calculator">OKX</a>, <a href="/kucoin-liquidation-calculator">KuCoin</a> and <a href="/mexc-liquidation-calculator">MEXC</a> calculators already have the fee and funding defaults filled in for you.</p>
 
     <h2 id="mistakes">Common mistakes</h2>
     <ul>
@@ -153,10 +153,10 @@
   <div class="related">
     <h3>Explore next</h3>
     <div class="explore-grid">
-      <a class="explore-tile" href="/guides/isolated-vs-cross.html"><div class="et-kicker">Basics</div><div class="et-title">Isolated vs. cross margin explained</div></a>
-      <a class="explore-tile" href="/guides/liquidation-vs-bankruptcy.html"><div class="et-kicker">Basics</div><div class="et-title">Liquidation price vs. bankruptcy price</div></a>
-      <a class="explore-tile" href="/guides/funding-fees.html"><div class="et-kicker">Costs &amp; Fees</div><div class="et-title">Why funding fees can eat your buffer</div></a>
-      <a class="explore-tile" href="/guides/practice-without-real-money.html"><div class="et-kicker">Strategy &amp; Practice</div><div class="et-title">How to practice liquidation risk without real money</div></a>
+      <a class="explore-tile" href="/guides/isolated-vs-cross"><div class="et-kicker">Basics</div><div class="et-title">Isolated vs. cross margin explained</div></a>
+      <a class="explore-tile" href="/guides/liquidation-vs-bankruptcy"><div class="et-kicker">Basics</div><div class="et-title">Liquidation price vs. bankruptcy price</div></a>
+      <a class="explore-tile" href="/guides/funding-fees"><div class="et-kicker">Costs &amp; Fees</div><div class="et-title">Why funding fees can eat your buffer</div></a>
+      <a class="explore-tile" href="/guides/practice-without-real-money"><div class="et-kicker">Strategy &amp; Practice</div><div class="et-title">How to practice liquidation risk without real money</div></a>
     </div>
   </div>
 </article>
@@ -164,7 +164,7 @@
 <footer>
   <div class="wrap">
     <span>LiquidationBuffer — not financial advice, just math.</span>
-    <span><a href="/">Back to calculator</a> · <a href="/impressum.html">Imprint</a> · <a href="/datenschutz.html">Privacy</a></span>
+    <span><a href="/">Back to calculator</a> · <a href="/impressum">Imprint</a> · <a href="/datenschutz">Privacy</a></span>
   </div>
 </footer>
 <script src="/assets/site.js"></script>

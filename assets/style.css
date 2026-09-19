@@ -497,4 +497,3 @@ table.breakdown tr.total td:first-child{ color:var(--ink); }
 
 footer{ border-top:1px solid var(--line); padding:26px 0; }
 footer .wrap{ display:flex; justify-content:space-between; font-size:12px; color:var(--ink-soft); flex-wrap:wrap; gap:8px; }
-footer .footer-legal{ width:100%; font-size:11px; color:var(--line-strong); margin-top:10px; padding-top:10px; border-top:1px solid var(--line); }

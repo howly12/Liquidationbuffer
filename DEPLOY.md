@@ -104,6 +104,9 @@ assets config — no manual dashboard upload needed anymore.
 
 ## 6. Ongoing maintenance
 - Nothing to keep alive — there's no live data source to break.
+- `security.txt` (root and `/.well-known/`) has an `Expires` date — currently
+  2027-09-25. Renew it before then (bump the date another year) or scanners
+  treat the file as invalid/absent again.
 - If you want to reintroduce live exchange data later (auto-filling
   the form instead of manual entry), that would mean bringing back a
   `/functions` backend — treat that as a deliberate, separate project

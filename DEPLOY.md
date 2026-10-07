@@ -23,7 +23,7 @@ through Cloudflare, full DNS control, no external registrar involved).
 1. Cloudflare dashboard → **Workers & Pages** → **Create** → **Pages**
    tab → **Upload assets** (sometimes labeled "Upload static files").
 2. Drag in the *contents* of this folder — `index.html`, `robots.txt`,
-   `sitemap.xml`, `impressum.html`, `datenschutz.html`, the `assets/`
+   `sitemap.xml`, `legal.html`, `privacy.html`, `terms.html`, the `assets/`
    folder, and the `guides/` folder — not the outer folder itself.
 3. Give the project a name (e.g. `liquidationbuffer`) and deploy.
 4. Once deployed, go to the project → **Custom domains** → **Set up a
@@ -65,7 +65,12 @@ internal `href` — write `https://www.liquidationbuffer.com/guides/foo` and
 `/guides/foo`, never `…foo.html` (the *file* is still `foo.html`). Using the
 `.html` form makes each canonical point at a redirect, which Google reports as
 "Alternative page with proper canonical tag" / "Crawled – currently not indexed".
-`impressum` and `datenschutz` are `noindex`, so they stay out of the sitemap.
+`legal`, `privacy` and `terms` are `noindex`, so they stay out of the sitemap.
+The operator is shown only as "Copperleaf LLC, a Wyoming limited liability
+company" plus the contact email (no address, name or registration number); keep
+it that way. The site-wide footer reads `© 2026 Copperleaf LLC · Legal · Privacy ·
+Terms` and must be copied to every new page. `_redirects` keeps 301s from the two
+previous legal URLs.
 
 Every article in `/guides/` follows the same structure — use the most
 recent one as your template for the next:

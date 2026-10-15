@@ -12,7 +12,12 @@
 <meta property="og:description" content="Pre-filled with MEXC's fee and funding rules. Maintenance margin is left for you to enter — it depends on your pair, not just the exchange.">
 <meta property="og:url" content="https://www.liquidationbuffer.com/mexc-liquidation-calculator">
 <meta property="og:site_name" content="LiquidationBuffer">
-<meta name="twitter:card" content="summary">
+<meta property="og:image" content="https://www.liquidationbuffer.com/assets/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="LiquidationBuffer: crypto liquidation price calculator">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://www.liquidationbuffer.com/assets/og-image.png">
 <link rel="icon" href="/favicon.ico" sizes="48x48">
 <link rel="icon" type="image/svg+xml" href="/assets/favicon.svg" sizes="any">
 <link rel="icon" type="image/png" sizes="96x96" href="/assets/favicon-96.png">
@@ -234,6 +239,12 @@
         </div>
 
         <table class="breakdown" id="breakdownTable"></table>
+
+        <details class="compare">
+          <summary>Compare other leverage levels</summary>
+          <table class="breakdown compare-table" id="compareTable"></table>
+          <p class="compare-note">Same maintenance margin rate, fees and funding as above. Exchanges often raise the maintenance margin rate at higher leverage tiers, so the real buffer at the high end can be smaller than shown.</p>
+        </details>
 
         <div class="disclaimers">
           <p>Based on MEXC's mark price, not the chart/last price — the two can diverge slightly.</p>

@@ -141,6 +141,7 @@ function calculate(){
     tbl.appendChild(row('Assumed (1/leverage)', naive.toFixed(3) + '%'));
     tbl.appendChild(row('Maintenance margin rate', 'enter above'));
     const totalTr = row('Real buffer', '—'); totalTr.className = 'total';
+    renderCompare(null);
     tbl.appendChild(totalTr);
     lastResult = null;
     return;
@@ -211,7 +212,42 @@ function calculate(){
     tbl.appendChild(feeTr);
   }
 
+  renderCompare({ mmrPct, feeBufferImpact, fundingImpact, price, dir, leverage });
   lastResult = { naive, real, leverage, side: state.side };
+}
+
+/* ---------- Leverage comparison (same inputs, other leverage levels) ---------- */
+const COMPARE_LEVERAGES = [3, 5, 10, 20, 25, 50, 75, 100];
+
+function fmtLiq(x){
+  return x >= 1 ? '$' + x.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) : formatPrice(x);
+}
+
+function renderCompare(p){
+  const tbl = document.getElementById('compareTable');
+  if (!tbl) return;
+  tbl.innerHTML = '';
+  if (!p){
+    tbl.innerHTML = '<tr><td>Enter your maintenance margin rate above to compare leverage levels.</td></tr>';
+    return;
+  }
+  const levels = COMPARE_LEVERAGES.slice();
+  if (levels.indexOf(p.leverage) === -1 && p.leverage >= 1 && p.leverage <= 125) levels.push(p.leverage);
+  levels.sort((a, b) => a - b);
+  const head = document.createElement('tr');
+  head.className = 'head';
+  head.innerHTML = '<td>Leverage</td><td>Assumed</td><td>Real buffer</td>' + (p.price > 0 ? '<td>Liq. price</td>' : '');
+  tbl.appendChild(head);
+  levels.forEach(L => {
+    const naive = 100 / L;
+    const real = Math.min(naive, Math.max(0, naive - p.mmrPct - p.feeBufferImpact - p.fundingImpact));
+    const tr = document.createElement('tr');
+    if (L === p.leverage) tr.className = 'current';
+    if (real <= 0) tr.className += ' gone';
+    const priceCell = p.price > 0 ? '<td>' + fmtLiq(p.price * (1 + p.dir * real / 100)) + '</td>' : '';
+    tr.innerHTML = `<td>${L}x</td><td>${naive.toFixed(2)}%</td><td>${real.toFixed(2)}%</td>` + priceCell;
+    tbl.appendChild(tr);
+  });
 }
 
 function formatPrice(p){

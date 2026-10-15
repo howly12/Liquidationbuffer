@@ -12,9 +12,14 @@
 <meta property="og:description" content="10x leverage doesn't mean a 10% buffer. Enter your exchange's real maintenance margin, fee and funding numbers to see what's actually left.">
 <meta property="og:url" content="https://www.liquidationbuffer.com/">
 <meta property="og:site_name" content="LiquidationBuffer">
-<meta name="twitter:card" content="summary">
+<meta property="og:image" content="https://www.liquidationbuffer.com/assets/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="LiquidationBuffer: crypto liquidation price calculator">
+<meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Liquidation Buffer Calculator — Your real buffer, not the assumed one">
 <meta name="twitter:description" content="10x leverage doesn't mean a 10% buffer. Works for any exchange — enter your own numbers.">
+<meta name="twitter:image" content="https://www.liquidationbuffer.com/assets/og-image.png">
 <link rel="icon" href="/favicon.ico" sizes="48x48">
 <link rel="icon" type="image/svg+xml" href="/assets/favicon.svg" sizes="any">
 <link rel="icon" type="image/png" sizes="96x96" href="/assets/favicon-96.png">
@@ -70,6 +75,29 @@
         "text" : "No. It models isolated margin only, because a cross-margin liquidation price depends on your whole account and every other open position. See cross margin vs. isolated margin."
       },
       "name" : "Does the calculator support cross margin?"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": "https://www.liquidationbuffer.com/#org",
+      "name": "LiquidationBuffer",
+      "legalName": "Copperleaf LLC",
+      "url": "https://www.liquidationbuffer.com/",
+      "logo": "https://www.liquidationbuffer.com/assets/apple-touch-icon.png",
+      "email": "info@liquidationbuffer.com"
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://www.liquidationbuffer.com/#website",
+      "name": "LiquidationBuffer",
+      "url": "https://www.liquidationbuffer.com/",
+      "publisher": { "@id": "https://www.liquidationbuffer.com/#org" }
     }
   ]
 }
@@ -244,6 +272,12 @@
         </div>
 
         <table class="breakdown" id="breakdownTable"></table>
+
+        <details class="compare">
+          <summary>Compare other leverage levels</summary>
+          <table class="breakdown compare-table" id="compareTable"></table>
+          <p class="compare-note">Same maintenance margin rate, fees and funding as above. Exchanges often raise the maintenance margin rate at higher leverage tiers, so the real buffer at the high end can be smaller than shown.</p>
+        </details>
 
         <div class="disclaimers">
           <p>Based on your exchange's mark price, not the chart/last price — the two can diverge slightly.</p>

@@ -4,8 +4,8 @@
 <meta charset="UTF-8">
 <script>(function(){try{if(localStorage.getItem('lb-theme')==='light')document.documentElement.setAttribute('data-theme','light');}catch(e){}})();</script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>What Is Maintenance Margin? | LiquidationBuffer</title>
-<meta name="description" content="Maintenance margin explained: how it sets your liquidation price, why it rises with position size, and where to find your exchange's actual rate.">
+<title>Maintenance Margin: Definition, Formula and Example</title>
+<meta name="description" content="Maintenance margin explained: definition, formula and a worked example, how it sets your liquidation price, and why it rises with position size.">
 <link rel="canonical" href="https://www.liquidationbuffer.com/guides/maintenance-margin">
 <meta property="og:type" content="article">
 <meta property="og:title" content="What Is Maintenance Margin? Explained Simply">
@@ -31,7 +31,7 @@
   "author": { "@type": "Organization", "name": "LiquidationBuffer" },
   "publisher": { "@type": "Organization", "name": "LiquidationBuffer" },
   "datePublished": "2026-09-09",
-  "dateModified": "2026-09-09"
+  "dateModified": "2026-10-15"
 }
 </script>
 <script type="application/ld+json">
@@ -47,15 +47,41 @@
 </script>
 <script type="application/ld+json">
 {
-  "@context": "https://schema.org",
-  "@type": "FAQPage",
-  "mainEntity": [
-    {"@type":"Question","name":"What is a good maintenance margin rate?",
-     "acceptedAnswer":{"@type":"Answer","text":"Lower is better for you as a trader — it means more price movement before liquidation. Major pairs like BTC or ETH typically start around 0.4–0.65% at the smallest position tier. Smaller-cap or lower-liquidity tokens are usually higher, sometimes 1% or more even at the smallest tier, because the exchange is pricing in the risk of not being able to close a large position cleanly."}},
-    {"@type":"Question","name":"Does maintenance margin change while my position is open?",
-     "acceptedAnswer":{"@type":"Answer","text":"It can. If your position size grows (e.g. you add margin and increase leverage, or the position's notional value crosses into a higher tier), the maintenance margin rate for that tier applies. Some exchanges also adjust maintenance margin rates platform-wide during extreme volatility, independent of your position size."}},
-    {"@type":"Question","name":"Is maintenance margin the same as initial margin?",
-     "acceptedAnswer":{"@type":"Answer","text":"No. Initial margin is what you deposit to open the position — always the larger number. Maintenance margin is the minimum that must remain for the position to stay open. The gap between the two is your liquidation buffer."}}
+  "@context" : "https://schema.org",
+  "@type" : "FAQPage",
+  "mainEntity" : [
+    {
+      "@type" : "Question",
+      "acceptedAnswer" : {
+        "@type" : "Answer",
+        "text" : "Maintenance margin equals position value times the maintenance margin rate for the position's tier, minus a tier deduction on exchanges that publish one. Position value is contract size times mark price."
+      },
+      "name" : "What is the maintenance margin formula?"
+    },
+    {
+      "@type" : "Question",
+      "acceptedAnswer" : {
+        "@type" : "Answer",
+        "text" : "Lower is better for you as a trader — it means more price movement before liquidation. Major pairs like BTC or ETH typically start around 0.4–0.65% at the smallest position tier. Smaller-cap or lower-liquidity tokens are usually higher, sometimes 1% or more even at the smallest tier, because the exchange is pricing in the risk of not being able to close a large position cleanly."
+      },
+      "name" : "What is a good maintenance margin rate?"
+    },
+    {
+      "@type" : "Question",
+      "acceptedAnswer" : {
+        "@type" : "Answer",
+        "text" : "It can. If your position size grows into a higher tier, the maintenance margin rate for that tier applies. Some exchanges also adjust rates platform-wide during extreme volatility, independent of your specific position size."
+      },
+      "name" : "Does maintenance margin change while my position is open?"
+    },
+    {
+      "@type" : "Question",
+      "acceptedAnswer" : {
+        "@type" : "Answer",
+        "text" : "No. Initial margin is what you deposit to open the position — always the larger number. Maintenance margin is the minimum that must remain for the position to stay open. The gap between the two is your liquidation buffer."
+      },
+      "name" : "Is maintenance margin the same as initial margin?"
+    }
   ]
 }
 </script>
@@ -82,7 +108,7 @@
     <div class="kicker"><span class="dot"></span>Basics</div>
     <h1>What Is Maintenance Margin?</h1>
     <p class="lede">The value that actually determines when your position gets liquidated — not your leverage.</p>
-    <p class="article-meta">Last updated September 9, 2026 · 6 min read</p>
+    <p class="article-meta">Last updated October 15, 2026 · 6 min read</p>
   </div>
 
   <div class="toc">
@@ -90,6 +116,7 @@
     <ol>
       <li><a href="#definition">The simple definition</a></li>
       <li><a href="#vs-initial">Maintenance margin vs. initial margin</a></li>
+      <li><a href="#formula">The maintenance margin formula</a></li>
       <li><a href="#tiers">Why it rises with position size</a></li>
       <li><a href="#example">A worked example</a></li>
       <li><a href="#find-yours">How to find your exchange's actual rate</a></li>
@@ -108,6 +135,12 @@
     <h2 id="vs-initial">Maintenance margin vs. initial margin</h2>
     <p>The difference from <strong>initial margin</strong> (what you deposit when opening the position) is key: initial margin is always higher than maintenance margin. Your buffer to liquidation lives entirely in that gap.</p>
     <p>Concretely: if you open a position with 10% initial margin (10x leverage) and the maintenance margin rate for your tier is 0.65%, the gap between those two numbers — roughly 9.35 percentage points — is your real cushion, not the full 10%. Fees and funding then eat into that same gap further, which is why the calculator on this site treats maintenance margin as the starting point, not the final answer.</p>
+
+    <h2 id="formula">The maintenance margin formula</h2>
+    <p>On most perpetual exchanges, the maintenance margin of a position is its value multiplied by the maintenance margin rate (MMR) of the tier it falls into:</p>
+    <p><code>Maintenance margin = Position value × MMR</code></p>
+    <p>Position value is the contract size times the mark price. Tiered exchanges publish a deduction so that only the part of the position inside each tier is charged at that tier's rate: Bybit calls it the maintenance margin deduction and Binance lists it as the maintenance amount, giving <code>Position value × MMR − Deduction</code>. Because the mark price changes, a rising price can move a position into a higher tier.</p>
+    <p>A $375,000 position at a 0.65% rate needs $375,000 × 0.0065 = $2,437.50 of maintenance margin. With $5,000 of initial margin, $2,562.50 is left before costs, about 0.683% of the position. <a href="/guides/how-to-calculate-liquidation-price">How to calculate liquidation price</a> turns this into a price, and <a href="/guides/what-is-a-margin-buffer">what is a margin buffer</a> shows the same figures as a cushion.</p>
 
     <h2 id="tiers">Why it rises with position size</h2>
     <p>Most exchanges use a tiered system: the larger your position, the higher the maintenance margin rate — and the lower the maximum allowed leverage. A small BTC position might still trade at 100x or more on some exchanges; the same exchange might only allow 20x for a multi-million-dollar position, with a correspondingly higher MMR.</p>
@@ -132,6 +165,10 @@
 
     <h2 id="faq">FAQ</h2>
     <div class="faq-item">
+      <h3>What is the maintenance margin formula?</h3>
+      <p>Maintenance margin equals position value times the maintenance margin rate for the position's tier, minus a tier deduction on exchanges that publish one. Position value is contract size times mark price.</p>
+    </div>
+    <div class="faq-item">
       <h3>What is a good maintenance margin rate?</h3>
       <p>Lower is better for you as a trader — it means more price movement before liquidation. Major pairs like BTC or ETH typically start around 0.4–0.65% at the smallest position tier. Smaller-cap or lower-liquidity tokens are usually higher, sometimes 1% or more even at the smallest tier, because the exchange is pricing in the risk of not being able to close a large position cleanly.</p>
     </div>
@@ -153,9 +190,9 @@
   <div class="related">
     <h3>Explore next</h3>
     <div class="explore-grid">
-      <a class="explore-tile" href="/guides/isolated-vs-cross"><div class="et-kicker">Basics</div><div class="et-title">Isolated vs. cross margin explained</div></a>
+      <a class="explore-tile" href="/guides/isolated-vs-cross"><div class="et-kicker">Basics</div><div class="et-title">Cross margin vs. isolated margin explained</div></a>
       <a class="explore-tile" href="/guides/liquidation-vs-bankruptcy"><div class="et-kicker">Basics</div><div class="et-title">Liquidation price vs. bankruptcy price</div></a>
-      <a class="explore-tile" href="/guides/funding-fees"><div class="et-kicker">Costs &amp; Fees</div><div class="et-title">Why funding fees can eat your buffer</div></a>
+      <a class="explore-tile" href="/guides/funding-fees"><div class="et-kicker">Costs &amp; Fees</div><div class="et-title">Crypto funding rates: why they can eat your buffer</div></a>
       <a class="explore-tile" href="/guides/practice-without-real-money"><div class="et-kicker">Strategy &amp; Practice</div><div class="et-title">How to practice liquidation risk without real money</div></a>
     </div>
   </div>

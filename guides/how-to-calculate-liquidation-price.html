@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<script>(function(){try{if(localStorage.getItem('lb-theme')==='light')document.documentElement.setAttribute('data-theme','light');}catch(e){}})();</script>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>How to Calculate Liquidation Price: Formula &amp; Example</title>
+<meta name="description" content="How to calculate the liquidation price of a leveraged crypto position: the formula, a worked example with maintenance margin, fees and funding.">
+<link rel="canonical" href="https://www.liquidationbuffer.com/guides/how-to-calculate-liquidation-price">
+<meta property="og:type" content="article">
+<meta property="og:title" content="How to Calculate Liquidation Price">
+<meta property="og:description" content="The formula, a worked example, and the parts a simple formula leaves out.">
+<meta property="og:url" content="https://www.liquidationbuffer.com/guides/how-to-calculate-liquidation-price">
+<meta property="og:site_name" content="LiquidationBuffer">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="How to Calculate Liquidation Price">
+<meta name="twitter:description" content="The formula, a worked example, and the parts a simple formula leaves out.">
+<link rel="icon" href="/favicon.ico" sizes="48x48">
+<link rel="icon" type="image/svg+xml" href="/assets/favicon.svg" sizes="any">
+<link rel="icon" type="image/png" sizes="96x96" href="/assets/favicon-96.png">
+<link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
+<link rel="stylesheet" href="/assets/style.css">
+<link rel="preload" href="/assets/fonts/ibm-plex-sans-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/assets/fonts/space-grotesk-latin.woff2" as="font" type="font/woff2" crossorigin>
+<script type="application/ld+json">
+{
+  "@context" : "https://schema.org",
+  "@type" : "Article",
+  "author" : {
+    "@type" : "Organization",
+    "name" : "LiquidationBuffer"
+  },
+  "dateModified" : "2026-10-15",
+  "datePublished" : "2026-10-15",
+  "description" : "How to calculate the liquidation price of a leveraged crypto position: the formula, a worked example with maintenance margin, fees and funding.",
+  "headline" : "How to Calculate Liquidation Price",
+  "publisher" : {
+    "@type" : "Organization",
+    "name" : "LiquidationBuffer"
+  }
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context" : "https://schema.org",
+  "@type" : "BreadcrumbList",
+  "itemListElement" : [
+    {
+      "@type" : "ListItem",
+      "item" : "https://www.liquidationbuffer.com/",
+      "name" : "Calculator",
+      "position" : 1
+    },
+    {
+      "@type" : "ListItem",
+      "item" : "https://www.liquidationbuffer.com/guides/",
+      "name" : "Guides",
+      "position" : 2
+    },
+    {
+      "@type" : "ListItem",
+      "item" : "https://www.liquidationbuffer.com/guides/how-to-calculate-liquidation-price",
+      "name" : "How to Calculate Liquidation Price",
+      "position" : 3
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context" : "https://schema.org",
+  "@type" : "FAQPage",
+  "mainEntity" : [
+    {
+      "@type" : "Question",
+      "acceptedAnswer" : {
+        "@type" : "Answer",
+        "text" : "No. The bankruptcy price is where your margin would be exactly zero. The liquidation price comes earlier, when the margin falls to the maintenance requirement, and the difference is what pays for the forced close."
+      },
+      "name" : "Is the liquidation price the same as the bankruptcy price?"
+    },
+    {
+      "@type" : "Question",
+      "acceptedAnswer" : {
+        "@type" : "Answer",
+        "text" : "Usually because of tiered maintenance margin (the maintenance amount or deduction), fees that the exchange builds into the trigger, cross margin using the rest of your account, or other open positions and unrealized profit. Treat any formula as an estimate and check the figure your exchange displays."
+      },
+      "name" : "Why does my exchange show a different liquidation price than this formula?"
+    },
+    {
+      "@type" : "Question",
+      "acceptedAnswer" : {
+        "@type" : "Answer",
+        "text" : "Yes. The maintenance margin rate is subtracted from the distance, so a higher rate leaves less room. Larger positions fall into higher tiers, which is why the same leverage is riskier at a larger size."
+      },
+      "name" : "Does a higher maintenance margin rate move the liquidation price closer?"
+    },
+    {
+      "@type" : "Question",
+      "acceptedAnswer" : {
+        "@type" : "Answer",
+        "text" : "Most exchanges use the mark price, which is derived from an index of several markets, so that a single spike does not liquidate positions. Look up the rule for your exchange and contract."
+      },
+      "name" : "Is liquidation based on the last price or the mark price?"
+    }
+  ]
+}
+</script>
+<script defer src="https://cloud.umami.is/script.js" data-website-id="c57ce8d4-f0c9-427d-851b-8e64d8860d99"></script>
+</head>
+<body>
+<header class="site">
+  <div class="wrap">
+    <a class="brand" href="/"><div class="brand-mark">L</div><div class="brand-name">LiquidationBuffer</div></a>
+    <div class="hdr-right">
+      <nav class="site"><a href="/#calc">Calculator</a><a href="/guides/">Guides</a></nav>
+      <div class="theme-toggle">
+        <button data-theme-btn="dark" class="active">Dark</button>
+        <button data-theme-btn="light">Light</button>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="wrap breadcrumb"><a href="/">Calculator</a> · <a href="/guides/">Guides</a> · How to Calculate Liquidation Price</div>
+
+<article class="article wrap">
+  <div class="article-header">
+    <div class="kicker"><span class="dot"></span>Basics</div>
+    <h1>How to Calculate Liquidation Price</h1>
+    <p class="lede">The formula for a leveraged crypto position, a worked example with maintenance margin and funding, and the parts a simple formula leaves out.</p>
+    <p class="article-meta">Last updated October 15, 2026 · 7 min read</p>
+  </div>
+
+  <div class="toc">
+    <p class="toc-title">On this page</p>
+    <ol>
+      <li><a href="#meaning">What the liquidation price means</a></li>
+      <li><a href="#formula">The basic formula</a></li>
+      <li><a href="#fees-funding">Adding fees and funding</a></li>
+      <li><a href="#example">A worked example</a></li>
+      <li><a href="#limits">What simple formulas leave out</a></li>
+      <li><a href="#calculators">Calculate it for your exchange</a></li>
+      <li><a href="#faq">FAQ</a></li>
+    </ol>
+  </div>
+
+  <div class="article-body">
+    <p>The liquidation price is the price at which an exchange force-closes your leveraged position because the margin left in it has fallen to the maintenance requirement. It is not the price at which your margin hits zero, and it is not simply the entry price minus 1/leverage. This guide shows the formula first, then a full example that includes the costs most short formulas skip.</p>
+
+    <h2 id="meaning">What the liquidation price means</h2>
+    <p>When you open a leveraged position you post <strong>initial margin</strong>. As the price moves against you, the unrealized loss eats into that margin. The exchange does not wait for it to reach zero: once the remaining margin falls to the <a href="/guides/maintenance-margin">maintenance margin</a> requirement, its liquidation engine starts closing the position. The price at which that happens is the liquidation price.</p>
+    <p>Exchanges generally compare it against the <strong>mark price</strong>, not the last traded price, so a short wick on the chart does not necessarily liquidate you. Check which price your exchange uses; this calculator assumes the mark price.</p>
+
+    <h2 id="formula">The basic formula</h2>
+    <p>For an isolated-margin, USDT-margined perpetual, ignoring fees and funding, with leverage <code>L</code> and maintenance margin rate <code>MMR</code> as a decimal (0.65% is 0.0065):</p>
+    <ul>
+      <li><strong>Long:</strong> <code>Liquidation price = Entry × (1 − 1/L + MMR)</code></li>
+      <li><strong>Short:</strong> <code>Liquidation price = Entry × (1 + 1/L − MMR)</code></li>
+    </ul>
+    <p>The <code>1/L</code> term is your initial margin as a share of the position. The <code>MMR</code> term takes part of that away: liquidation starts while an MMR-sized slice of margin is still left, so the room you can actually use is <code>1/L − MMR</code>.</p>
+    <div class="callout">At 10x with a 0.5% maintenance margin rate the usable distance is 10% − 0.5% = 9.5%. At 75x with 0.65% it is 1.333% − 0.65% = 0.683%, about half of what 1/leverage alone suggests.</div>
+
+    <h2 id="fees-funding">Adding fees and funding</h2>
+    <p>Two more costs shrink the distance, and both depend on your exchange and how long you hold:</p>
+    <ul>
+      <li><strong>Funding.</strong> Each funding payment moves margin out of your position (longs when the rate is positive) or into it (shorts when the rate is positive). Over <code>n</code> payments at rate <code>f</code>, a long loses <code>n × f</code> of distance and a short gains it. See <a href="/guides/funding-fees">why funding fees can eat your buffer</a>.</li>
+      <li><strong>Fees.</strong> Some exchanges build the closing fee into the liquidation condition, which moves the trigger closer to entry. Others deduct it only after liquidation has started, which leaves the trigger where it was. Where the fee is in the trigger, this calculator subtracts the opening and the closing fee, so <code>2 × taker fee</code>. The <a href="/guides/liquidation-fees">liquidation fees guide</a> shows how each exchange handles it.</li>
+    </ul>
+    <p>Put together, with the distance as a share of the entry price:</p>
+    <p><code>Buffer = 1/L − MMR − fees (only if in the trigger) − funding (long) or + funding (short)</code></p>
+    <p><code>Long: Entry × (1 − Buffer)</code> and <code>Short: Entry × (1 + Buffer)</code></p>
+
+    <h2 id="example">A worked example</h2>
+    <p>A long position on BTCUSDT with these inputs:</p>
+    <ul>
+      <li>Entry price $62,000, margin $5,000, leverage 75x, so a position of $375,000</li>
+      <li>Maintenance margin rate 0.65%</li>
+      <li>Funding 0.01% per 8 hours, held for 24 hours, so 3 payments</li>
+      <li>Taker fee 0.05%, deducted after the trigger (as on Binance in isolated mode)</li>
+    </ul>
+    <table class="breakdown" style="margin:20px 0;">
+      <tr><td>1 / leverage (1 / 75)</td><td>1.333%</td></tr>
+      <tr><td>− maintenance margin rate</td><td>−0.650%</td></tr>
+      <tr><td>− funding (3 × 0.01%, long)</td><td>−0.030%</td></tr>
+      <tr><td>= buffer</td><td>0.653%</td></tr>
+      <tr class="total"><td>Liquidation price: $62,000 × (1 − 0.00653)</td><td>$61,594.93</td></tr>
+    </table>
+    <p>Ignoring maintenance margin and funding would put the liquidation price at $61,173.33. That is $421.60 further away than the real trigger. The same position as a short would have a buffer of 0.713%, because it receives the funding payments, with a liquidation price of $62,442.27.</p>
+
+    <h2 id="limits">What simple formulas leave out</h2>
+    <ul>
+      <li><strong>Tiered maintenance margin.</strong> The rate depends on position size. Binance's tables list a "maintenance amount" per tier, and Bybit subtracts a "maintenance margin deduction", so the requirement is <code>position value × MMR − deduction</code> rather than a flat percentage.</li>
+      <li><strong>Cross margin.</strong> The liquidation price depends on your whole account, so one position's numbers cannot give it. Calculators like this one model isolated margin only. See <a href="/guides/isolated-vs-cross">cross margin vs. isolated margin</a>.</li>
+      <li><strong>Slippage.</strong> In a fast market the forced close can fill beyond the liquidation price. <a href="/guides/liquidation-vs-bankruptcy">Liquidation price vs. bankruptcy price</a> explains who absorbs that gap.</li>
+      <li><strong>Partial liquidation.</strong> Some exchanges close very large positions in steps rather than all at once.</li>
+    </ul>
+
+    <h2 id="calculators">Calculate it for your exchange</h2>
+    <p>The <a href="/#calc">liquidation price calculator</a> applies exactly the steps above to your own numbers. If you trade on one of the exchanges below, the taker fee, funding interval and fee behavior are already filled in: <a href="/binance-liquidation-calculator">Binance</a>, <a href="/bybit-liquidation-calculator">Bybit</a>, <a href="/okx-liquidation-calculator">OKX</a>, <a href="/kucoin-liquidation-calculator">KuCoin</a> and <a href="/mexc-liquidation-calculator">MEXC</a>. You still enter the maintenance margin rate for your pair, because it differs by pair and tier.</p>
+
+    <h2 id="faq">FAQ</h2>
+    <div class="faq-item">
+      <h3>Is the liquidation price the same as the bankruptcy price?</h3>
+      <p>No. The bankruptcy price is where your margin would be exactly zero. The liquidation price comes earlier, when the margin falls to the maintenance requirement, and the difference is what pays for the forced close.</p>
+    </div>
+    <div class="faq-item">
+      <h3>Why does my exchange show a different liquidation price than this formula?</h3>
+      <p>Usually because of tiered maintenance margin (the maintenance amount or deduction), fees that the exchange builds into the trigger, cross margin using the rest of your account, or other open positions and unrealized profit. Treat any formula as an estimate and check the figure your exchange displays.</p>
+    </div>
+    <div class="faq-item">
+      <h3>Does a higher maintenance margin rate move the liquidation price closer?</h3>
+      <p>Yes. The maintenance margin rate is subtracted from the distance, so a higher rate leaves less room. Larger positions fall into higher tiers, which is why the same leverage is riskier at a larger size.</p>
+    </div>
+    <div class="faq-item">
+      <h3>Is liquidation based on the last price or the mark price?</h3>
+      <p>Most exchanges use the mark price, which is derived from an index of several markets, so that a single spike does not liquidate positions. Look up the rule for your exchange and contract.</p>
+    </div>
+
+    <a class="cta-inline" href="/#calc">
+      <span class="ci-title">Calculate your liquidation price with your own numbers</span>
+      <span>→</span>
+    </a>
+  </div>
+
+  <div class="related">
+    <h3>Explore next</h3>
+    <div class="explore-grid">
+      <a class="explore-tile" href="/guides/maintenance-margin"><div class="et-kicker">Basics</div><div class="et-title">What maintenance margin actually means</div></a>
+      <a class="explore-tile" href="/guides/liquidation-vs-bankruptcy"><div class="et-kicker">Basics</div><div class="et-title">Liquidation price vs. bankruptcy price</div></a>
+      <a class="explore-tile" href="/guides/what-is-a-margin-buffer"><div class="et-kicker">Basics</div><div class="et-title">What is a margin buffer?</div></a>
+      <a class="explore-tile" href="/guides/funding-fees"><div class="et-kicker">Costs &amp; Fees</div><div class="et-title">Crypto funding rates: why they can eat your buffer</div></a>
+    </div>
+  </div>
+</article>
+
+<footer>
+  <div class="wrap">
+    <span>LiquidationBuffer — not financial advice, just math.</span>
+    <span><a href="/">Back to calculator</a> &middot; &copy; 2026 Copperleaf LLC &middot; <a href="/legal">Legal</a> &middot; <a href="/privacy">Privacy</a> &middot; <a href="/terms">Terms</a></span>
+  </div>
+</footer>
+<script src="/assets/site.js"></script>
+</body>
+</html>

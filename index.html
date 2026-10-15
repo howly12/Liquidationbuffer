@@ -4,8 +4,8 @@
 <meta charset="UTF-8">
 <script>(function(){try{if(localStorage.getItem('lb-theme')==='light')document.documentElement.setAttribute('data-theme','light');}catch(e){}})();</script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Liquidation Calculator: Your Real Buffer | LiquidationBuffer</title>
-<meta name="description" content="Free liquidation buffer calculator for any crypto exchange. Enter your maintenance margin, fees and funding to see your real buffer, not just 1/leverage.">
+<title>Crypto Liquidation Price Calculator | LiquidationBuffer</title>
+<meta name="description" content="Free crypto liquidation price calculator for any exchange. Add your maintenance margin, fees and funding to see your real liquidation price.">
 <link rel="canonical" href="https://www.liquidationbuffer.com/">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Liquidation Buffer Calculator — Your real buffer, not the assumed one">
@@ -32,6 +32,46 @@
   "operatingSystem": "Any browser",
   "description": "Liquidation buffer calculator for crypto perpetuals. Works for any exchange — enter your own maintenance margin rate, fees and funding rate to see the real price buffer before liquidation.",
   "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context" : "https://schema.org",
+  "@type" : "FAQPage",
+  "mainEntity" : [
+    {
+      "@type" : "Question",
+      "acceptedAnswer" : {
+        "@type" : "Answer",
+        "text" : "For an isolated long: entry price × (1 − 1/leverage + maintenance margin rate), then adjusted for funding and, where your exchange counts it in the trigger, fees. For a short the signs flip."
+      },
+      "name" : "How is the liquidation price calculated?"
+    },
+    {
+      "@type" : "Question",
+      "acceptedAnswer" : {
+        "@type" : "Answer",
+        "text" : "Yes, and for any other exchange, because you enter your own maintenance margin rate, fee and funding rate. For the five exchanges named there are pages with the fee, funding interval and fee behavior already filled in: Binance, Bybit, OKX, KuCoin and MEXC."
+      },
+      "name" : "Does this work for Binance, Bybit, OKX, KuCoin and MEXC?"
+    },
+    {
+      "@type" : "Question",
+      "acceptedAnswer" : {
+        "@type" : "Answer",
+        "text" : "Because the exchange liquidates you while the maintenance margin is still left, and because fees and funding are paid out of the same margin. At 75x with a 0.65% maintenance margin rate, the usable distance is about half of 1/75."
+      },
+      "name" : "Why is the real buffer smaller than 1/leverage?"
+    },
+    {
+      "@type" : "Question",
+      "acceptedAnswer" : {
+        "@type" : "Answer",
+        "text" : "No. It models isolated margin only, because a cross-margin liquidation price depends on your whole account and every other open position. See cross margin vs. isolated margin."
+      },
+      "name" : "Does the calculator support cross margin?"
+    }
+  ]
 }
 </script>
 <script defer src="https://cloud.umami.is/script.js" data-website-id="c57ce8d4-f0c9-427d-851b-8e64d8860d99"></script>
@@ -61,8 +101,8 @@
 <section class="hero">
   <div class="wrap hero-grid">
     <div class="kicker"><span class="dot"></span>Works with any exchange</div>
-    <h1 class="hero-title">10x leverage doesn't mean a 10% buffer</h1>
-    <p class="hero-sub">Maintenance margin, fees and funding eat into your safety margin before the price even moves. Enter your exchange's own numbers below and see how much is actually left — no guessing, no exchange lock-in.</p>
+    <h1 class="hero-title">Crypto liquidation price calculator</h1>
+    <p class="hero-sub"><strong>10x leverage doesn't mean a 10% buffer.</strong> Maintenance margin, fees and funding eat into your safety margin before the price even moves. Enter your exchange's own numbers below and see how much is actually left — no guessing, no exchange lock-in.</p>
 
     <div class="calc-shell" id="calc">
       <div class="calc-form">
@@ -246,16 +286,53 @@
   </div>
 </section>
 
+<section class="how" id="how">
+  <div class="wrap">
+    <div class="article-body">
+      <h2>How the liquidation price is calculated</h2>
+      <p>For an isolated long position, the liquidation price is the entry price moved down by your real buffer. This calculator works it out in three steps:</p>
+      <ul>
+        <li><strong>Start with 1/leverage.</strong> At 75x that is 1.333% of the entry price.</li>
+        <li><strong>Subtract the maintenance margin rate.</strong> The exchange liquidates while that slice of margin is still left, so 0.65% comes off.</li>
+        <li><strong>Subtract fees and funding.</strong> Funding paid over your holding period always counts. The opening and closing fee counts when your exchange builds it into the liquidation trigger.</li>
+      </ul>
+      <p><code>Long: Entry × (1 − Buffer)</code> and <code>Short: Entry × (1 + Buffer)</code>, with <code>Buffer = 1/L − MMR − fees − funding</code>. The <a href="/guides/how-to-calculate-liquidation-price">full guide with a worked example</a> shows each step with numbers, and <a href="/guides/what-is-a-margin-buffer">what a margin buffer is</a> explains the idea behind it.</p>
+
+      <h2>Frequently asked questions</h2>
+      <div class="faq-item">
+        <h3>How is the liquidation price calculated?</h3>
+        <p>For an isolated long: entry price × (1 − 1/leverage + maintenance margin rate), then adjusted for funding and, where your exchange counts it in the trigger, fees. For a short the signs flip.</p>
+      </div>
+      <div class="faq-item">
+        <h3>Does this work for Binance, Bybit, OKX, KuCoin and MEXC?</h3>
+        <p>Yes, and for any other exchange, because you enter your own maintenance margin rate, fee and funding rate. For the five exchanges named there are pages with the fee, funding interval and fee behavior already filled in: <a href="/binance-liquidation-calculator">Binance</a>, <a href="/bybit-liquidation-calculator">Bybit</a>, <a href="/okx-liquidation-calculator">OKX</a>, <a href="/kucoin-liquidation-calculator">KuCoin</a> and <a href="/mexc-liquidation-calculator">MEXC</a>.</p>
+      </div>
+      <div class="faq-item">
+        <h3>Why is the real buffer smaller than 1/leverage?</h3>
+        <p>Because the exchange liquidates you while the maintenance margin is still left, and because fees and funding are paid out of the same margin. At 75x with a 0.65% maintenance margin rate, the usable distance is about half of 1/75.</p>
+      </div>
+      <div class="faq-item">
+        <h3>Does the calculator support cross margin?</h3>
+        <p>No. It models isolated margin only, because a cross-margin liquidation price depends on your whole account and every other open position. See <a href="/guides/isolated-vs-cross">cross margin vs. isolated margin</a>.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
 <section class="guides" id="guides">
   <div class="wrap">
     <h2>Before you calculate</h2>
     <div class="guide-list">
+      <a class="guide-item" href="/guides/how-to-calculate-liquidation-price">
+        <div><div class="gi-title">How to calculate liquidation price</div><div class="gi-sub">The formula, a worked example, and what simple formulas leave out</div></div>
+        <span class="gi-arrow">→</span>
+      </a>
       <a class="guide-item" href="/guides/maintenance-margin">
         <div><div class="gi-title">What maintenance margin actually means</div><div class="gi-sub">Why your real buffer is always smaller than 1/leverage alone</div></div>
         <span class="gi-arrow">→</span>
       </a>
       <a class="guide-item" href="/guides/isolated-vs-cross">
-        <div><div class="gi-title">Isolated vs. cross margin explained</div><div class="gi-sub">Two different answers to what happens when a position moves against you</div></div>
+        <div><div class="gi-title">Cross margin vs. isolated margin explained</div><div class="gi-sub">Two different answers to what happens when a position moves against you</div></div>
         <span class="gi-arrow">→</span>
       </a>
       <a class="guide-item" href="/guides/funding-fees">

@@ -115,6 +115,8 @@
     <p>Only in extremely fast market moves (flash crashes, thin liquidity, a sudden large liquidation cascading into more liquidations) can actual execution be meaningfully worse than the calculated liquidation price. In that case, the exchange's <strong>insurance fund</strong> — a pool built up largely from the leftover margin of liquidations that closed with room to spare — steps in to cover the difference, rather than the trader's account going negative or the exchange failing to pay the profitable counterparty in full.</p>
     <p>If the insurance fund itself were ever insufficient during an extreme event, most exchanges have a further mechanism called <strong>auto-deleveraging (ADL)</strong>: profitable positions on the opposite side get force-closed, in order of leverage and profitability, to make up the shortfall. It's rare, it's disclosed in every major exchange's terms, and it's precisely the kind of tail-risk scenario that a normal liquidation-price calculation doesn't capture — which is why it's called out separately as a disclaimer rather than folded into the math.</p>
 
+    <p>Whether a shortfall can ever reach you personally depends on the exchange's terms rather than on the math. <a href="/guides/negative-balance-protection">Negative balance protection in crypto futures</a> explains where that protection starts and where it stops.</p>
+
     <h2 id="where-fee">Where the fee belongs — and where it doesn't</h2>
     <p>Not every exchange handles the clearance fee the same way, and this genuinely changes the math, not just the terminology:</p>
     <ul>
@@ -122,6 +124,7 @@
       <li><strong>Fee built into the trigger itself</strong> (Bybit, OKX, KuCoin, among others): a comparable fee term is added directly to the liquidation price formula, which means the trigger point sits slightly closer to entry price than a maintenance-margin-only calculation would suggest.</li>
     </ul>
     <p>Neither approach is "wrong" — they're just different engineering choices for the same underlying goal (make sure the exchange, and other traders, are never left short). But it means the same maintenance margin rate can produce a slightly different real-world buffer depending on which model your exchange uses, which is exactly why the calculator on this site asks you directly which category your exchange falls into, rather than assuming one universal formula.</p>
+    <p>The <a href="/guides/liquidation-fees">liquidation fees guide</a> compares how Binance, Bybit, OKX, KuCoin and MEXC each handle it.</p>
 
     <h2 id="faq">FAQ</h2>
     <div class="faq-item">
@@ -147,8 +150,8 @@
     <h3>Explore next</h3>
     <div class="explore-grid">
       <a class="explore-tile" href="/guides/maintenance-margin"><div class="et-kicker">Basics</div><div class="et-title">What maintenance margin actually means</div></a>
-      <a class="explore-tile" href="/guides/isolated-vs-cross"><div class="et-kicker">Basics</div><div class="et-title">Isolated vs. cross margin explained</div></a>
-      <a class="explore-tile" href="/guides/funding-fees"><div class="et-kicker">Costs &amp; Fees</div><div class="et-title">Why funding fees can eat your buffer</div></a>
+      <a class="explore-tile" href="/guides/isolated-vs-cross"><div class="et-kicker">Basics</div><div class="et-title">Cross margin vs. isolated margin explained</div></a>
+      <a class="explore-tile" href="/guides/funding-fees"><div class="et-kicker">Costs &amp; Fees</div><div class="et-title">Crypto funding rates: why they can eat your buffer</div></a>
       <a class="explore-tile" href="/guides/practice-without-real-money"><div class="et-kicker">Strategy &amp; Practice</div><div class="et-title">How to practice liquidation risk without real money</div></a>
     </div>
   </div>

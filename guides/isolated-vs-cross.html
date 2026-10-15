@@ -4,16 +4,16 @@
 <meta charset="UTF-8">
 <script>(function(){try{if(localStorage.getItem('lb-theme')==='light')document.documentElement.setAttribute('data-theme','light');}catch(e){}})();</script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Isolated vs. Cross Margin Explained | LiquidationBuffer</title>
-<meta name="description" content="Isolated vs. cross margin: what happens at liquidation in each mode, how the liquidation price calculation differs, and which one to use when.">
+<title>Cross Margin vs. Isolated Margin Explained</title>
+<meta name="description" content="Cross margin vs. isolated margin: what happens at liquidation in each mode, how the liquidation price calculation differs, and which one to use.">
 <link rel="canonical" href="https://www.liquidationbuffer.com/guides/isolated-vs-cross">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Isolated vs. Cross Margin: The Difference Explained">
+<meta property="og:title" content="Cross Margin vs. Isolated Margin: The Difference Explained">
 <meta property="og:description" content="Two completely different answers to the same question: what happens when a position moves against you?">
 <meta property="og:url" content="https://www.liquidationbuffer.com/guides/isolated-vs-cross">
 <meta property="og:site_name" content="LiquidationBuffer">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Isolated vs. Cross Margin: The Difference Explained">
+<meta name="twitter:title" content="Cross Margin vs. Isolated Margin: The Difference Explained">
 <meta name="twitter:description" content="Two completely different answers to the same question: what happens when a position moves against you?">
 <link rel="icon" href="/favicon.ico" sizes="48x48">
 <link rel="icon" type="image/svg+xml" href="/assets/favicon.svg" sizes="any">
@@ -26,12 +26,12 @@
 {
   "@context": "https://schema.org",
   "@type": "Article",
-  "headline": "Isolated vs. Cross Margin: The Difference Explained",
+  "headline": "Cross Margin vs. Isolated Margin: The Difference Explained",
   "description": "Isolated margin and cross margin explained simply: what happens at liquidation in each mode, and the trade-offs between them.",
   "author": { "@type": "Organization", "name": "LiquidationBuffer" },
   "publisher": { "@type": "Organization", "name": "LiquidationBuffer" },
   "datePublished": "2026-09-09",
-  "dateModified": "2026-09-09"
+  "dateModified": "2026-10-15"
 }
 </script>
 <script type="application/ld+json">
@@ -41,7 +41,7 @@
   "itemListElement": [
     {"@type":"ListItem","position":1,"name":"Calculator","item":"https://www.liquidationbuffer.com/"},
     {"@type":"ListItem","position":2,"name":"Guides","item":"https://www.liquidationbuffer.com/guides/"},
-    {"@type":"ListItem","position":3,"name":"Isolated vs. Cross Margin","item":"https://www.liquidationbuffer.com/guides/isolated-vs-cross"}
+    {"@type":"ListItem","position":3,"name":"Cross Margin vs. Isolated Margin","item":"https://www.liquidationbuffer.com/guides/isolated-vs-cross"}
   ]
 }
 </script>
@@ -75,14 +75,14 @@
   </div>
 </header>
 
-<div class="wrap breadcrumb"><a href="/">Calculator</a> · <a href="/guides/">Guides</a> · Isolated vs. Cross</div>
+<div class="wrap breadcrumb"><a href="/">Calculator</a> · <a href="/guides/">Guides</a> · Cross vs. Isolated Margin</div>
 
 <article class="article wrap">
   <div class="article-header">
     <div class="kicker"><span class="dot"></span>Basics</div>
-    <h1>Isolated vs. Cross Margin</h1>
+    <h1>Cross Margin vs. Isolated Margin</h1>
     <p class="lede">Two completely different answers to the same question: what happens when a position moves against you?</p>
-    <p class="article-meta">Last updated September 9, 2026 · 6 min read</p>
+    <p class="article-meta">Last updated October 15, 2026 · 6 min read</p>
   </div>
 
   <div class="toc">
@@ -107,6 +107,7 @@
     <h2 id="cross">Cross margin</h2>
     <p>With cross margin, all your open positions share the same overall account balance. If one position moves against you, margin is automatically pulled from other, profitable positions or free balance to delay liquidation — the exchange treats your whole account as one pool of collateral.</p>
     <p>The advantage: a larger effective buffer, as long as your total account has enough balance. A position that would have been liquidated under isolated margin might survive under cross margin simply because unrelated funds backed it up. The downside: a single, badly losing position can, in the extreme, put your entire account balance at risk — not just the margin meant for it. There's no hard ceiling on the loss the way there is with isolated margin.</p>
+    <p>Even cross margin does not guarantee the worst case ends at zero. What happens when a loss outruns the balance is covered in <a href="/guides/negative-balance-protection">negative balance protection in crypto futures</a>.</p>
 
     <h2 id="technical">How the liquidation calculation actually differs</h2>
     <p>This isn't just a philosophical difference — it changes the actual math. Under isolated margin, the liquidation price for a position can be calculated from that position's own numbers alone: entry price, leverage, maintenance margin rate, fees. That's exactly what a calculator like the one on this site does.</p>
@@ -153,7 +154,7 @@
     <div class="explore-grid">
       <a class="explore-tile" href="/guides/maintenance-margin"><div class="et-kicker">Basics</div><div class="et-title">What maintenance margin actually means</div></a>
       <a class="explore-tile" href="/guides/liquidation-vs-bankruptcy"><div class="et-kicker">Basics</div><div class="et-title">Liquidation price vs. bankruptcy price</div></a>
-      <a class="explore-tile" href="/guides/funding-fees"><div class="et-kicker">Costs &amp; Fees</div><div class="et-title">Why funding fees can eat your buffer</div></a>
+      <a class="explore-tile" href="/guides/funding-fees"><div class="et-kicker">Costs &amp; Fees</div><div class="et-title">Crypto funding rates: why they can eat your buffer</div></a>
       <a class="explore-tile" href="/guides/practice-without-real-money"><div class="et-kicker">Strategy &amp; Practice</div><div class="et-title">How to practice liquidation risk without real money</div></a>
     </div>
   </div>

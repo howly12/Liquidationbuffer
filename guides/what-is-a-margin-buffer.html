@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<script>(function(){try{if(localStorage.getItem('lb-theme')==='light')document.documentElement.setAttribute('data-theme','light');}catch(e){}})();</script>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>What Is a Margin Buffer? Definition and Example</title>
+<meta name="description" content="A margin buffer is the cushion between your position and liquidation. Definition, how to measure it in dollars and as a price move, and an example.">
+<link rel="canonical" href="https://www.liquidationbuffer.com/guides/what-is-a-margin-buffer">
+<meta property="og:type" content="article">
+<meta property="og:title" content="What Is a Margin Buffer?">
+<meta property="og:description" content="The cushion between your position and liquidation, and why it is smaller than the leverage suggests.">
+<meta property="og:url" content="https://www.liquidationbuffer.com/guides/what-is-a-margin-buffer">
+<meta property="og:site_name" content="LiquidationBuffer">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="What Is a Margin Buffer?">
+<meta name="twitter:description" content="The cushion between your position and liquidation, and why it is smaller than the leverage suggests.">
+<link rel="icon" href="/favicon.ico" sizes="48x48">
+<link rel="icon" type="image/svg+xml" href="/assets/favicon.svg" sizes="any">
+<link rel="icon" type="image/png" sizes="96x96" href="/assets/favicon-96.png">
+<link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
+<link rel="stylesheet" href="/assets/style.css">
+<link rel="preload" href="/assets/fonts/ibm-plex-sans-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/assets/fonts/space-grotesk-latin.woff2" as="font" type="font/woff2" crossorigin>
+<script type="application/ld+json">
+{
+  "@context" : "https://schema.org",
+  "@type" : "Article",
+  "author" : {
+    "@type" : "Organization",
+    "name" : "LiquidationBuffer"
+  },
+  "dateModified" : "2026-10-15",
+  "datePublished" : "2026-10-15",
+  "description" : "A margin buffer is the cushion between your position and liquidation. Definition, how to measure it in dollars and as a price move, and an example.",
+  "headline" : "What Is a Margin Buffer?",
+  "publisher" : {
+    "@type" : "Organization",
+    "name" : "LiquidationBuffer"
+  }
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context" : "https://schema.org",
+  "@type" : "BreadcrumbList",
+  "itemListElement" : [
+    {
+      "@type" : "ListItem",
+      "item" : "https://www.liquidationbuffer.com/",
+      "name" : "Calculator",
+      "position" : 1
+    },
+    {
+      "@type" : "ListItem",
+      "item" : "https://www.liquidationbuffer.com/guides/",
+      "name" : "Guides",
+      "position" : 2
+    },
+    {
+      "@type" : "ListItem",
+      "item" : "https://www.liquidationbuffer.com/guides/what-is-a-margin-buffer",
+      "name" : "What Is a Margin Buffer?",
+      "position" : 3
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context" : "https://schema.org",
+  "@type" : "FAQPage",
+  "mainEntity" : [
+    {
+      "@type" : "Question",
+      "acceptedAnswer" : {
+        "@type" : "Answer",
+        "text" : "Yes, they describe the same cushion. Margin buffer usually refers to the money above the maintenance requirement, liquidation buffer to the price move it represents."
+      },
+      "name" : "Is a margin buffer the same as a liquidation buffer?"
+    },
+    {
+      "@type" : "Question",
+      "acceptedAnswer" : {
+        "@type" : "Answer",
+        "text" : "The exchange's liquidation engine closes the position. Depending on the exchange, a fee is charged, and in a fast market the fill can be worse than the calculated liquidation price."
+      },
+      "name" : "What happens when the margin buffer reaches zero?"
+    },
+    {
+      "@type" : "Question",
+      "acceptedAnswer" : {
+        "@type" : "Answer",
+        "text" : "There is no universal number. It should be larger than the price move you would tolerate before exiting, and large enough that normal volatility on your pair and timeframe does not reach it. This is general information, not financial advice."
+      },
+      "name" : "How big should a margin buffer be?"
+    }
+  ]
+}
+</script>
+<script defer src="https://cloud.umami.is/script.js" data-website-id="c57ce8d4-f0c9-427d-851b-8e64d8860d99"></script>
+</head>
+<body>
+<header class="site">
+  <div class="wrap">
+    <a class="brand" href="/"><div class="brand-mark">L</div><div class="brand-name">LiquidationBuffer</div></a>
+    <div class="hdr-right">
+      <nav class="site"><a href="/#calc">Calculator</a><a href="/guides/">Guides</a></nav>
+      <div class="theme-toggle">
+        <button data-theme-btn="dark" class="active">Dark</button>
+        <button data-theme-btn="light">Light</button>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="wrap breadcrumb"><a href="/">Calculator</a> · <a href="/guides/">Guides</a> · What Is a Margin Buffer?</div>
+
+<article class="article wrap">
+  <div class="article-header">
+    <div class="kicker"><span class="dot"></span>Basics</div>
+    <h1>What Is a Margin Buffer?</h1>
+    <p class="lede">The cushion between your position and liquidation, in dollars and as a price move, and why it is smaller than the leverage suggests.</p>
+    <p class="article-meta">Last updated October 15, 2026 · 6 min read</p>
+  </div>
+
+  <div class="toc">
+    <p class="toc-title">On this page</p>
+    <ol>
+      <li><a href="#definition">The definition</a></li>
+      <li><a href="#two-views">Two ways to measure it</a></li>
+      <li><a href="#example">A worked example</a></li>
+      <li><a href="#what-shrinks-it">What shrinks the buffer</a></li>
+      <li><a href="#widen">How to keep a wider buffer</a></li>
+      <li><a href="#faq">FAQ</a></li>
+    </ol>
+  </div>
+
+  <div class="article-body">
+    <p>A margin buffer is the amount by which the margin in your position exceeds what the exchange requires to keep it open. As long as there is buffer left, the position stays open. When it is used up, the exchange liquidates. This site is named after the idea because most traders misjudge how big theirs really is.</p>
+
+    <h2 id="definition">The definition</h2>
+    <p>Every leveraged position has two margin numbers. <strong>Initial margin</strong> is what you put in to open it. <strong>Maintenance margin</strong> is the minimum the exchange requires to keep it open (see <a href="/guides/maintenance-margin">what maintenance margin means</a>). The margin buffer is the part of your margin that sits above the maintenance requirement, after costs such as funding have been taken out.</p>
+    <p>You will also see it called a liquidation buffer. They are the same cushion; "margin buffer" is how it looks in your account, and "liquidation buffer" is how it looks on the chart.</p>
+
+    <h2 id="two-views">Two ways to measure it</h2>
+    <ul>
+      <li><strong>In money:</strong> margin − maintenance margin − accumulated costs. This is the loss the position can still take.</li>
+      <li><strong>As a price move:</strong> that amount divided by the position size. This is how far the price can travel against you, and it is the number that matters for placing a stop loss.</li>
+    </ul>
+
+    <h2 id="example">A worked example</h2>
+    <p>You open a long with $5,000 of margin at 75x, a position of $375,000. The maintenance margin rate is 0.65%, and over your holding period you pay $112.50 in funding (0.03% of the position).</p>
+    <table class="breakdown" style="margin:20px 0;">
+      <tr><td>Margin posted</td><td>$5,000.00</td></tr>
+      <tr><td>− maintenance margin (0.65% of $375,000)</td><td>−$2,437.50</td></tr>
+      <tr><td>− funding paid</td><td>−$112.50</td></tr>
+      <tr class="total"><td>Margin buffer</td><td>$2,450.00</td></tr>
+    </table>
+    <p>As a price move that is $2,450 ÷ $375,000 = 0.653%. A rule of thumb based on leverage alone would have said 1/75 = 1.333%. The real cushion is less than half of that.</p>
+
+    <h2 id="what-shrinks-it">What shrinks the buffer</h2>
+    <ul>
+      <li><strong>Higher leverage:</strong> the same margin carries a bigger position, so the same price move costs a larger share of it.</li>
+      <li><strong>A higher maintenance margin rate:</strong> larger positions and smaller coins usually carry higher rates.</li>
+      <li><strong>Funding:</strong> it is paid out of margin, so a long position pays down its buffer with every positive funding payment. See <a href="/guides/funding-fees">funding fees and your buffer</a>.</li>
+      <li><strong>Fees:</strong> on exchanges that build the closing fee into the liquidation condition, the fee comes out of the buffer too.</li>
+      <li><strong>Unrealized loss:</strong> this is the one you are watching. Everything above shrinks the buffer before the price has moved at all.</li>
+    </ul>
+
+    <h2 id="widen">How to keep a wider buffer</h2>
+    <ul>
+      <li>Use lower leverage for the same position size. Halving leverage more than doubles the usable distance, because the maintenance margin rate is a fixed amount taken out of a bigger number.</li>
+      <li>Add margin to an isolated position, which pushes the liquidation price away.</li>
+      <li>Keep the holding period in mind on pairs with high funding rates.</li>
+      <li>Place a stop loss well inside the buffer, so the position is closed by your own order instead of by the liquidation engine.</li>
+    </ul>
+    <p>Numbers only go so far, though. Watching a thin buffer disappear in real time feels different from reading about it, and a practice mode with virtual money such as <a href="https://blitzkurs.com" target="_blank" rel="noopener">Blitzkurs</a> is a low-cost way to get used to that pace. To check your own position, the <a href="/#calc">calculator</a> shows the buffer in percent and in price.</p>
+
+    <h2 id="faq">FAQ</h2>
+    <div class="faq-item">
+      <h3>Is a margin buffer the same as a liquidation buffer?</h3>
+      <p>Yes, they describe the same cushion. Margin buffer usually refers to the money above the maintenance requirement, liquidation buffer to the price move it represents.</p>
+    </div>
+    <div class="faq-item">
+      <h3>What happens when the margin buffer reaches zero?</h3>
+      <p>The exchange's liquidation engine closes the position. Depending on the exchange, a fee is charged, and in a fast market the fill can be worse than the calculated liquidation price.</p>
+    </div>
+    <div class="faq-item">
+      <h3>How big should a margin buffer be?</h3>
+      <p>There is no universal number. It should be larger than the price move you would tolerate before exiting, and large enough that normal volatility on your pair and timeframe does not reach it. This is general information, not financial advice.</p>
+    </div>
+
+    <a class="cta-inline" href="/#calc">
+      <span class="ci-title">See your real margin buffer in percent and price</span>
+      <span>→</span>
+    </a>
+  </div>
+
+  <div class="related">
+    <h3>Explore next</h3>
+    <div class="explore-grid">
+      <a class="explore-tile" href="/guides/how-to-calculate-liquidation-price"><div class="et-kicker">Basics</div><div class="et-title">How to calculate liquidation price</div></a>
+      <a class="explore-tile" href="/guides/maintenance-margin"><div class="et-kicker">Basics</div><div class="et-title">What maintenance margin actually means</div></a>
+      <a class="explore-tile" href="/guides/margin-call-vs-liquidation"><div class="et-kicker">Basics</div><div class="et-title">Margin call vs. liquidation</div></a>
+      <a class="explore-tile" href="/guides/funding-fees"><div class="et-kicker">Costs &amp; Fees</div><div class="et-title">Crypto funding rates: why they can eat your buffer</div></a>
+    </div>
+  </div>
+</article>
+
+<footer>
+  <div class="wrap">
+    <span>LiquidationBuffer — not financial advice, just math.</span>
+    <span><a href="/">Back to calculator</a> &middot; &copy; 2026 Copperleaf LLC &middot; <a href="/legal">Legal</a> &middot; <a href="/privacy">Privacy</a> &middot; <a href="/terms">Terms</a></span>
+  </div>
+</footer>
+<script src="/assets/site.js"></script>
+</body>
+</html>

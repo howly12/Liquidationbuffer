@@ -111,6 +111,7 @@
     <h2 id="always-taker">Why liquidation is always a taker order</h2>
     <p>A maker order has no guaranteed fill time — it sits on the book until a counterparty happens to trade against it, which could be instant or could be minutes away. A liquidation engine cannot accept that uncertainty: once your margin crosses the maintenance threshold, the exchange needs the position closed <em>now</em>, not whenever the book gets around to it. So every liquidation, on every exchange, executes as a market (taker) order, full stop.</p>
     <p>That's precisely why the calculator on this site only ever asks for your <strong>taker</strong> fee. Whatever maker fee you'd pay closing a position yourself with a resting limit order is real, but it's simply irrelevant to where a forced liquidation actually triggers or what it costs you at that moment. Asking for a maker fee here would just be one more number to fill in that never changes the answer.</p>
+    <p>How that taker fee is applied at the moment of liquidation differs by exchange. See <a href="/guides/liquidation-fees">liquidation fees explained</a>.</p>
 
     <h2 id="fee-table">Taker fees across the exchanges we track</h2>
     <p>Regular-tier (no VIP, no token discount) rates, maker included for comparison — taker is the one that matters for liquidation math:</p>
@@ -159,7 +160,7 @@
       <a class="explore-tile" href="/guides/maintenance-margin"><div class="et-kicker">Basics</div><div class="et-title">What maintenance margin actually means</div></a>
       <a class="explore-tile" href="/guides/margin-call-vs-liquidation"><div class="et-kicker">Basics</div><div class="et-title">Margin call vs. liquidation</div></a>
       <a class="explore-tile" href="/guides/liquidation-vs-bankruptcy"><div class="et-kicker">Basics</div><div class="et-title">Liquidation price vs. bankruptcy price</div></a>
-      <a class="explore-tile" href="/guides/funding-fees"><div class="et-kicker">Costs &amp; Fees</div><div class="et-title">Why funding fees can eat your buffer</div></a>
+      <a class="explore-tile" href="/guides/funding-fees"><div class="et-kicker">Costs &amp; Fees</div><div class="et-title">Crypto funding rates: why they can eat your buffer</div></a>
     </div>
   </div>
 </article>

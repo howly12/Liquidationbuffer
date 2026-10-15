@@ -5,7 +5,7 @@
 <script>(function(){try{if(localStorage.getItem('lb-theme')==='light')document.documentElement.setAttribute('data-theme','light');}catch(e){}})();</script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Liquidation, Margin &amp; Funding Guides | LiquidationBuffer</title>
-<meta name="description" content="Plain-language guides to crypto perpetual liquidation: maintenance margin, isolated vs. cross margin, funding fees and liquidation vs. bankruptcy price.">
+<meta name="description" content="Plain-language guides to crypto perpetual liquidation: how to calculate liquidation price, margin buffer, cross vs. isolated margin, funding rates.">
 <link rel="canonical" href="https://www.liquidationbuffer.com/guides/">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Guides — Liquidation, Margin & Funding Explained">
@@ -59,12 +59,20 @@
     <h2>Basics</h2>
     <p class="cat-desc">The core mechanics everyone using leverage should understand before opening a position.</p>
     <div class="guide-list">
+      <a class="guide-item" href="/guides/how-to-calculate-liquidation-price">
+        <div><div class="gi-title">How to calculate liquidation price</div><div class="gi-sub">The formula, a worked example, and what a simple formula leaves out</div></div>
+        <span class="gi-arrow">→</span>
+      </a>
+      <a class="guide-item" href="/guides/what-is-a-margin-buffer">
+        <div><div class="gi-title">What is a margin buffer?</div><div class="gi-sub">The cushion between your position and liquidation, and why it is smaller than the leverage suggests</div></div>
+        <span class="gi-arrow">→</span>
+      </a>
       <a class="guide-item" href="/guides/maintenance-margin">
         <div><div class="gi-title">What maintenance margin actually means</div><div class="gi-sub">The value that really determines your liquidation price — not your leverage</div></div>
         <span class="gi-arrow">→</span>
       </a>
       <a class="guide-item" href="/guides/isolated-vs-cross">
-        <div><div class="gi-title">Isolated vs. cross margin explained</div><div class="gi-sub">Two different answers to what happens when a position moves against you</div></div>
+        <div><div class="gi-title">Cross margin vs. isolated margin explained</div><div class="gi-sub">Two different answers to what happens when a position moves against you</div></div>
         <span class="gi-arrow">→</span>
       </a>
       <a class="guide-item" href="/guides/liquidation-vs-bankruptcy">
@@ -75,6 +83,10 @@
         <div><div class="gi-title">Margin call vs. liquidation</div><div class="gi-sub">There's no phone call before a crypto perpetual gets liquidated</div></div>
         <span class="gi-arrow">→</span>
       </a>
+      <a class="guide-item" href="/guides/negative-balance-protection">
+        <div><div class="gi-title">Negative balance protection in crypto futures</div><div class="gi-sub">How exchanges try to keep you from losing more than your balance, and where that stops</div></div>
+        <span class="gi-arrow">→</span>
+      </a>
     </div>
   </div>
 
@@ -83,11 +95,15 @@
     <p class="cat-desc">The recurring costs that quietly shrink your buffer even when the price doesn't move.</p>
     <div class="guide-list">
       <a class="guide-item" href="/guides/funding-fees">
-        <div><div class="gi-title">Why funding fees can eat your buffer</div><div class="gi-sub">How periodic payments between longs and shorts affect your liquidation distance</div></div>
+        <div><div class="gi-title">Crypto funding rates: why they can eat your buffer</div><div class="gi-sub">How periodic payments between longs and shorts affect your liquidation distance</div></div>
         <span class="gi-arrow">→</span>
       </a>
       <a class="guide-item" href="/guides/maker-vs-taker-fees">
         <div><div class="gi-title">Maker vs. taker fees explained</div><div class="gi-sub">Why liquidation always costs the taker fee, never the maker fee</div></div>
+        <span class="gi-arrow">→</span>
+      </a>
+      <a class="guide-item" href="/guides/liquidation-fees">
+        <div><div class="gi-title">Liquidation fees explained</div><div class="gi-sub">What an exchange charges when it force-closes your position</div></div>
         <span class="gi-arrow">→</span>
       </a>
     </div>

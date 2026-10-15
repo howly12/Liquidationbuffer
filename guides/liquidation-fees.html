@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<script>(function(){try{if(localStorage.getItem('lb-theme')==='light')document.documentElement.setAttribute('data-theme','light');}catch(e){}})();</script>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Liquidation Fees Explained: What You Pay and Why</title>
+<meta name="description" content="What liquidation and clearance fees are, how they differ from trading fees, and how Binance, Bybit, OKX, KuCoin and MEXC build them into liquidation.">
+<link rel="canonical" href="https://www.liquidationbuffer.com/guides/liquidation-fees">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Liquidation Fees Explained">
+<meta property="og:description" content="What an exchange charges when it force-closes your position, and how that changes your real buffer.">
+<meta property="og:url" content="https://www.liquidationbuffer.com/guides/liquidation-fees">
+<meta property="og:site_name" content="LiquidationBuffer">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Liquidation Fees Explained">
+<meta name="twitter:description" content="What an exchange charges when it force-closes your position, and how that changes your real buffer.">
+<link rel="icon" href="/favicon.ico" sizes="48x48">
+<link rel="icon" type="image/svg+xml" href="/assets/favicon.svg" sizes="any">
+<link rel="icon" type="image/png" sizes="96x96" href="/assets/favicon-96.png">
+<link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
+<link rel="stylesheet" href="/assets/style.css">
+<link rel="preload" href="/assets/fonts/ibm-plex-sans-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/assets/fonts/space-grotesk-latin.woff2" as="font" type="font/woff2" crossorigin>
+<script type="application/ld+json">
+{
+  "@context" : "https://schema.org",
+  "@type" : "Article",
+  "author" : {
+    "@type" : "Organization",
+    "name" : "LiquidationBuffer"
+  },
+  "dateModified" : "2026-10-15",
+  "datePublished" : "2026-10-15",
+  "description" : "What liquidation and clearance fees are, how they differ from trading fees, and how Binance, Bybit, OKX, KuCoin and MEXC build them into liquidation.",
+  "headline" : "Liquidation Fees Explained",
+  "publisher" : {
+    "@type" : "Organization",
+    "name" : "LiquidationBuffer"
+  }
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context" : "https://schema.org",
+  "@type" : "BreadcrumbList",
+  "itemListElement" : [
+    {
+      "@type" : "ListItem",
+      "item" : "https://www.liquidationbuffer.com/",
+      "name" : "Calculator",
+      "position" : 1
+    },
+    {
+      "@type" : "ListItem",
+      "item" : "https://www.liquidationbuffer.com/guides/",
+      "name" : "Guides",
+      "position" : 2
+    },
+    {
+      "@type" : "ListItem",
+      "item" : "https://www.liquidationbuffer.com/guides/liquidation-fees",
+      "name" : "Liquidation Fees",
+      "position" : 3
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context" : "https://schema.org",
+  "@type" : "FAQPage",
+  "mainEntity" : [
+    {
+      "@type" : "Question",
+      "acceptedAnswer" : {
+        "@type" : "Answer",
+        "text" : "No. Liquidation fees apply when the exchange's engine closes the position. If you close it yourself first, you pay the normal trading fee for that order."
+      },
+      "name" : "Do I pay a liquidation fee if I close the position myself?"
+    },
+    {
+      "@type" : "Question",
+      "acceptedAnswer" : {
+        "@type" : "Answer",
+        "text" : "On most exchanges it goes at least partly into the insurance fund, which pays for liquidations that close at a worse price than expected. OKX states that the net proceeds of its liquidation and clearance fees are contributed to its security fund."
+      },
+      "name" : "Where does the liquidation fee go?"
+    },
+    {
+      "@type" : "Question",
+      "acceptedAnswer" : {
+        "@type" : "Answer",
+        "text" : "If your exchange builds the closing fee into the liquidation condition, the trigger sits closer to your entry than a calculation with maintenance margin alone. Funding payments and a higher maintenance margin tier for larger positions can also move it."
+      },
+      "name" : "Why is my liquidation price closer than I calculated?"
+    }
+  ]
+}
+</script>
+<script defer src="https://cloud.umami.is/script.js" data-website-id="c57ce8d4-f0c9-427d-851b-8e64d8860d99"></script>
+</head>
+<body>
+<header class="site">
+  <div class="wrap">
+    <a class="brand" href="/"><div class="brand-mark">L</div><div class="brand-name">LiquidationBuffer</div></a>
+    <div class="hdr-right">
+      <nav class="site"><a href="/#calc">Calculator</a><a href="/guides/">Guides</a></nav>
+      <div class="theme-toggle">
+        <button data-theme-btn="dark" class="active">Dark</button>
+        <button data-theme-btn="light">Light</button>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="wrap breadcrumb"><a href="/">Calculator</a> · <a href="/guides/">Guides</a> · Liquidation Fees</div>
+
+<article class="article wrap">
+  <div class="article-header">
+    <div class="kicker"><span class="dot"></span>Costs &amp; Fees</div>
+    <h1>Liquidation Fees Explained</h1>
+    <p class="lede">What you pay when an exchange force-closes your position, and how Binance, Bybit, OKX, KuCoin and MEXC build that fee into liquidation.</p>
+    <p class="article-meta">Last updated October 15, 2026 · 6 min read</p>
+  </div>
+
+  <div class="toc">
+    <p class="toc-title">On this page</p>
+    <ol>
+      <li><a href="#what">What a liquidation fee is</a></li>
+      <li><a href="#types">Liquidation fee vs. clearance fee</a></li>
+      <li><a href="#exchanges">How five exchanges handle it</a></li>
+      <li><a href="#size">How big the fee really is</a></li>
+      <li><a href="#reduce">What you can do about it</a></li>
+      <li><a href="#faq">FAQ</a></li>
+    </ol>
+  </div>
+
+  <div class="article-body">
+    <p>When your position is liquidated you do not just lose the margin. The exchange also charges a fee for closing it, and depending on the exchange that fee either moves your liquidation price or comes out of what is left afterward. The difference changes your real buffer, so it is worth knowing which one applies to you.</p>
+
+    <h2 id="what">What a liquidation fee is</h2>
+    <p>A liquidation fee is charged when the exchange's engine closes your position for you. It is a taker fee, because a forced close is always executed immediately as a market order (see <a href="/guides/maker-vs-taker-fees">maker vs. taker fees</a>). On OKX, for example, the liquidation fee is calculated at the taker rate of your current fee tier.</p>
+
+    <h2 id="types">Liquidation fee vs. clearance fee</h2>
+    <p>Some exchanges charge a second amount on top, often called a clearance fee or liquidation clearance fee. It covers slippage and losses during the forced close and is usually paid into the insurance fund. OKX describes both: a liquidation taker fee for processing the order, and a separate clearance fee to cover market fluctuations, with the net proceeds of both going to its security fund.</p>
+
+    <h2 id="exchanges">How five exchanges handle it</h2>
+    <p>Based on each exchange's public documentation at the time of writing. Rules change, so confirm on your exchange.</p>
+    <table class="breakdown" style="margin:20px 0;">
+      <tr><td><strong>Exchange</strong></td><td style="text-align:right;"><strong>Where the fee sits</strong></td></tr>
+      <tr><td>Binance (isolated)</td><td style="text-align:right;">Deducted after liquidation starts; the trigger does not move</td></tr>
+      <tr><td>Bybit</td><td style="text-align:right;">Estimated closing fee is added to the displayed maintenance margin, which moves the trigger</td></tr>
+      <tr><td>OKX</td><td style="text-align:right;">Liquidation happens when equity falls to maintenance margin plus liquidation fees</td></tr>
+      <tr><td>KuCoin</td><td style="text-align:right;">A liquidation fee rate is a term in the liquidation price formula itself</td></tr>
+      <tr><td>MEXC</td><td style="text-align:right;">The liquidation fee is added to maintenance margin before the 100% margin ratio check</td></tr>
+    </table>
+    <p>Where the fee is part of the trigger, liquidation happens a little earlier than a maintenance-margin-only calculation suggests. Where it is deducted afterward, the trigger stays put and the fee comes out of the remaining margin. The <a href="/guides/liquidation-vs-bankruptcy">liquidation vs. bankruptcy price guide</a> shows what is left in each case.</p>
+
+    <h2 id="size">How big the fee really is</h2>
+    <p>The fee is a percentage of the position, not of your margin, so leverage multiplies its weight. With $5,000 of margin at 75x the position is $375,000, and a 0.05% taker fee is $187.50. That is 3.75% of your margin for the closing fee alone, and 7.5% if you count the opening fee too.</p>
+    <p>This is why the calculator on this site asks for the taker fee and lets you say whether your exchange counts it toward the trigger: at high leverage the fee is not a rounding error.</p>
+
+    <h2 id="reduce">What you can do about it</h2>
+    <ul>
+      <li><strong>Lower the leverage.</strong> The fee is the same percentage of the position, but a smaller position for the same margin means it takes a smaller share of that margin.</li>
+      <li><strong>Close by your own order before the trigger.</strong> A stop loss you place yourself costs your normal taker or maker fee, not the liquidation charges.</li>
+      <li><strong>Check your fee tier.</strong> VIP levels lower the taker rate, which also lowers the liquidation fee on exchanges that use it.</li>
+    </ul>
+
+    <h2 id="faq">FAQ</h2>
+    <div class="faq-item">
+      <h3>Do I pay a liquidation fee if I close the position myself?</h3>
+      <p>No. Liquidation fees apply when the exchange's engine closes the position. If you close it yourself first, you pay the normal trading fee for that order.</p>
+    </div>
+    <div class="faq-item">
+      <h3>Where does the liquidation fee go?</h3>
+      <p>On most exchanges it goes at least partly into the insurance fund, which pays for liquidations that close at a worse price than expected. OKX states that the net proceeds of its liquidation and clearance fees are contributed to its security fund.</p>
+    </div>
+    <div class="faq-item">
+      <h3>Why is my liquidation price closer than I calculated?</h3>
+      <p>If your exchange builds the closing fee into the liquidation condition, the trigger sits closer to your entry than a calculation with maintenance margin alone. Funding payments and a higher maintenance margin tier for larger positions can also move it.</p>
+    </div>
+
+    <a class="cta-inline" href="/#calc">
+      <span class="ci-title">See what the fee does to your real buffer</span>
+      <span>→</span>
+    </a>
+  </div>
+
+  <div class="related">
+    <h3>Explore next</h3>
+    <div class="explore-grid">
+      <a class="explore-tile" href="/guides/liquidation-vs-bankruptcy"><div class="et-kicker">Basics</div><div class="et-title">Liquidation price vs. bankruptcy price</div></a>
+      <a class="explore-tile" href="/guides/maker-vs-taker-fees"><div class="et-kicker">Costs &amp; Fees</div><div class="et-title">Maker vs. taker fees explained</div></a>
+      <a class="explore-tile" href="/guides/how-to-calculate-liquidation-price"><div class="et-kicker">Basics</div><div class="et-title">How to calculate liquidation price</div></a>
+      <a class="explore-tile" href="/guides/negative-balance-protection"><div class="et-kicker">Basics</div><div class="et-title">Negative balance protection in crypto futures</div></a>
+    </div>
+  </div>
+</article>
+
+<footer>
+  <div class="wrap">
+    <span>LiquidationBuffer — not financial advice, just math.</span>
+    <span><a href="/">Back to calculator</a> &middot; &copy; 2026 Copperleaf LLC &middot; <a href="/legal">Legal</a> &middot; <a href="/privacy">Privacy</a> &middot; <a href="/terms">Terms</a></span>
+  </div>
+</footer>
+<script src="/assets/site.js"></script>
+</body>
+</html>

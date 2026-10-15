@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<script>(function(){try{if(localStorage.getItem('lb-theme')==='light')document.documentElement.setAttribute('data-theme','light');}catch(e){}})();</script>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Negative Balance Protection in Crypto Futures Explained</title>
+<meta name="description" content="What negative balance protection means, how crypto futures exchanges deliver it through insurance funds and auto-deleveraging, and where it stops.">
+<link rel="canonical" href="https://www.liquidationbuffer.com/guides/negative-balance-protection">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Negative Balance Protection in Crypto Futures">
+<meta property="og:description" content="How exchanges try to keep you from losing more than your balance, and where that protection stops.">
+<meta property="og:url" content="https://www.liquidationbuffer.com/guides/negative-balance-protection">
+<meta property="og:site_name" content="LiquidationBuffer">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Negative Balance Protection in Crypto Futures">
+<meta name="twitter:description" content="How exchanges try to keep you from losing more than your balance, and where that protection stops.">
+<link rel="icon" href="/favicon.ico" sizes="48x48">
+<link rel="icon" type="image/svg+xml" href="/assets/favicon.svg" sizes="any">
+<link rel="icon" type="image/png" sizes="96x96" href="/assets/favicon-96.png">
+<link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
+<link rel="stylesheet" href="/assets/style.css">
+<link rel="preload" href="/assets/fonts/ibm-plex-sans-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/assets/fonts/space-grotesk-latin.woff2" as="font" type="font/woff2" crossorigin>
+<script type="application/ld+json">
+{
+  "@context" : "https://schema.org",
+  "@type" : "Article",
+  "author" : {
+    "@type" : "Organization",
+    "name" : "LiquidationBuffer"
+  },
+  "dateModified" : "2026-10-15",
+  "datePublished" : "2026-10-15",
+  "description" : "What negative balance protection means, how crypto futures exchanges deliver it through insurance funds and auto-deleveraging, and where it stops.",
+  "headline" : "Negative Balance Protection in Crypto Futures",
+  "publisher" : {
+    "@type" : "Organization",
+    "name" : "LiquidationBuffer"
+  }
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context" : "https://schema.org",
+  "@type" : "BreadcrumbList",
+  "itemListElement" : [
+    {
+      "@type" : "ListItem",
+      "item" : "https://www.liquidationbuffer.com/",
+      "name" : "Calculator",
+      "position" : 1
+    },
+    {
+      "@type" : "ListItem",
+      "item" : "https://www.liquidationbuffer.com/guides/",
+      "name" : "Guides",
+      "position" : 2
+    },
+    {
+      "@type" : "ListItem",
+      "item" : "https://www.liquidationbuffer.com/guides/negative-balance-protection",
+      "name" : "Negative Balance Protection",
+      "position" : 3
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context" : "https://schema.org",
+  "@type" : "FAQPage",
+  "mainEntity" : [
+    {
+      "@type" : "Question",
+      "acceptedAnswer" : {
+        "@type" : "Answer",
+        "text" : "On isolated margin your loss is normally limited to the margin of that position. In an extreme move a position can be closed below its bankruptcy price, and the exchange's insurance fund usually covers the gap. This is exchange policy and not guaranteed, and with cross margin your whole futures balance can be lost."
+      },
+      "name" : "Can I lose more than I deposit on a crypto futures exchange?"
+    },
+    {
+      "@type" : "Question",
+      "acceptedAnswer" : {
+        "@type" : "Answer",
+        "text" : "No. A stop loss is your own order and can fill at a worse price in a fast market. Negative balance protection is the provider's backstop for what happens if losses exceed your funds."
+      },
+      "name" : "Is negative balance protection the same as a stop loss?"
+    },
+    {
+      "@type" : "Question",
+      "acceptedAnswer" : {
+        "@type" : "Answer",
+        "text" : "Auto-deleveraging (ADL) is the last-resort mechanism where an exchange force-closes profitable opposite positions to cover a liquidated position's loss when its insurance fund is exhausted. Positions with the highest profit and leverage are usually closed first."
+      },
+      "name" : "What is auto-deleveraging?"
+    },
+    {
+      "@type" : "Question",
+      "acceptedAnswer" : {
+        "@type" : "Answer",
+        "text" : "Most large perpetual exchanges describe an insurance fund and ADL rather than a formal guarantee. Whether that amounts to protection depends on the exchange's terms, so read them."
+      },
+      "name" : "Do crypto exchanges offer it like forex brokers do?"
+    }
+  ]
+}
+</script>
+<script defer src="https://cloud.umami.is/script.js" data-website-id="c57ce8d4-f0c9-427d-851b-8e64d8860d99"></script>
+</head>
+<body>
+<header class="site">
+  <div class="wrap">
+    <a class="brand" href="/"><div class="brand-mark">L</div><div class="brand-name">LiquidationBuffer</div></a>
+    <div class="hdr-right">
+      <nav class="site"><a href="/#calc">Calculator</a><a href="/guides/">Guides</a></nav>
+      <div class="theme-toggle">
+        <button data-theme-btn="dark" class="active">Dark</button>
+        <button data-theme-btn="light">Light</button>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="wrap breadcrumb"><a href="/">Calculator</a> · <a href="/guides/">Guides</a> · Negative Balance Protection</div>
+
+<article class="article wrap">
+  <div class="article-header">
+    <div class="kicker"><span class="dot"></span>Basics</div>
+    <h1>Negative Balance Protection in Crypto Futures</h1>
+    <p class="lede">What it means when a provider promises you cannot lose more than your balance, and how crypto futures exchanges actually deliver that.</p>
+    <p class="article-meta">Last updated October 15, 2026 · 6 min read</p>
+  </div>
+
+  <div class="toc">
+    <p class="toc-title">On this page</p>
+    <ol>
+      <li><a href="#definition">What negative balance protection is</a></li>
+      <li><a href="#how">How crypto futures exchanges build it</a></li>
+      <li><a href="#limits">Where the protection stops</a></li>
+      <li><a href="#check">What to check before you trade</a></li>
+      <li><a href="#faq">FAQ</a></li>
+    </ol>
+  </div>
+
+  <div class="article-body">
+    <p>If you searched for negative balance protection you probably saw forex and CFD brokers advertise it. Crypto perpetual futures exchanges rarely use the term, but they solve the same problem with different tools. Knowing which tools, and where they stop, matters more than the label.</p>
+
+    <h2 id="definition">What negative balance protection is</h2>
+    <p>Negative balance protection means your account cannot go below zero because of trading losses. If a position loses more than you deposited, the provider absorbs the excess instead of asking you to pay it back.</p>
+    <p>In the EU and the UK, regulators require this for retail forex and CFD accounts, which is why it is such a common line in broker marketing. For crypto exchanges there is usually no equivalent legal requirement, so the protection comes from how the exchange is built and from what its terms say.</p>
+
+    <h2 id="how">How crypto futures exchanges build it</h2>
+    <ol>
+      <li><strong>Margin mode.</strong> With isolated margin, the most you can lose on a position is the margin assigned to it. With cross margin, the whole futures balance backs the position. See <a href="/guides/isolated-vs-cross">cross margin vs. isolated margin</a>.</li>
+      <li><strong>Liquidation before zero.</strong> The exchange closes your position when the margin falls to the maintenance requirement, while some margin is still left. <a href="/guides/liquidation-vs-bankruptcy">Liquidation price vs. bankruptcy price</a> explains the gap.</li>
+      <li><strong>Insurance fund.</strong> When a position is closed at a price worse than its bankruptcy price, the shortfall is paid from the exchange's insurance fund, which is built up from the leftover margin of liquidations that closed with room to spare.</li>
+      <li><strong>Auto-deleveraging (ADL).</strong> If the insurance fund is not enough, the exchange closes profitable positions on the opposite side, ranked by profit and leverage, to cover the loss. Rare, but it is the final step.</li>
+    </ol>
+
+    <h2 id="limits">Where the protection stops</h2>
+    <ul>
+      <li><strong>It is a policy, not a guarantee.</strong> OKX's published liquidation rules, for example, say it decides at its own discretion when to use its security fund and does not guarantee that losses will be covered by it. Other exchanges word it differently, but the principle is the same.</li>
+      <li><strong>Cross margin exposes the whole balance.</strong> Protection against a negative balance does not protect the balance you deposited.</li>
+      <li><strong>ADL can close a winning position.</strong> It protects the system, not the individual trader on the profitable side.</li>
+      <li><strong>Recourse differs by country.</strong> A regulated broker in the EU is bound by rules; an offshore exchange is bound by its own terms.</li>
+    </ul>
+
+    <h2 id="check">What to check before you trade</h2>
+    <ul>
+      <li>The exchange's terms and risk disclosure: what exactly does it say about negative balances and the insurance fund?</li>
+      <li>Which margin mode is the default for your account, and whether you can limit risk per position.</li>
+      <li>Whether the exchange publishes its insurance fund balance, and how it has behaved in past volatility.</li>
+      <li>Your own buffer: <a href="/#calc">calculate how far the price can move</a> before liquidation, instead of relying on the backstop.</li>
+    </ul>
+
+    <h2 id="faq">FAQ</h2>
+    <div class="faq-item">
+      <h3>Can I lose more than I deposit on a crypto futures exchange?</h3>
+      <p>On isolated margin your loss is normally limited to the margin of that position. In an extreme move a position can be closed below its bankruptcy price, and the exchange's insurance fund usually covers the gap. This is exchange policy and not guaranteed, and with cross margin your whole futures balance can be lost.</p>
+    </div>
+    <div class="faq-item">
+      <h3>Is negative balance protection the same as a stop loss?</h3>
+      <p>No. A stop loss is your own order and can fill at a worse price in a fast market. Negative balance protection is the provider's backstop for what happens if losses exceed your funds.</p>
+    </div>
+    <div class="faq-item">
+      <h3>What is auto-deleveraging?</h3>
+      <p>Auto-deleveraging (ADL) is the last-resort mechanism where an exchange force-closes profitable opposite positions to cover a liquidated position's loss when its insurance fund is exhausted. Positions with the highest profit and leverage are usually closed first.</p>
+    </div>
+    <div class="faq-item">
+      <h3>Do crypto exchanges offer it like forex brokers do?</h3>
+      <p>Most large perpetual exchanges describe an insurance fund and ADL rather than a formal guarantee. Whether that amounts to protection depends on the exchange's terms, so read them.</p>
+    </div>
+
+    <a class="cta-inline" href="/#calc">
+      <span class="ci-title">Check how much room your position has before liquidation</span>
+      <span>→</span>
+    </a>
+  </div>
+
+  <div class="related">
+    <h3>Explore next</h3>
+    <div class="explore-grid">
+      <a class="explore-tile" href="/guides/liquidation-vs-bankruptcy"><div class="et-kicker">Basics</div><div class="et-title">Liquidation price vs. bankruptcy price</div></a>
+      <a class="explore-tile" href="/guides/isolated-vs-cross"><div class="et-kicker">Basics</div><div class="et-title">Cross margin vs. isolated margin explained</div></a>
+      <a class="explore-tile" href="/guides/margin-call-vs-liquidation"><div class="et-kicker">Basics</div><div class="et-title">Margin call vs. liquidation</div></a>
+      <a class="explore-tile" href="/guides/liquidation-fees"><div class="et-kicker">Costs &amp; Fees</div><div class="et-title">Liquidation fees explained</div></a>
+    </div>
+  </div>
+</article>
+
+<footer>
+  <div class="wrap">
+    <span>LiquidationBuffer — not financial advice, just math.</span>
+    <span><a href="/">Back to calculator</a> &middot; &copy; 2026 Copperleaf LLC &middot; <a href="/legal">Legal</a> &middot; <a href="/privacy">Privacy</a> &middot; <a href="/terms">Terms</a></span>
+  </div>
+</footer>
+<script src="/assets/site.js"></script>
+</body>
+</html>

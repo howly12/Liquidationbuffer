@@ -101,6 +101,29 @@ articles than the original four.
 
 ---
 
+## 5a. Page-level conventions added October 2026
+- **Social image:** every indexable page carries `og:image`
+  (`/assets/og-image.png`, 1200×630), `og:image:width/height/alt`, `twitter:image` and
+  `twitter:card` = `summary_large_image`. Copy those lines from an existing guide
+  into new indexable pages. `legal`, `privacy`, `terms`, `404` and the embed do not need them.
+- **Homepage schema:** `index.html` carries `Organization` + `WebSite` JSON-LD (no `sameAs`
+  yet; add the X profile URL there once the account exists) and an FAQPage block that
+  must match the four visible FAQ items.
+- **FAQ schema:** the FAQPage JSON-LD of a page is generated from its visible `faq-item`
+  blocks. If you edit an FAQ answer, update the JSON-LD with the same text.
+- **Leverage comparison:** the calculator pages and the embed contain a
+  `<details class="compare">` block with `#compareTable`, filled by `renderCompare()` in
+  `assets/calculator.js` (levels in `COMPARE_LEVERAGES`). It uses the same MMR for every
+  level, which the note under the table says. Keep the block on every page that loads
+  `calculator.js`; the script skips it silently if the table is missing.
+- **Mobile:** grids that hold the calculator use `minmax(0,1fr)` so inputs cannot widen
+  the page; test new layouts at 375 px for horizontal scroll.
+- **Keyword map:** see the "LiquidationBuffer SEO" memory note for the target keywords of
+  each guide. Exchange pages beyond the five existing ones were checked in October 2026
+  and have about 10 searches/month each, so they are not worth building.
+
+---
+
 ## 5b. Git integration (Cloudflare Workers)
 This repo is connected to a Cloudflare Workers service (`billowing-lab-7d25`)
 via GitHub integration on the `main` branch. Every push to `main` triggers

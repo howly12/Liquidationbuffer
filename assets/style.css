@@ -297,7 +297,7 @@ select:focus, input:focus{ outline:2px solid var(--accent); outline-offset:1px; 
 }
 .preset-row button:hover{ border-color:var(--ink); color:var(--ink); }
 
-input[type=range]{ width:100%; accent-color:var(--ink); margin-top:4px; }
+input[type=range]{ width:100%; max-width:100%; box-sizing:border-box; accent-color:var(--ink); margin:4px 0 0; }
 .range-labels{ display:flex; justify-content:space-between; font-size:11px; color:var(--ink-soft); margin-top:2px; font-family:'IBM Plex Mono', monospace;}
 .range-current{ font-size:13px; font-weight:500; text-align:center; margin-top:2px; }
 .hint{ font-size:11.5px; color:var(--ink-soft); margin-top:6px; line-height:1.4; }
